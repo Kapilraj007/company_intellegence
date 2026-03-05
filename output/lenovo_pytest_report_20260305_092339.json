@@ -1,0 +1,17 @@
+{
+  "company_name": "Lenovo",
+  "generated_at": "2026-03-05T09:23:44",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence/output/lenovo_golden_record_20260305_092339.json",
+  "total": 487,
+  "passed": 443,
+  "failed": 0,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 3.19,
+  "all_passed": true,
+  "failed_tests": [],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 0,
+  "skip_reason": null
+}

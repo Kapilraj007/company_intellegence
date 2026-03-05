@@ -1,0 +1,17 @@
+{
+  "company_name": "unknown",
+  "generated_at": "2026-03-05T09:16:31",
+  "golden_record_path": null,
+  "total": 0,
+  "passed": 0,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "duration_sec": 0.0,
+  "all_passed": false,
+  "failed_tests": [],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 2,
+  "skip_reason": "golden_record_path not set or missing: 'None'. Agent 3 may have produced no valid rows."
+}

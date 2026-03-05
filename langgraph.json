@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "company_intelligence": "./graph.py:graph"
+  },
+  "env": ".env"
+}

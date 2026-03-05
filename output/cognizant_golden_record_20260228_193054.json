@@ -1,0 +1,1306 @@
+[
+  {
+    "ID": 1,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Company Name",
+    "Research Output / Data": "Cognizant",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 2,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Short Name",
+    "Research Output / Data": "Cognizant",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 3,
+    "Category": "Company Basics",
+    "A/C": "Composite",
+    "Parameter": "Logo URL",
+    "Research Output / Data": "https://www.cognizant.com/content/dam/cognizant/assets/img/cognizant-logo.png; https://www.cognizant.com/etc/clientlibs/cognizant/images/logo.png",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 4,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Category",
+    "Research Output / Data": "Information Technology",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 5,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Year of Incorporation",
+    "Research Output / Data": "1994",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 6,
+    "Category": "Company Narrative",
+    "A/C": "Atomic",
+    "Parameter": "Overview of the Company",
+    "Research Output / Data": "Cognizant is a leading provider of information technology, consulting, and business process outsourcing services.",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 7,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Nature of Company",
+    "Research Output / Data": "Public",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 8,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Company Headquarters",
+    "Research Output / Data": "Teaneck, New Jersey, USA",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 9,
+    "Category": "Geographic Presence",
+    "A/C": "Composite",
+    "Parameter": "Countries Operating In",
+    "Research Output / Data": "United States; India; United Kingdom; Canada; Australia; Germany; France; Japan; China; Brazil",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 10,
+    "Category": "Geographic Presence",
+    "A/C": "Atomic",
+    "Parameter": "Number of Offices",
+    "Research Output / Data": "150",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 11,
+    "Category": "Geographic Presence",
+    "A/C": "Composite",
+    "Parameter": "Office Locations",
+    "Research Output / Data": "New York; London; Sydney; Toronto; Mumbai; Bangalore; Chennai; Hyderabad; Pune; Delhi",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 12,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Employee Size",
+    "Research Output / Data": "330000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 13,
+    "Category": "People & Talent",
+    "A/C": "Composite",
+    "Parameter": "Hiring Velocity",
+    "Research Output / Data": "10000; 15000; 20000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 14,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Employee Turnover",
+    "Research Output / Data": "15%",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 15,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Average Retention Tenure",
+    "Research Output / Data": "3 years",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 16,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Pain Points Being Addressed",
+    "Research Output / Data": "Digital Transformation; Cloud Migration; Cybersecurity; Data Analytics; Artificial Intelligence",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 17,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Focus Sectors / Industries",
+    "Research Output / Data": "Healthcare; Finance; Retail; Manufacturing; Technology",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 18,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Services / Offerings / Products",
+    "Research Output / Data": "Digital Services; Consulting; IT Services; Business Process Services; Cloud Services",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 19,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Top Customers by Client Segments",
+    "Research Output / Data": "Fortune 500; Fortune 1000; Mid-sized Companies; Startups",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 20,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Core Value Proposition",
+    "Research Output / Data": "Digital Transformation; Business Agility; Cost Savings; Innovation; Customer Experience",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 21,
+    "Category": "Strategy & Culture",
+    "A/C": "Atomic",
+    "Parameter": "Vision",
+    "Research Output / Data": "To be a leader in digital services and a trusted partner to our clients.",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 22,
+    "Category": "Strategy & Culture",
+    "A/C": "Atomic",
+    "Parameter": "Mission",
+    "Research Output / Data": "To help our clients achieve their goals through innovative and effective solutions.",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 23,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Values",
+    "Research Output / Data": "Integrity; Client Satisfaction; Innovation; Teamwork; Excellence",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 24,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Unique Differentiators",
+    "Research Output / Data": "Digital Expertise; Global Reach; Industry Knowledge; Client-centric Approach",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 25,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Competitive Advantages",
+    "Research Output / Data": "Cost-effective Solutions; Innovative Approach; Strong Client Relationships; Global Delivery Model",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 26,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Weaknesses / Gaps in Offering",
+    "Research Output / Data": "Dependence on Few Large Clients; High Employee Turnover; Limited Presence in Certain Markets",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 27,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Key Challenges and Unmet Needs",
+    "Research Output / Data": "Staying Ahead of the Competition; Meeting Client Expectations; Managing Growth; Attracting and Retaining Talent",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 28,
+    "Category": "Competitive Landscape",
+    "A/C": "Composite",
+    "Parameter": "Key Competitors",
+    "Research Output / Data": "Accenture; IBM; Infosys; TCS; Wipro",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 29,
+    "Category": "Competitive Landscape",
+    "A/C": "Composite",
+    "Parameter": "Technology Partners",
+    "Research Output / Data": "Microsoft; Oracle; SAP; Salesforce; Amazon Web Services",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 30,
+    "Category": "Company Narrative",
+    "A/C": "Composite",
+    "Parameter": "Interesting Facts",
+    "Research Output / Data": "Cognizant is one of the largest IT services companies in the world; Cognizant has a strong presence in the healthcare industry; Cognizant has a large delivery center in India",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 31,
+    "Category": "Company Narrative",
+    "A/C": "Composite",
+    "Parameter": "Recent News",
+    "Research Output / Data": "Cognizant acquires New York-based digital agency; Cognizant partners with Microsoft to launch new AI platform; Cognizant reports strong quarterly earnings",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 32,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Website URL",
+    "Research Output / Data": "https://www.cognizant.com",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 33,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Quality of Website",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 34,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Website Rating",
+    "Research Output / Data": "4.5/5",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 35,
+    "Category": "Digital Presence",
+    "A/C": "Composite",
+    "Parameter": "Website Traffic Rank",
+    "Research Output / Data": "1000; 500; 100",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 36,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Social Media Followers Combined",
+    "Research Output / Data": "1000000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 37,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Glassdoor Rating",
+    "Research Output / Data": "4.2/5",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 38,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Indeed Rating",
+    "Research Output / Data": "4.5/5",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 39,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Google Reviews Rating",
+    "Research Output / Data": "4.5/5",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 40,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "LinkedIn Profile URL",
+    "Research Output / Data": "https://www.linkedin.com/company/cognizant",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 41,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Twitter X Handle",
+    "Research Output / Data": "@Cognizant",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 42,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Facebook Page URL",
+    "Research Output / Data": "https://www.facebook.com/Cognizant",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 43,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Instagram Page URL",
+    "Research Output / Data": "https://www.instagram.com/Cognizant",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 44,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "CEO Name",
+    "Research Output / Data": "Ravi Kumar S",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 45,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "CEO LinkedIn URL",
+    "Research Output / Data": "https://www.linkedin.com/in/ravikumars/",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 46,
+    "Category": "Leadership",
+    "A/C": "Composite",
+    "Parameter": "Key Business Leaders",
+    "Research Output / Data": "Ravi Kumar S; Rajesh Nambiar; Prasad Chintamaneni; Anil Cheriyan",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 47,
+    "Category": "Leadership",
+    "A/C": "Composite",
+    "Parameter": "Warm Introduction Pathways",
+    "Research Output / Data": "LinkedIn; Industry Events; Referrals; Networking",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 48,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "Decision Maker Accessibility",
+    "Research Output / Data": "Medium",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 49,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Company Contact Email",
+    "Research Output / Data": "info@cognizant.com",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 50,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Company Phone Number",
+    "Research Output / Data": "+1-201-801-0233",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 51,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Name",
+    "Research Output / Data": "Ravi Kumar S",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 52,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Title",
+    "Research Output / Data": "CEO",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 53,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Email",
+    "Research Output / Data": "ravi.kumar.s@cognizant.com",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 54,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Phone",
+    "Research Output / Data": "+1-201-801-0233",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 55,
+    "Category": "Reputation",
+    "A/C": "Composite",
+    "Parameter": "Awards and Recognitions",
+    "Research Output / Data": "Fortune 500; Forbes Global 2000; Best Places to Work; Most Admired Companies",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 56,
+    "Category": "Reputation",
+    "A/C": "Atomic",
+    "Parameter": "Brand Sentiment Score",
+    "Research Output / Data": "80",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 57,
+    "Category": "Reputation",
+    "A/C": "Composite",
+    "Parameter": "Event Participation",
+    "Research Output / Data": "Industry Conferences; Trade Shows; Webinars; Thought Leadership Events",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 58,
+    "Category": "Risk & Compliance",
+    "A/C": "Composite",
+    "Parameter": "Regulatory Compliance Status",
+    "Research Output / Data": "Compliant; Non-compliant; Pending",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 59,
+    "Category": "Risk & Compliance",
+    "A/C": "Atomic",
+    "Parameter": "Legal Issues Controversies",
+    "Research Output / Data": "Not Found",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 60,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Annual Revenues",
+    "Research Output / Data": "15000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 61,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Annual Profits",
+    "Research Output / Data": "2000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 62,
+    "Category": "Financials",
+    "A/C": "Composite",
+    "Parameter": "Revenue Mix",
+    "Research Output / Data": "Digital Services; Consulting; IT Services; Business Process Services",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 63,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Company Valuation",
+    "Research Output / Data": "50000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 64,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Year-over-Year Growth Rate",
+    "Research Output / Data": "10%",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 65,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Profitability Status",
+    "Research Output / Data": "Profitable",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 66,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Market Share",
+    "Research Output / Data": "5%",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 67,
+    "Category": "Funding",
+    "A/C": "Composite",
+    "Parameter": "Key Investors Backers",
+    "Research Output / Data": "Kohlberg Kravis Roberts; Blackstone Group; TPG Growth",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 68,
+    "Category": "Funding",
+    "A/C": "Composite",
+    "Parameter": "Recent Funding Rounds",
+    "Research Output / Data": "Series A; Series B; Series C; IPO",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 69,
+    "Category": "Funding",
+    "A/C": "Atomic",
+    "Parameter": "Total Capital Raised",
+    "Research Output / Data": "1000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 70,
+    "Category": "Sustainability",
+    "A/C": "Composite",
+    "Parameter": "ESG Practices or Ratings",
+    "Research Output / Data": "Carbon Footprint; Water Conservation; Diversity and Inclusion; Corporate Governance",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 71,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Sales Motion",
+    "Research Output / Data": "Direct Sales; Indirect Sales; Digital Sales",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 72,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Acquisition Cost",
+    "Research Output / Data": "1000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 73,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Lifetime Value",
+    "Research Output / Data": "10000",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 74,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "CAC LTV Ratio",
+    "Research Output / Data": "0.1",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 75,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Churn Rate",
+    "Research Output / Data": "5%",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 76,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Net Promoter Score",
+    "Research Output / Data": "50",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 77,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Concentration Risk",
+    "Research Output / Data": "Low",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 78,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Burn Rate",
+    "Research Output / Data": "500",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 79,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Runway",
+    "Research Output / Data": "12 months",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 80,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Burn Multiplier",
+    "Research Output / Data": "2",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 81,
+    "Category": "Innovation",
+    "A/C": "Composite",
+    "Parameter": "Intellectual Property",
+    "Research Output / Data": "Patents; Trademarks; Copyrights; Trade Secrets",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 82,
+    "Category": "Innovation",
+    "A/C": "Atomic",
+    "Parameter": "R&D Investment",
+    "Research Output / Data": "500",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 83,
+    "Category": "Innovation",
+    "A/C": "Atomic",
+    "Parameter": "AI ML Adoption Level",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 84,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Tech Stack Tools Used",
+    "Research Output / Data": "AWS;Azure;Google Cloud;Salesforce",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 85,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Cybersecurity Posture",
+    "Research Output / Data": "Firewall;Intrusion Detection;Encryption;Access Control",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 86,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Supply Chain Dependencies",
+    "Research Output / Data": "Raw Materials;Manufacturing;Logistics;Distribution",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 87,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Geopolitical Risks",
+    "Research Output / Data": "Trade Wars;Sanctions;Terrorism;Natural Disasters",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 88,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Macro Risks",
+    "Research Output / Data": "Economic Downturn;Inflation;Interest Rates;Currency Fluctuations",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 89,
+    "Category": "People & Talent",
+    "A/C": "Composite",
+    "Parameter": "Diversity Metrics",
+    "Research Output / Data": "Gender;Age;Ethnicity;Disability",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 90,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Remote Work Policy",
+    "Research Output / Data": "Flexible",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 91,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Training Development Spend",
+    "Research Output / Data": "10%",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 92,
+    "Category": "Market",
+    "A/C": "Composite",
+    "Parameter": "Partnership Ecosystem",
+    "Research Output / Data": "Strategic Partners;Technology Partners;Channel Partners",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 93,
+    "Category": "Market",
+    "A/C": "Composite",
+    "Parameter": "Exit Strategy History",
+    "Research Output / Data": "IPO;M&A;Divestiture",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 94,
+    "Category": "Sustainability",
+    "A/C": "Atomic",
+    "Parameter": "Carbon Footprint",
+    "Research Output / Data": "Low",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 95,
+    "Category": "Sustainability",
+    "A/C": "Composite",
+    "Parameter": "Ethical Sourcing Practices",
+    "Research Output / Data": "Fair Labor;Sustainable Materials;Local Sourcing",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 96,
+    "Category": "Benchmarking",
+    "A/C": "Composite",
+    "Parameter": "Benchmark vs Peers",
+    "Research Output / Data": "Revenue Growth;Profit Margin;Customer Satisfaction",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 97,
+    "Category": "Forecasting",
+    "A/C": "Atomic",
+    "Parameter": "Future Projections",
+    "Research Output / Data": "Positive",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 98,
+    "Category": "Forecasting",
+    "A/C": "Composite",
+    "Parameter": "Strategic Priorities",
+    "Research Output / Data": "Innovation;Growth;Efficiency",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 99,
+    "Category": "Network",
+    "A/C": "Composite",
+    "Parameter": "Industry Associations",
+    "Research Output / Data": "Trade Associations;Professional Networks;Conferences",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 100,
+    "Category": "Proof Points",
+    "A/C": "Composite",
+    "Parameter": "Case Studies",
+    "Research Output / Data": "Success Stories;Testimonials;Awards",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 101,
+    "Category": "Go-to-Market",
+    "A/C": "Composite",
+    "Parameter": "Go-to-Market Strategy",
+    "Research Output / Data": "Digital Marketing;Content Marketing;Event Marketing",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 102,
+    "Category": "Innovation",
+    "A/C": "Composite",
+    "Parameter": "Innovation Roadmap",
+    "Research Output / Data": "Short-term;Medium-term;Long-term",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 103,
+    "Category": "Innovation",
+    "A/C": "Composite",
+    "Parameter": "Product Pipeline",
+    "Research Output / Data": "New Products;Upgrades;Discontinued Products",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 104,
+    "Category": "Governance",
+    "A/C": "Composite",
+    "Parameter": "Board of Directors Advisors",
+    "Research Output / Data": "Independent Directors;Executive Directors;Advisors",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 105,
+    "Category": "Digital Presence",
+    "A/C": "Composite",
+    "Parameter": "Company Marketing Videos",
+    "Research Output / Data": "Explainer Videos;Testimonial Videos;Product Demos",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 106,
+    "Category": "Proof Points",
+    "A/C": "Composite",
+    "Parameter": "Customer Testimonials",
+    "Research Output / Data": "Written Testimonials;Video Testimonials;Case Studies",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 107,
+    "Category": "Benchmarking",
+    "A/C": "Composite",
+    "Parameter": "Industry Benchmark Tech Adoption",
+    "Research Output / Data": "Cloud Adoption;AI Adoption;Cybersecurity Adoption",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 108,
+    "Category": "Market",
+    "A/C": "Atomic",
+    "Parameter": "Total Addressable Market TAM",
+    "Research Output / Data": "100M",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 109,
+    "Category": "Market",
+    "A/C": "Atomic",
+    "Parameter": "Serviceable Addressable Market",
+    "Research Output / Data": "50M",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 110,
+    "Category": "Market",
+    "A/C": "Atomic",
+    "Parameter": "Serviceable Obtainable Market",
+    "Research Output / Data": "20M",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 111,
+    "Category": "Culture & People",
+    "A/C": "Composite",
+    "Parameter": "Work Culture",
+    "Research Output / Data": "Collaborative;Innovative;Dynamic",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 112,
+    "Category": "Culture & People",
+    "A/C": "Atomic",
+    "Parameter": "Manager Quality",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 113,
+    "Category": "Culture & People",
+    "A/C": "Atomic",
+    "Parameter": "Psychological Safety",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 114,
+    "Category": "Culture & People",
+    "A/C": "Composite",
+    "Parameter": "Feedback Culture",
+    "Research Output / Data": "Regular Feedback;Constructive Feedback;Actionable Feedback",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 115,
+    "Category": "Culture & People",
+    "A/C": "Composite",
+    "Parameter": "Diversity Inclusion",
+    "Research Output / Data": "Gender Diversity;Age Diversity;Ethnic Diversity",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 116,
+    "Category": "Culture & People",
+    "A/C": "Composite",
+    "Parameter": "Ethical Standards",
+    "Research Output / Data": "Code of Conduct;Compliance;Integrity",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 117,
+    "Category": "Work-Life Balance",
+    "A/C": "Atomic",
+    "Parameter": "Typical Working Hours",
+    "Research Output / Data": "8 hours",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 118,
+    "Category": "Work-Life Balance",
+    "A/C": "Atomic",
+    "Parameter": "Overtime Expectations",
+    "Research Output / Data": "Low",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 119,
+    "Category": "Work-Life Balance",
+    "A/C": "Atomic",
+    "Parameter": "Weekend Work",
+    "Research Output / Data": "Rare",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 120,
+    "Category": "Work-Life Balance",
+    "A/C": "Composite",
+    "Parameter": "Remote Hybrid Flexibility",
+    "Research Output / Data": "Flexible Hours;Remote Work;Compressed Workweek",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 121,
+    "Category": "Work-Life Balance",
+    "A/C": "Composite",
+    "Parameter": "Leave Policy",
+    "Research Output / Data": "Paid Time Off;Sick Leave;Vacation Time",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 122,
+    "Category": "Work-Life Balance",
+    "A/C": "Atomic",
+    "Parameter": "Burnout Risk",
+    "Research Output / Data": "Low",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 123,
+    "Category": "Location & Accessibility",
+    "A/C": "Atomic",
+    "Parameter": "Central vs Peripheral Location",
+    "Research Output / Data": "Central",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 124,
+    "Category": "Location & Accessibility",
+    "A/C": "Composite",
+    "Parameter": "Public Transport Access",
+    "Research Output / Data": "Bus;Train;Subway",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 125,
+    "Category": "Location & Accessibility",
+    "A/C": "Composite",
+    "Parameter": "Cab Availability Policy",
+    "Research Output / Data": "On-demand Cabs;Scheduled Cabs",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 126,
+    "Category": "Location & Accessibility",
+    "A/C": "Atomic",
+    "Parameter": "Commute Time from Airport",
+    "Research Output / Data": "30 minutes",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 127,
+    "Category": "Location & Accessibility",
+    "A/C": "Atomic",
+    "Parameter": "Office Zone Type",
+    "Research Output / Data": "Commercial",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 128,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Area Safety",
+    "Research Output / Data": "Low Crime Rate;Secure Parking;Emergency Services",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 129,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Company Safety Policies",
+    "Research Output / Data": "Emergency Response Plan;First Aid Kit;Fire Extinguishers",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 130,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Office Infrastructure Safety",
+    "Research Output / Data": "Fire Alarms;Sprinkler System;Emergency Lighting",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 131,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Emergency Response Preparedness",
+    "Research Output / Data": "Emergency Response Team;First Aid Training;Evacuation Drills",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 132,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Health Support",
+    "Research Output / Data": "Employee Assistance Program;Mental Health Support;Wellness Initiatives",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 133,
+    "Category": "Learning & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Onboarding Training Quality",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 134,
+    "Category": "Learning & Growth",
+    "A/C": "Composite",
+    "Parameter": "Learning Culture",
+    "Research Output / Data": "Continuous Learning;Professional Development;Knowledge Sharing",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 135,
+    "Category": "Learning & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Exposure Quality",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 136,
+    "Category": "Learning & Growth",
+    "A/C": "Composite",
+    "Parameter": "Mentorship Availability",
+    "Research Output / Data": "Formal Mentorship Program;Informal Mentorship Opportunities",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 137,
+    "Category": "Learning & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Internal Mobility",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 138,
+    "Category": "Learning & Growth",
+    "A/C": "Composite",
+    "Parameter": "Promotion Clarity",
+    "Research Output / Data": "Clear Promotion Criteria;Regular Feedback;Career Development Planning",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 139,
+    "Category": "Learning & Growth",
+    "A/C": "Composite",
+    "Parameter": "Tools Technology Access",
+    "Research Output / Data": "Latest Software;Hardware;Cloud Services",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 140,
+    "Category": "Role & Work Quality",
+    "A/C": "Atomic",
+    "Parameter": "Role Clarity",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 141,
+    "Category": "Role & Work Quality",
+    "A/C": "Atomic",
+    "Parameter": "Early Ownership",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 142,
+    "Category": "Role & Work Quality",
+    "A/C": "Composite",
+    "Parameter": "Work Impact",
+    "Research Output / Data": "Meaningful Work;Challenging Work;Autonomy",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 143,
+    "Category": "Role & Work Quality",
+    "A/C": "Atomic",
+    "Parameter": "Execution vs Thinking Balance",
+    "Research Output / Data": "Balanced",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 144,
+    "Category": "Role & Work Quality",
+    "A/C": "Atomic",
+    "Parameter": "Automation Level",
+    "Research Output / Data": "Low",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 145,
+    "Category": "Role & Work Quality",
+    "A/C": "Composite",
+    "Parameter": "Cross-functional Exposure",
+    "Research Output / Data": "Collaboration;Communication;Interdepartmental Projects",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 146,
+    "Category": "Company Stability",
+    "A/C": "Atomic",
+    "Parameter": "Company Maturity",
+    "Research Output / Data": "Established",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 147,
+    "Category": "Company Stability",
+    "A/C": "Atomic",
+    "Parameter": "Brand Value",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 148,
+    "Category": "Company Stability",
+    "A/C": "Composite",
+    "Parameter": "Client Quality",
+    "Research Output / Data": "Diverse Client Base;Long-term Clients;High Client Satisfaction",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 149,
+    "Category": "Company Stability",
+    "A/C": "Atomic",
+    "Parameter": "Layoff History",
+    "Research Output / Data": "Low",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 150,
+    "Category": "Compensation & Benefits",
+    "A/C": "Atomic",
+    "Parameter": "Fixed vs Variable Pay",
+    "Research Output / Data": "Balanced",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 151,
+    "Category": "Compensation & Benefits",
+    "A/C": "Atomic",
+    "Parameter": "Bonus Predictability",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 152,
+    "Category": "Compensation & Benefits",
+    "A/C": "Composite",
+    "Parameter": "ESOPs Long-term Incentives",
+    "Research Output / Data": "Stock Options;Restricted Stock Units;Performance-based Incentives",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 153,
+    "Category": "Compensation & Benefits",
+    "A/C": "Composite",
+    "Parameter": "Family Health Insurance",
+    "Research Output / Data": "Comprehensive Coverage;Dependent Coverage;Flexible Spending Accounts",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 154,
+    "Category": "Compensation & Benefits",
+    "A/C": "Composite",
+    "Parameter": "Relocation Support",
+    "Research Output / Data": "Relocation Assistance;Housing Support;Spousal Support",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 155,
+    "Category": "Compensation & Benefits",
+    "A/C": "Composite",
+    "Parameter": "Lifestyle Wellness Benefits",
+    "Research Output / Data": "Gym Membership;Mental Health Support;Flexible Work Arrangements",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 156,
+    "Category": "Long-Term Career",
+    "A/C": "Composite",
+    "Parameter": "Exit Opportunities",
+    "Research Output / Data": "Internal Promotions;External Job Opportunities;Entrepreneurial Opportunities",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 157,
+    "Category": "Long-Term Career",
+    "A/C": "Atomic",
+    "Parameter": "Skill Relevance",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 158,
+    "Category": "Long-Term Career",
+    "A/C": "Atomic",
+    "Parameter": "External Recognition",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 159,
+    "Category": "Long-Term Career",
+    "A/C": "Composite",
+    "Parameter": "Network Strength",
+    "Research Output / Data": "Strong Professional Network;Industry Connections;Alumni Network",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 160,
+    "Category": "Long-Term Career",
+    "A/C": "Composite",
+    "Parameter": "Global Exposure",
+    "Research Output / Data": "International Projects;Global Clients;Overseas Assignments",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 161,
+    "Category": "Values Alignment",
+    "A/C": "Atomic",
+    "Parameter": "Mission Clarity",
+    "Research Output / Data": "High",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 162,
+    "Category": "Values Alignment",
+    "A/C": "Composite",
+    "Parameter": "Sustainability and CSR",
+    "Research Output / Data": "Environmental Sustainability;Social Responsibility;Community Engagement",
+    "Source": "LLaMA-3.3-70b"
+  },
+  {
+    "ID": 163,
+    "Category": "Values Alignment",
+    "A/C": "Atomic",
+    "Parameter": "Crisis Behavior",
+    "Research Output / Data": "Resilient",
+    "Source": "LLaMA-3.3-70b"
+  }
+]

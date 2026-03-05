@@ -1,0 +1,362 @@
+[
+  {
+    "ID": 1,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Company Name",
+    "Research Output / Data": "Google LLC",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 2,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Short Name",
+    "Research Output / Data": "Google",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 3,
+    "Category": "Company Basics",
+    "A/C": "Composite",
+    "Parameter": "Logo URL",
+    "Research Output / Data": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png;https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_42x16dp.png",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 4,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Category",
+    "Research Output / Data": "Technology",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 5,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Year of Incorporation",
+    "Research Output / Data": "1998",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 6,
+    "Category": "Company Narrative",
+    "A/C": "Atomic",
+    "Parameter": "Overview of the Company",
+    "Research Output / Data": "Google is a multinational technology company specializing in Internet-related services and products",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 7,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Nature of Company",
+    "Research Output / Data": "Public",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 8,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Company Headquarters",
+    "Research Output / Data": "Mountain View, California, USA",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 9,
+    "Category": "Geographic Presence",
+    "A/C": "Composite",
+    "Parameter": "Countries Operating In",
+    "Research Output / Data": "USA;Canada;UK;India;Australia;Germany;France;Italy;Spain;China;Japan",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 10,
+    "Category": "Geographic Presence",
+    "A/C": "Atomic",
+    "Parameter": "Number of Offices",
+    "Research Output / Data": "70",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 11,
+    "Category": "Geographic Presence",
+    "A/C": "Composite",
+    "Parameter": "Office Locations",
+    "Research Output / Data": "Mountain View;New York;London;Bangalore;Sydney;Munich;Paris;Milan;Madrid;Beijing;Tokyo",
+    "Source": "Groq/company_basics"
+  },
+  {
+    "ID": 12,
+    "Category": "People & Talent",
+    "A/C": "Google",
+    "Parameter": "Employee Size",
+    "Research Output / Data": "150000",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 13,
+    "Category": "People & Talent",
+    "A/C": "Google",
+    "Parameter": "Hiring Velocity",
+    "Research Output / Data": "1000;2000;500",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 14,
+    "Category": "People & Talent",
+    "A/C": "Google",
+    "Parameter": "Employee Turnover",
+    "Research Output / Data": "10",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 15,
+    "Category": "People & Talent",
+    "A/C": "Google",
+    "Parameter": "Average Retention Tenure",
+    "Research Output / Data": "3.5",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 16,
+    "Category": "Business Model",
+    "A/C": "Google",
+    "Parameter": "Pain Points Being Addressed",
+    "Research Output / Data": "Data Storage;Cyber Security;Artificial Intelligence",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 17,
+    "Category": "Business Model",
+    "A/C": "Google",
+    "Parameter": "Focus Sectors / Industries",
+    "Research Output / Data": "Technology;Healthcare;Finance",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 18,
+    "Category": "Business Model",
+    "A/C": "Google",
+    "Parameter": "Services / Offerings / Products",
+    "Research Output / Data": "Google Search;Google Ads;Google Cloud",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 19,
+    "Category": "Business Model",
+    "A/C": "Google",
+    "Parameter": "Top Customers by Client Segments",
+    "Research Output / Data": "Enterprise;Small Business;Individuals",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 20,
+    "Category": "Business Model",
+    "A/C": "Google",
+    "Parameter": "Core Value Proposition",
+    "Research Output / Data": "Innovation;Ease of Use;Scalability",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 21,
+    "Category": "Strategy & Culture",
+    "A/C": "Google",
+    "Parameter": "Vision",
+    "Research Output / Data": "To organize the world's information",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 22,
+    "Category": "Strategy & Culture",
+    "A/C": "Google",
+    "Parameter": "Mission",
+    "Research Output / Data": "To make information universally accessible",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 23,
+    "Category": "Strategy & Culture",
+    "A/C": "Google",
+    "Parameter": "Values",
+    "Research Output / Data": "Innovation;Collaboration;Respect",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 24,
+    "Category": "Strategy & Culture",
+    "A/C": "Google",
+    "Parameter": "Unique Differentiators",
+    "Research Output / Data": "Artificial Intelligence;Machine Learning;Data Analytics",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 25,
+    "Category": "Strategy & Culture",
+    "A/C": "Google",
+    "Parameter": "Competitive Advantages",
+    "Research Output / Data": "Brand Recognition;Global Reach;Innovative Products",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 26,
+    "Category": "Strategy & Culture",
+    "A/C": "Google",
+    "Parameter": "Weaknesses / Gaps in Offering",
+    "Research Output / Data": "Dependence on Advertising;Data Privacy Concerns;Competition from New Entrants",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 27,
+    "Category": "Strategy & Culture",
+    "A/C": "Google",
+    "Parameter": "Key Challenges and Unmet Needs",
+    "Research Output / Data": "Regulatory Compliance;Cyber Security Threats;Sustainability",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 28,
+    "Category": "Competitive Landscape",
+    "A/C": "Google",
+    "Parameter": "Key Competitors",
+    "Research Output / Data": "Amazon;Microsoft;Facebook",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 29,
+    "Category": "Competitive Landscape",
+    "A/C": "Google",
+    "Parameter": "Technology Partners",
+    "Research Output / Data": "Samsung;Intel;Cisco",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 30,
+    "Category": "Company Narrative",
+    "A/C": "Google",
+    "Parameter": "Interesting Facts",
+    "Research Output / Data": "Founded in 1998;Headquartered in California;IPO in 2004",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 31,
+    "Category": "Company Narrative",
+    "A/C": "Google",
+    "Parameter": "Recent News",
+    "Research Output / Data": "Acquisition of Fitbit;Launch of Google Pixel 6;Expansion into Cloud Gaming",
+    "Source": "Groq/people_strategy"
+  },
+  {
+    "ID": 102,
+    "Category": "Innovation",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Innovation Roadmap",
+    "Research Output / Data": "Artificial Intelligence;Machine Learning;Cloud Computing",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 103,
+    "Category": "Innovation",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Product Pipeline",
+    "Research Output / Data": "Google Pixel;Google Home;Google Assistant",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 104,
+    "Category": "Governance",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Board of Directors Advisors",
+    "Research Output / Data": "Sundar Pichai;Sergey Brin;Larry Page",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 105,
+    "Category": "Digital Presence",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Company Marketing Videos",
+    "Research Output / Data": "Google Ads;Google Cloud;Google Pixel Marketing",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 106,
+    "Category": "Proof Points",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Customer Testimonials",
+    "Research Output / Data": "Coca-Cola;McDonalds;Toyota",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 107,
+    "Category": "Benchmarking",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Industry Benchmark Tech Adoption",
+    "Research Output / Data": "Amazon;Microsoft;Facebook",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 108,
+    "Category": "Market",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Total Addressable Market TAM",
+    "Research Output / Data": "1.5 Trillion",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 109,
+    "Category": "Market",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Serviceable Addressable Market SAM",
+    "Research Output / Data": "750 Billion",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 110,
+    "Category": "Market",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Serviceable Obtainable Market SOM",
+    "Research Output / Data": "300 Billion",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 111,
+    "Category": "Culture & People",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Work Culture",
+    "Research Output / Data": "Innovative;Collaborative;Dynamic",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 112,
+    "Category": "Culture & People",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Manager Quality",
+    "Research Output / Data": "High",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 113,
+    "Category": "Culture & People",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Psychological Safety",
+    "Research Output / Data": "High",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 114,
+    "Category": "Culture & People",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Feedback Culture",
+    "Research Output / Data": "Regular;Constructive;Actionable",
+    "Source": "Groq/innovation_market"
+  },
+  {
+    "ID": 115,
+    "Category": "Culture & People",
+    "A/C": "Google;Alphabet",
+    "Parameter": "Diversity Inclusion",
+    "Research Output / Data": "Gender;Race;Disability",
+    "Source": "Groq/innovation_market"
+  }
+]

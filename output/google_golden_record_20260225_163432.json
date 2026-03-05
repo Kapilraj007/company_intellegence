@@ -1,0 +1,802 @@
+[
+  {
+    "ID": 1,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Company Name",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Google",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 2,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Short Name",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Google",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 3,
+    "Category": "Company Basics",
+    "A/C": "Composite",
+    "Parameter": "Logo URL",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 4,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Category",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Technology",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 5,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Year of Incorporation",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "1998",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 6,
+    "Category": "Company Narrative",
+    "A/C": "Atomic",
+    "Parameter": "Overview of the Company",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "Google is a multinational technology company specializing in Internet-related services and products.",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 7,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Nature of Company",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Public",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 8,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Company Headquarters",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Mountain View, California",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 9,
+    "Category": "Geographic Presence",
+    "A/C": "Composite",
+    "Parameter": "Countries Operating In",
+    "Min": 1,
+    "Max": 10,
+    "Research Output / Data": "USA; Canada; UK; India; Australia",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 10,
+    "Category": "Geographic Presence",
+    "A/C": "Atomic",
+    "Parameter": "Number of Offices (beyond HQ)",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "70",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 11,
+    "Category": "Geographic Presence",
+    "A/C": "Composite",
+    "Parameter": "Office Locations",
+    "Min": 1,
+    "Max": 10,
+    "Research Output / Data": "New York; London; Paris; Tokyo; Sydney",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 12,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Employee Size",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "150000",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 13,
+    "Category": "People & Talent",
+    "A/C": "Composite",
+    "Parameter": "Hiring Velocity",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "1000; 2000; 500; 1500; 3000",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 14,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Employee Turnover",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "10",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 15,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Average Retention Tenure",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "2.5 years",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 16,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Pain Points Being Addressed",
+    "Min": 2,
+    "Max": 8,
+    "Research Output / Data": "Information retrieval; Advertising; Cloud computing; Artificial intelligence",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 17,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Focus Sectors / Industries",
+    "Min": 1,
+    "Max": 10,
+    "Research Output / Data": "Technology; Advertising; Software; Internet",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 18,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Services / Offerings / Products",
+    "Min": 2,
+    "Max": 10,
+    "Research Output / Data": "Google Search; Google Ads; Google Cloud; Google Drive",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 19,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Top Customers by Client Segments",
+    "Min": 3,
+    "Max": 20,
+    "Research Output / Data": "Small businesses; Medium businesses; Large enterprises",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 20,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Core Value Proposition",
+    "Min": 2,
+    "Max": 5,
+    "Research Output / Data": "Organizing the world's information; Making information universally accessible",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 21,
+    "Category": "Strategy & Culture",
+    "A/C": "Atomic",
+    "Parameter": "Vision",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "To organize the world's information and make it universally accessible and useful",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 22,
+    "Category": "Strategy & Culture",
+    "A/C": "Atomic",
+    "Parameter": "Mission",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "To organize the world's information and make it universally accessible and useful",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 23,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Values",
+    "Min": 3,
+    "Max": 7,
+    "Research Output / Data": "Focus on the user; Do one thing really well; Fast is better than slow",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 24,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Unique Differentiators",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Innovative products; Strong brand recognition",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 25,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Competitive Advantages",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Large user base; Strong financial resources",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 26,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Weaknesses / Gaps in Offering",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Dependence on advertising revenue",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 27,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Key Challenges and Unmet Needs",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Increasing competition; Regulatory challenges",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 28,
+    "Category": "Competitive Landscape",
+    "A/C": "Composite",
+    "Parameter": "Key Competitors",
+    "Min": 5,
+    "Max": 20,
+    "Research Output / Data": "Microsoft; Amazon; Facebook; Apple; IBM",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 29,
+    "Category": "Competitive Landscape",
+    "A/C": "Composite",
+    "Parameter": "Technology Partners",
+    "Min": 2,
+    "Max": 8,
+    "Research Output / Data": "Cisco; Intel; Oracle",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 30,
+    "Category": "Company Narrative",
+    "A/C": "Composite",
+    "Parameter": "Interesting Facts",
+    "Min": 2,
+    "Max": 3,
+    "Research Output / Data": "Google's first storage was made from Lego bricks; Google's name is inspired by the word 'googol'",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 31,
+    "Category": "Company Narrative",
+    "A/C": "Composite",
+    "Parameter": "Recent News",
+    "Min": 2,
+    "Max": 8,
+    "Research Output / Data": "Google announces new AI-powered features; Google expands its cloud services",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 32,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Website URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.google.com",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 33,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Quality of Website",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 34,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Website Rating",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "4.5",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 35,
+    "Category": "Digital Presence",
+    "A/C": "Composite",
+    "Parameter": "Website Traffic Rank",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "1; 2; 3",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 36,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Social Media Followers Combined",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "100 million",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 37,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Glassdoor Rating",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "4.3",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 38,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Indeed Rating",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "4.5",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 39,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Google Reviews Rating",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "4.5",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 40,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "LinkedIn Profile URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.linkedin.com/company/google",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 41,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Twitter X Handle",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "@Google",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 42,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Facebook Page URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.facebook.com/Google",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 43,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Instagram Page URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.instagram.com/google",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 44,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "CEO Name",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Sundar Pichai",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 45,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "CEO LinkedIn URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.linkedin.com/in/sundarpichai",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 46,
+    "Category": "Leadership",
+    "A/C": "Composite",
+    "Parameter": "Key Business Leaders",
+    "Min": 2,
+    "Max": 5,
+    "Research Output / Data": "Sundar Pichai; Ruth Porat; Sundar Pichai",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 47,
+    "Category": "Leadership",
+    "A/C": "Composite",
+    "Parameter": "Warm Introduction Pathways",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "LinkedIn; Industry events; Networking",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 48,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "Decision Maker Accessibility",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Medium",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 49,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Company Contact Email",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 50,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Company Phone Number",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "(650) 253-0000",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 51,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Name",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 52,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Title",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 53,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Email",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 54,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Phone",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 55,
+    "Category": "Reputation",
+    "A/C": "Composite",
+    "Parameter": "Awards and Recognitions",
+    "Min": 1,
+    "Max": 8,
+    "Research Output / Data": "Best Company to Work For; Most Innovative Company",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 56,
+    "Category": "Reputation",
+    "A/C": "Atomic",
+    "Parameter": "Brand Sentiment Score",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "80",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 57,
+    "Category": "Reputation",
+    "A/C": "Composite",
+    "Parameter": "Event Participation",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Google I/O; Google Cloud Next",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 58,
+    "Category": "Risk & Compliance",
+    "A/C": "Composite",
+    "Parameter": "Regulatory Compliance Status",
+    "Min": 1,
+    "Max": 6,
+    "Research Output / Data": "Compliant; Non-compliant",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 59,
+    "Category": "Risk & Compliance",
+    "A/C": "Atomic",
+    "Parameter": "Legal Issues Controversies",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 60,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Annual Revenues",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "$161 billion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 61,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Annual Profits",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "$40 billion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 62,
+    "Category": "Financials",
+    "A/C": "Composite",
+    "Parameter": "Revenue Mix",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Advertising; Cloud services; Hardware",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 63,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Company Valuation",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "$1 trillion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 64,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Year-over-Year Growth Rate",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "10%",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 65,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Profitability Status",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Profitable",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 66,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Market Share",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "80%",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 67,
+    "Category": "Funding",
+    "A/C": "Composite",
+    "Parameter": "Key Investors Backers",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Alphabet; CapitalG; Fidelity",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 68,
+    "Category": "Funding",
+    "A/C": "Composite",
+    "Parameter": "Recent Funding Rounds",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Series A; Series B; Series C",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 69,
+    "Category": "Funding",
+    "A/C": "Atomic",
+    "Parameter": "Total Capital Raised",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "$100 billion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 70,
+    "Category": "Sustainability",
+    "A/C": "Composite",
+    "Parameter": "ESG Practices or Ratings",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Renewable energy; Carbon neutral",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 71,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Sales Motion",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Direct sales; Indirect sales",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 72,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Acquisition Cost",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "$100",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 73,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Lifetime Value",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "$1000",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 74,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "CAC LTV Ratio",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "0.1",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 75,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Churn Rate",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "5%",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 76,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Net Promoter Score",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "80",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 77,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Concentration Risk",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Low",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 78,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Burn Rate",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "$10 million",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 79,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Runway",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "12 months",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 80,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Burn Multiplier",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  }
+]

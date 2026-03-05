@@ -1,0 +1,17 @@
+{
+  "company_name": "IBM",
+  "generated_at": "2026-03-02T20:19:08",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence/output/ibm_golden_record_20260302_201907.json",
+  "total": 488,
+  "passed": 444,
+  "failed": 0,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 1.29,
+  "all_passed": true,
+  "failed_tests": [],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 0,
+  "skip_reason": null
+}

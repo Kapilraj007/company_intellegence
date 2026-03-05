@@ -1,0 +1,41 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	llm1(llm1)
+	llm2(llm2)
+	llm3(llm3)
+	combine(combine)
+	retry_inc_llm1(retry_inc_llm1)
+	retry_inc_llm2(retry_inc_llm2)
+	retry_inc_llm3(retry_inc_llm3)
+	llm1_failed_param_retry(llm1_failed_param_retry)
+	consolidate(consolidate)
+	retry_inc_consolidate(retry_inc_consolidate)
+	save(save)
+	run_tests(run_tests)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> llm1;
+	combine --> consolidate;
+	consolidate -. &nbsp;retry_consolidation&nbsp; .-> retry_inc_consolidate;
+	consolidate -.-> save;
+	llm1 -. &nbsp;pass&nbsp; .-> llm2;
+	llm1 -. &nbsp;retry_llm1&nbsp; .-> retry_inc_llm1;
+	llm1_failed_param_retry --> consolidate;
+	llm2 -. &nbsp;pass&nbsp; .-> llm3;
+	llm2 -. &nbsp;retry_llm2&nbsp; .-> retry_inc_llm2;
+	llm3 -. &nbsp;pass&nbsp; .-> combine;
+	llm3 -. &nbsp;retry_llm3&nbsp; .-> retry_inc_llm3;
+	retry_inc_consolidate --> consolidate;
+	retry_inc_llm1 --> llm1;
+	retry_inc_llm2 --> llm2;
+	retry_inc_llm3 --> llm3;
+	run_tests -. &nbsp;end&nbsp; .-> __end__;
+	run_tests -. &nbsp;retry_via_llm1&nbsp; .-> llm1_failed_param_retry;
+	save --> run_tests;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc

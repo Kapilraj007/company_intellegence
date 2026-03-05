@@ -1,0 +1,16 @@
+{
+  "company_name": "tcs",
+  "generated_at": "2026-03-01T16:02:44",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence/output/tcs_golden_record_20260226_220033.json",
+  "total": 482,
+  "passed": 438,
+  "failed": 0,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 1.75,
+  "all_passed": true,
+  "failed_tests": [],
+  "error_tests": [],
+  "exit_code": 0,
+  "skip_reason": null
+}

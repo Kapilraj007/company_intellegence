@@ -1,0 +1,25 @@
+{
+  "company_name": "JPMorgan Chase",
+  "generated_at": "2026-03-02T20:24:16",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence/output/jpmorgan_chase_golden_record_20260302_202413.json",
+  "total": 488,
+  "passed": 443,
+  "failed": 1,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 2.15,
+  "all_passed": false,
+  "failed_tests": [
+    {
+      "name": "tests/integration/test_temp_retry_probe.py::test_retry_probe_fail_once_id_77",
+      "message": "tests/integration/test_temp_retry_probe.py:41: in test_retry_probe_fail_once_id_77\n    pytest.fail(\"Temporary retry probe triggered: ID=77 (Customer Concentration Risk)\")\nE   Failed: Temporary retry probe triggered: ID=77 (Customer Concentration Risk)",
+      "phase": null
+    }
+  ],
+  "error_tests": [],
+  "failed_parameter_ids": [
+    77
+  ],
+  "exit_code": 1,
+  "skip_reason": null
+}

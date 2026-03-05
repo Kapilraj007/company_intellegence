@@ -1,0 +1,17 @@
+{
+  "company_name": "cognizant",
+  "generated_at": "2026-03-05T10:24:16",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence/output/cognizant_golden_record_20260305_102414.json",
+  "total": 494,
+  "passed": 450,
+  "failed": 0,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 1.71,
+  "all_passed": true,
+  "failed_tests": [],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 0,
+  "skip_reason": null
+}

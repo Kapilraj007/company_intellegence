@@ -1,0 +1,16 @@
+{
+  "company_name": "Life insurance corporation",
+  "generated_at": "2026-03-01T16:06:04",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence/output/life_insurance_corporation_golden_record_20260301_160601.json",
+  "total": 482,
+  "passed": 438,
+  "failed": 0,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 2.03,
+  "all_passed": true,
+  "failed_tests": [],
+  "error_tests": [],
+  "exit_code": 0,
+  "skip_reason": null
+}

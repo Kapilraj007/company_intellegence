@@ -1,0 +1,1632 @@
+[
+  {
+    "ID": 1,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Company Name",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Dell Technologies",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 2,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Short Name",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Dell",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 3,
+    "Category": "Company Basics",
+    "A/C": "Composite",
+    "Parameter": "Logo URL",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "https://www.dell.com/en-us/img/logo.svg; https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Dell_Logo.svg/1280px-Dell_Logo.svg.png",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 4,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Category",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Technology",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 5,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Year of Incorporation",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "1984",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 6,
+    "Category": "Company Narrative",
+    "A/C": "Atomic",
+    "Parameter": "Overview of the Company",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "Dell Technologies is a multinational technology company that develops, sells, repairs, and supports computers and other electronic devices.",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 7,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Nature of Company",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Public",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 8,
+    "Category": "Company Basics",
+    "A/C": "Atomic",
+    "Parameter": "Company Headquarters",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Round Rock, Texas, USA",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 9,
+    "Category": "Geographic Presence",
+    "A/C": "Composite",
+    "Parameter": "Countries Operating In",
+    "Min": 1,
+    "Max": 10,
+    "Research Output / Data": "USA; Canada; Mexico; China; Japan; India; UK; Germany; France; Australia",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 10,
+    "Category": "Geographic Presence",
+    "A/C": "Atomic",
+    "Parameter": "Number of Offices (beyond HQ)",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 11,
+    "Category": "Geographic Presence",
+    "A/C": "Composite",
+    "Parameter": "Office Locations",
+    "Min": 1,
+    "Max": 10,
+    "Research Output / Data": "New York; Los Angeles; Chicago; Houston; Seattle; London; Paris; Beijing; Tokyo; Sydney",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 12,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Employee Size",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 13,
+    "Category": "People & Talent",
+    "A/C": "Composite",
+    "Parameter": "Hiring Velocity",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "1000; 500; 2000; 1500; 2500",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 14,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Employee Turnover",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "10%",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 15,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Average Retention Tenure",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "3 years",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 16,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Pain Points Being Addressed",
+    "Min": 2,
+    "Max": 8,
+    "Research Output / Data": "Data storage; Cybersecurity; Cloud computing; Artificial intelligence; Internet of Things; Networking; Data analytics; Machine learning",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 17,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Focus Sectors / Industries",
+    "Min": 1,
+    "Max": 10,
+    "Research Output / Data": "Healthcare; Finance; Education; Government; Retail; Manufacturing; Energy; Transportation; Technology; Media",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 18,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Services / Offerings / Products",
+    "Min": 2,
+    "Max": 10,
+    "Research Output / Data": "Laptops; Desktops; Servers; Storage; Networking; Cybersecurity; Cloud computing; Artificial intelligence; Internet of Things; Data analytics",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 19,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Top Customers by Client Segments",
+    "Min": 3,
+    "Max": 20,
+    "Research Output / Data": "Government; Education; Healthcare; Finance; Retail; Manufacturing; Energy; Transportation; Technology; Media",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 20,
+    "Category": "Business Model",
+    "A/C": "Composite",
+    "Parameter": "Core Value Proposition",
+    "Min": 2,
+    "Max": 5,
+    "Research Output / Data": "Innovative technology; Customer support; Sustainable practices; Data security; Digital transformation",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 21,
+    "Category": "Strategy & Culture",
+    "A/C": "Atomic",
+    "Parameter": "Vision",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "To be the most successful and sustainable technology company for our customers, employees, and communities.",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 22,
+    "Category": "Strategy & Culture",
+    "A/C": "Atomic",
+    "Parameter": "Mission",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "To deliver innovative technology solutions that empower our customers to achieve their goals.",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 23,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Values",
+    "Min": 3,
+    "Max": 7,
+    "Research Output / Data": "Innovation; Customer satisfaction; Teamwork; Integrity; Sustainability; Diversity; Inclusion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 24,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Unique Differentiators",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Innovative technology; Customer support; Sustainable practices; Data security; Digital transformation; Global presence",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 25,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Competitive Advantages",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Innovative technology; Customer support; Sustainable practices; Data security; Digital transformation; Global presence",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 26,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Weaknesses / Gaps in Offering",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Dependence on few large customers; High research and development expenses; Intense competition",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 27,
+    "Category": "Strategy & Culture",
+    "A/C": "Composite",
+    "Parameter": "Key Challenges and Unmet Needs",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Cybersecurity threats; Data privacy concerns; Climate change; Digital divide; Skills gap; Technological disruption",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 28,
+    "Category": "Competitive Landscape",
+    "A/C": "Composite",
+    "Parameter": "Key Competitors",
+    "Min": 5,
+    "Max": 20,
+    "Research Output / Data": "HP; Lenovo; Apple; Microsoft; IBM; Cisco; Oracle; SAP; Google; Amazon",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 29,
+    "Category": "Competitive Landscape",
+    "A/C": "Composite",
+    "Parameter": "Technology Partners",
+    "Min": 2,
+    "Max": 8,
+    "Research Output / Data": "Microsoft; Intel; Cisco; Oracle; SAP; Google; Amazon; VMware",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 30,
+    "Category": "Company Narrative",
+    "A/C": "Composite",
+    "Parameter": "Interesting Facts",
+    "Min": 2,
+    "Max": 3,
+    "Research Output / Data": "Dell is one of the largest technology companies in the world; Dell has a strong commitment to sustainability; Dell has a diverse and inclusive workforce",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 31,
+    "Category": "Company Narrative",
+    "A/C": "Composite",
+    "Parameter": "Recent News",
+    "Min": 2,
+    "Max": 8,
+    "Research Output / Data": "Dell announces new laptop line; Dell partners with Microsoft; Dell expands into new markets; Dell invests in artificial intelligence; Dell launches new cybersecurity platform",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 32,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Website URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.dell.com",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 33,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Quality of Website",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 34,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Website Rating",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 35,
+    "Category": "Digital Presence",
+    "A/C": "Composite",
+    "Parameter": "Website Traffic Rank",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 36,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Social Media Followers Combined",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 37,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Glassdoor Rating",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 38,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Indeed Rating",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 39,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Google Reviews Rating",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 40,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "LinkedIn Profile URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.linkedin.com/company/dell",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 41,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Twitter X Handle",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 42,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Facebook Page URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.facebook.com/Dell",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 43,
+    "Category": "Digital Presence",
+    "A/C": "Atomic",
+    "Parameter": "Instagram Page URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.instagram.com/dell",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 44,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "CEO Name",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Michael Dell",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 45,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "CEO LinkedIn URL",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "https://www.linkedin.com/in/michaeldell",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 46,
+    "Category": "Leadership",
+    "A/C": "Composite",
+    "Parameter": "Key Business Leaders",
+    "Min": 2,
+    "Max": 5,
+    "Research Output / Data": "Jeff Clarke; Chuck Whitten; Sam Burd",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 47,
+    "Category": "Leadership",
+    "A/C": "Composite",
+    "Parameter": "Warm Introduction Pathways",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "LinkedIn connections; Industry events; Referrals; Partnerships; Networking groups",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 48,
+    "Category": "Leadership",
+    "A/C": "Atomic",
+    "Parameter": "Decision Maker Accessibility",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 49,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Company Contact Email",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 50,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Company Phone Number",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 51,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Name",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 52,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Title",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 53,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Email",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 54,
+    "Category": "Contact Info",
+    "A/C": "Atomic",
+    "Parameter": "Primary Contact Phone",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 55,
+    "Category": "Reputation",
+    "A/C": "Composite",
+    "Parameter": "Awards and Recognitions",
+    "Min": 1,
+    "Max": 8,
+    "Research Output / Data": "Fortune 500; Best Places to Work; World's Most Admired Companies; America's Best Employers for Diversity",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 56,
+    "Category": "Reputation",
+    "A/C": "Atomic",
+    "Parameter": "Brand Sentiment Score",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 57,
+    "Category": "Reputation",
+    "A/C": "Composite",
+    "Parameter": "Event Participation",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "CES; SXSW; Web Summit; World Economic Forum; Consumer Electronics Show; SXSW Conference",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 58,
+    "Category": "Risk & Compliance",
+    "A/C": "Composite",
+    "Parameter": "Regulatory Compliance Status",
+    "Min": 1,
+    "Max": 6,
+    "Research Output / Data": "GDPR; CCPA; HIPAA; PCI-DSS; SOC 2; ISO 27001",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 59,
+    "Category": "Risk & Compliance",
+    "A/C": "Atomic",
+    "Parameter": "Legal Issues Controversies",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 60,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Annual Revenues",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 61,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Annual Profits",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 62,
+    "Category": "Financials",
+    "A/C": "Composite",
+    "Parameter": "Revenue Mix",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 63,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Company Valuation",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 64,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Year-over-Year Growth Rate",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 65,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Profitability Status",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 66,
+    "Category": "Financials",
+    "A/C": "Atomic",
+    "Parameter": "Market Share",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 67,
+    "Category": "Funding",
+    "A/C": "Composite",
+    "Parameter": "Key Investors Backers",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Silver Lake; MSD Capital; Temasek Holdings; GIC Private Limited; Canada Pension Plan Investment Board",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 68,
+    "Category": "Funding",
+    "A/C": "Composite",
+    "Parameter": "Recent Funding Rounds",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "$50 million; $100 million; $200 million; $500 million; $1 billion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 69,
+    "Category": "Funding",
+    "A/C": "Atomic",
+    "Parameter": "Total Capital Raised",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 70,
+    "Category": "Sustainability",
+    "A/C": "Composite",
+    "Parameter": "ESG Practices or Ratings",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Carbon neutral; Renewable energy; Sustainable supply chain; Diversity and inclusion; Human rights",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 71,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Sales Motion",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 72,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Acquisition Cost",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 73,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Lifetime Value",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 74,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "CAC LTV Ratio",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 75,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Churn Rate",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 76,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Net Promoter Score",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 77,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Customer Concentration Risk",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 78,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Burn Rate",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "$100 million",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 79,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Runway",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "12 months",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 80,
+    "Category": "Sales & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Burn Multiplier",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Found",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 81,
+    "Category": "Innovation",
+    "A/C": "Composite",
+    "Parameter": "Intellectual Property",
+    "Min": 1,
+    "Max": 6,
+    "Research Output / Data": "Patents; Trademarks; Copyrights; Trade Secrets; Industrial Designs; Domain Names",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 82,
+    "Category": "Innovation",
+    "A/C": "Atomic",
+    "Parameter": "R&D Investment",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "$1.3 billion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 83,
+    "Category": "Innovation",
+    "A/C": "Atomic",
+    "Parameter": "AI ML Adoption Level",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 84,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Tech Stack Tools Used",
+    "Min": 3,
+    "Max": 10,
+    "Research Output / Data": "Microsoft Office; Salesforce; Oracle; SAP; IBM; Google Workspace; Amazon Web Services; Microsoft Azure",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 85,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Cybersecurity Posture",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Firewall; Encryption; Access Control; Incident Response",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 86,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Supply Chain Dependencies",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Component Sourcing; Manufacturing; Logistics; Warehousing; Distribution",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 87,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Geopolitical Risks",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Trade Policies; Regulatory Changes; Political Instability; Economic Sanctions",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 88,
+    "Category": "Operations",
+    "A/C": "Composite",
+    "Parameter": "Macro Risks",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Economic Downturn; Market Volatility; Interest Rate Changes; Inflation",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 89,
+    "Category": "People & Talent",
+    "A/C": "Composite",
+    "Parameter": "Diversity Metrics",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Gender Ratio; Ethnic Diversity; Age Distribution; Disability Employment",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 90,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Remote Work Policy",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Flexible Work Arrangements",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 91,
+    "Category": "People & Talent",
+    "A/C": "Atomic",
+    "Parameter": "Training Development Spend",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "$100 million",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 92,
+    "Category": "Market",
+    "A/C": "Composite",
+    "Parameter": "Partnership Ecosystem",
+    "Min": 2,
+    "Max": 8,
+    "Research Output / Data": "Microsoft; Intel; SAP; Oracle; IBM; Google; Amazon; Salesforce",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 93,
+    "Category": "Market",
+    "A/C": "Composite",
+    "Parameter": "Exit Strategy History",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Acquisitions; Mergers; Divestitures",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 94,
+    "Category": "Sustainability",
+    "A/C": "Atomic",
+    "Parameter": "Carbon Footprint Environmental Impact",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "200,000 metric tons",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 95,
+    "Category": "Sustainability",
+    "A/C": "Composite",
+    "Parameter": "Ethical Sourcing Practices",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Conflict Minerals; Child Labor; Human Rights; Environmental Sustainability",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 96,
+    "Category": "Benchmarking",
+    "A/C": "Composite",
+    "Parameter": "Benchmark vs Peers",
+    "Min": 3,
+    "Max": 6,
+    "Research Output / Data": "HP; Lenovo; Apple; Microsoft; IBM; Cisco",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 97,
+    "Category": "Forecasting",
+    "A/C": "Atomic",
+    "Parameter": "Future Projections",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "10% growth",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 98,
+    "Category": "Forecasting",
+    "A/C": "Composite",
+    "Parameter": "Strategic Priorities",
+    "Min": 3,
+    "Max": 5,
+    "Research Output / Data": "Cloud Computing; Artificial Intelligence; Cybersecurity; Data Analytics; Internet of Things",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 99,
+    "Category": "Network",
+    "A/C": "Composite",
+    "Parameter": "Industry Associations Memberships",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "TechNet; ITI; BSA; Chamber of Commerce; National Association of Manufacturers; World Economic Forum",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 100,
+    "Category": "Proof Points",
+    "A/C": "Composite",
+    "Parameter": "Case Studies Public Success Stories",
+    "Min": 2,
+    "Max": 5,
+    "Research Output / Data": "Customer Testimonials; Success Stories; Case Studies; Whitepapers; Webinars",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 101,
+    "Category": "Go-to-Market",
+    "A/C": "Composite",
+    "Parameter": "Go-to-Market Strategy",
+    "Min": 3,
+    "Max": 6,
+    "Research Output / Data": "Digital Marketing; Social Media; Content Marketing; Event Marketing; Public Relations; Sales Enablement",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 102,
+    "Category": "Innovation",
+    "A/C": "Composite",
+    "Parameter": "Innovation Roadmap",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "Short-term; Medium-term; Long-term; Emerging Technologies; Disruptive Innovations; Incremental Innovations",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 103,
+    "Category": "Innovation",
+    "A/C": "Composite",
+    "Parameter": "Product Pipeline",
+    "Min": 2,
+    "Max": 6,
+    "Research Output / Data": "New Products; Upgraded Products; Discontinued Products; Product Life Cycle; Product Development; Product Launch",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 104,
+    "Category": "Governance",
+    "A/C": "Composite",
+    "Parameter": "Board of Directors Advisors",
+    "Min": 3,
+    "Max": 8,
+    "Research Output / Data": "CEO; CFO; CTO; Independent Directors; Advisory Board; Audit Committee; Compensation Committee",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 105,
+    "Category": "Digital Presence",
+    "A/C": "Composite",
+    "Parameter": "Company Marketing Videos",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Product Demos; Explainer Videos; Testimonials; Brand Storytelling; Social Media Videos",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 106,
+    "Category": "Proof Points",
+    "A/C": "Composite",
+    "Parameter": "Customer Testimonial",
+    "Min": 2,
+    "Max": 5,
+    "Research Output / Data": "Customer Reviews; Case Studies; Success Stories; Testimonials; References",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 107,
+    "Category": "Benchmarking",
+    "A/C": "Composite",
+    "Parameter": "Industry Benchmark Tech Adoption",
+    "Min": 2,
+    "Max": 3,
+    "Research Output / Data": "Cloud Adoption; Artificial Intelligence; Cybersecurity; Data Analytics; Internet of Things",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 108,
+    "Category": "Market",
+    "A/C": "Atomic",
+    "Parameter": "Total Addressable Market TAM",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "$100 billion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 109,
+    "Category": "Market",
+    "A/C": "Atomic",
+    "Parameter": "Serviceable Addressable Market SAM",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "$50 billion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 110,
+    "Category": "Market",
+    "A/C": "Atomic",
+    "Parameter": "Serviceable Obtainable Market SOM",
+    "Min": 1,
+    "Max": 1,
+    "Research Output / Data": "$20 billion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 111,
+    "Category": "Culture & People",
+    "A/C": "Composite",
+    "Parameter": "Work Culture",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Collaborative; Innovative; Inclusive",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 112,
+    "Category": "Culture & People",
+    "A/C": "Atomic",
+    "Parameter": "Manager Quality",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 113,
+    "Category": "Culture & People",
+    "A/C": "Atomic",
+    "Parameter": "Psychological Safety",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 114,
+    "Category": "Culture & People",
+    "A/C": "Composite",
+    "Parameter": "Feedback Culture",
+    "Min": 1,
+    "Max": 2,
+    "Research Output / Data": "Regular Feedback; Constructive Feedback",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 115,
+    "Category": "Culture & People",
+    "A/C": "Composite",
+    "Parameter": "Diversity Inclusion",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Gender Diversity; Ethnic Diversity; Age Diversity; Disability Inclusion; LGBTQ+ Inclusion",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 116,
+    "Category": "Culture & People",
+    "A/C": "Composite",
+    "Parameter": "Ethical Standards",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Code of Conduct; Ethics Training; Compliance Program",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 117,
+    "Category": "Work-Life Balance",
+    "A/C": "Atomic",
+    "Parameter": "Typical Working Hours",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "40 hours",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 118,
+    "Category": "Work-Life Balance",
+    "A/C": "Atomic",
+    "Parameter": "Overtime Expectations",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Low",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 119,
+    "Category": "Work-Life Balance",
+    "A/C": "Atomic",
+    "Parameter": "Weekend Work",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Not Expected",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 120,
+    "Category": "Work-Life Balance",
+    "A/C": "Composite",
+    "Parameter": "Remote Hybrid On-site Flexibility",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Remote Work; Flexible Hours; On-site Work",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 121,
+    "Category": "Work-Life Balance",
+    "A/C": "Composite",
+    "Parameter": "Leave Policy",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Vacation Days; Sick Leave; Parental Leave; Bereavement Leave",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 122,
+    "Category": "Work-Life Balance",
+    "A/C": "Atomic",
+    "Parameter": "Burnout Risk",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Low",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 123,
+    "Category": "Location & Accessibility",
+    "A/C": "Atomic",
+    "Parameter": "Central vs Peripheral Location",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Central",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 124,
+    "Category": "Location & Accessibility",
+    "A/C": "Composite",
+    "Parameter": "Public Transport Access",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Bus; Train; Subway; Bike-sharing",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 125,
+    "Category": "Location & Accessibility",
+    "A/C": "Composite",
+    "Parameter": "Cab Availability Company Policy",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Uber; Lyft; Taxi",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 126,
+    "Category": "Location & Accessibility",
+    "A/C": "Atomic",
+    "Parameter": "Commute Time from Airport",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "30 minutes",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 127,
+    "Category": "Location & Accessibility",
+    "A/C": "Atomic",
+    "Parameter": "Office Zone Type",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Urban",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 128,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Area Safety",
+    "Min": 1,
+    "Max": 2,
+    "Research Output / Data": "Low Crime Rate; Secure Parking",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 129,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Company Safety Policies",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Emergency Response Plan; First Aid Kit; Fire Extinguisher; Security Cameras",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 130,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Office Infrastructure Safety",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Fire Alarm; Sprinkler System; Emergency Exit",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 131,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Emergency Response Preparedness",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Emergency Response Plan; First Aid Training; Fire Drill; Crisis Management",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 132,
+    "Category": "Safety & Well-being",
+    "A/C": "Composite",
+    "Parameter": "Health Support",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Health Insurance; Mental Health Support; Employee Assistance Program; Wellness Program; Fitness Center",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 133,
+    "Category": "Learning & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Onboarding Training Quality",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 134,
+    "Category": "Learning & Growth",
+    "A/C": "Composite",
+    "Parameter": "Learning Culture",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Training Programs; Mentorship; Coaching; Feedback",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 135,
+    "Category": "Learning & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Exposure Quality",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 136,
+    "Category": "Learning & Growth",
+    "A/C": "Composite",
+    "Parameter": "Mentorship Availability",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Formal Mentorship Program; Informal Mentorship; Peer Mentorship",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 137,
+    "Category": "Learning & Growth",
+    "A/C": "Atomic",
+    "Parameter": "Internal Mobility",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 138,
+    "Category": "Learning & Growth",
+    "A/C": "Composite",
+    "Parameter": "Promotion Clarity",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Clear Promotion Path; Transparent Promotion Criteria; Regular Feedback",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 139,
+    "Category": "Learning & Growth",
+    "A/C": "Composite",
+    "Parameter": "Tools Technology Access",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Software; Hardware; Cloud Services; Data Analytics; Productivity Tools",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 140,
+    "Category": "Role & Work Quality",
+    "A/C": "Atomic",
+    "Parameter": "Role Clarity",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 141,
+    "Category": "Role & Work Quality",
+    "A/C": "Atomic",
+    "Parameter": "Early Ownership",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 142,
+    "Category": "Role & Work Quality",
+    "A/C": "Composite",
+    "Parameter": "Work Impact",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Meaningful Work; Challenging Work; Autonomy",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 143,
+    "Category": "Role & Work Quality",
+    "A/C": "Atomic",
+    "Parameter": "Execution vs Thinking Balance",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Balanced",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 144,
+    "Category": "Role & Work Quality",
+    "A/C": "Atomic",
+    "Parameter": "Automation Level",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Low",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 145,
+    "Category": "Role & Work Quality",
+    "A/C": "Composite",
+    "Parameter": "Cross-functional Exposure",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Collaboration; Communication; Teamwork; Interdepartmental Projects",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 146,
+    "Category": "Company Stability",
+    "A/C": "Atomic",
+    "Parameter": "Company Maturity",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Established",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 147,
+    "Category": "Company Stability",
+    "A/C": "Atomic",
+    "Parameter": "Brand Value",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 148,
+    "Category": "Company Stability",
+    "A/C": "Composite",
+    "Parameter": "Client Quality",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Fortune 500; Large Enterprises; Mid-sized Businesses; Small Businesses; Startups",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 149,
+    "Category": "Company Stability",
+    "A/C": "Atomic",
+    "Parameter": "Layoff History",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Low",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 150,
+    "Category": "Compensation & Benefits",
+    "A/C": "Atomic",
+    "Parameter": "Fixed vs Variable Pay",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Balanced",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 151,
+    "Category": "Compensation & Benefits",
+    "A/C": "Atomic",
+    "Parameter": "Bonus Predictability",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 152,
+    "Category": "Compensation & Benefits",
+    "A/C": "Composite",
+    "Parameter": "ESOPs Long-term Incentives",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Stock Options; Restricted Stock Units; Performance-based Stock Units",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 153,
+    "Category": "Compensation & Benefits",
+    "A/C": "Composite",
+    "Parameter": "Family Health Insurance",
+    "Min": 1,
+    "Max": 4,
+    "Research Output / Data": "Medical; Dental; Vision; Life Insurance",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 154,
+    "Category": "Compensation & Benefits",
+    "A/C": "Composite",
+    "Parameter": "Relocation Support",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Moving Expenses; Temporary Housing; Job Placement Assistance",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 155,
+    "Category": "Compensation & Benefits",
+    "A/C": "Composite",
+    "Parameter": "Lifestyle Wellness Benefits",
+    "Min": 1,
+    "Max": 6,
+    "Research Output / Data": "Gym Membership; Mental Health Support; Employee Assistance Program; Wellness Programs; Flexible Work Arrangements; On-site Childcare",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 156,
+    "Category": "Long-Term Career",
+    "A/C": "Composite",
+    "Parameter": "Exit Opportunities",
+    "Min": 1,
+    "Max": 5,
+    "Research Output / Data": "Internal Job Postings; External Job Placements; Career Coaching; Outplacement Services",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 157,
+    "Category": "Long-Term Career",
+    "A/C": "Atomic",
+    "Parameter": "Skill Relevance",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 158,
+    "Category": "Long-Term Career",
+    "A/C": "Atomic",
+    "Parameter": "External Recognition",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "High",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 159,
+    "Category": "Long-Term Career",
+    "A/C": "Composite",
+    "Parameter": "Network Strength",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Professional Networking; Industry Events; Conferences",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 160,
+    "Category": "Long-Term Career",
+    "A/C": "Composite",
+    "Parameter": "Global Exposure",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "International Assignments; Global Projects; Cultural Training",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 161,
+    "Category": "Values Alignment",
+    "A/C": "Atomic",
+    "Parameter": "Mission Clarity",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Clear",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 162,
+    "Category": "Values Alignment",
+    "A/C": "Composite",
+    "Parameter": "Sustainability and CSR",
+    "Min": 1,
+    "Max": 3,
+    "Research Output / Data": "Environmental Sustainability; Social Responsibility; Governance",
+    "Source": "Groq/LLaMA-3.3-70b"
+  },
+  {
+    "ID": 163,
+    "Category": "Values Alignment",
+    "A/C": "Atomic",
+    "Parameter": "Crisis Behavior",
+    "Min": "-",
+    "Max": "-",
+    "Research Output / Data": "Responsible",
+    "Source": "Groq/LLaMA-3.3-70b"
+  }
+]
