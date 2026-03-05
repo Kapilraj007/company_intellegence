@@ -1,0 +1,4 @@
+[phases.install]
+cmds = [
+  "pip install langgraph langchain langchain-core langchain-groq langsmith fastapi uvicorn pydantic python-dotenv pytest requests"
+]
