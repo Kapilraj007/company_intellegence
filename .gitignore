@@ -1,0 +1,30 @@
+# Environment secrets — NEVER commit
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# LangGraph internal checkpoints
+.langgraph_api/
+*.pckl
+
+# Test cache
+.pytest_cache/
+tests/.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Output files (stored locally, not in git)
+output/*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
