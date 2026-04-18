@@ -1,0 +1,16 @@
+# .dockerignore — place this in project root
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.pytest_cache/
+.langgraph_api/
+output/
+logs/
+*.log
+frontend/node_modules/
+frontend/dist/
+tests/
+README.md
+PRODUCTION.md

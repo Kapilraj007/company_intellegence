@@ -1,0 +1,39 @@
+# LangGraph + LangChain
+langgraph
+langchain
+langchain-core
+langchain-groq
+
+# FastAPI server
+fastapi
+uvicorn[standard]
+
+# LLM providers
+groq
+
+# Data validation
+pydantic
+
+# Storage
+supabase>=2.0.0
+pinecone>=3.0.0
+
+# NumPy — pin before torch and sentence-transformers
+numpy<2.0.0
+
+# Embeddings
+sentence-transformers>=2.7.0
+
+# Analytics / clustering
+scikit-learn
+
+# Utilities
+python-dotenv
+requests
+loguru
+PyJWT
+python-jose[cryptography]
+
+# Testing
+pytest
+pytest-asyncio

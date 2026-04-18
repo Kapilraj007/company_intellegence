@@ -1,0 +1,1383 @@
+{
+  "company_name": "Wipro",
+  "total_expected": 163,
+  "total_received": 163,
+  "total_passed": 163,
+  "total_missing": 0,
+  "total_failed": 0,
+  "completeness_pct": 100.0,
+  "results": [
+    {
+      "ID": 1,
+      "Category": "Company Basics",
+      "AC": "Atomic",
+      "Parameter": "Company Name",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 2,
+      "Category": "Company Basics",
+      "AC": "Atomic",
+      "Parameter": "Short Name",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 3,
+      "Category": "Company Basics",
+      "AC": "Composite",
+      "Parameter": "Logo URL",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 4,
+      "Category": "Company Basics",
+      "AC": "Atomic",
+      "Parameter": "Category",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 5,
+      "Category": "Company Basics",
+      "AC": "Atomic",
+      "Parameter": "Year of Incorporation",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 6,
+      "Category": "Company Narrative",
+      "AC": "Atomic",
+      "Parameter": "Overview of the Company",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 7,
+      "Category": "Company Basics",
+      "AC": "Atomic",
+      "Parameter": "Nature of Company",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 8,
+      "Category": "Company Basics",
+      "AC": "Atomic",
+      "Parameter": "Company Headquarters",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 9,
+      "Category": "Geographic Presence",
+      "AC": "Composite",
+      "Parameter": "Countries Operating In",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 10,
+      "Category": "Geographic Presence",
+      "AC": "Atomic",
+      "Parameter": "Number of Offices",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 11,
+      "Category": "Geographic Presence",
+      "AC": "Composite",
+      "Parameter": "Office Locations",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 12,
+      "Category": "People & Talent",
+      "AC": "Atomic",
+      "Parameter": "Employee Size",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 13,
+      "Category": "People & Talent",
+      "AC": "Composite",
+      "Parameter": "Hiring Velocity",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 14,
+      "Category": "People & Talent",
+      "AC": "Atomic",
+      "Parameter": "Employee Turnover",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 15,
+      "Category": "People & Talent",
+      "AC": "Atomic",
+      "Parameter": "Average Retention Tenure",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 16,
+      "Category": "Business Model",
+      "AC": "Composite",
+      "Parameter": "Pain Points Being Addressed",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 17,
+      "Category": "Business Model",
+      "AC": "Composite",
+      "Parameter": "Focus Sectors / Industries",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 18,
+      "Category": "Business Model",
+      "AC": "Composite",
+      "Parameter": "Services / Offerings / Products",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 19,
+      "Category": "Business Model",
+      "AC": "Composite",
+      "Parameter": "Top Customers by Client Segments",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 20,
+      "Category": "Business Model",
+      "AC": "Composite",
+      "Parameter": "Core Value Proposition",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 21,
+      "Category": "Strategy & Culture",
+      "AC": "Atomic",
+      "Parameter": "Vision",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 22,
+      "Category": "Strategy & Culture",
+      "AC": "Atomic",
+      "Parameter": "Mission",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 23,
+      "Category": "Strategy & Culture",
+      "AC": "Composite",
+      "Parameter": "Values",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 24,
+      "Category": "Strategy & Culture",
+      "AC": "Composite",
+      "Parameter": "Unique Differentiators",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 25,
+      "Category": "Strategy & Culture",
+      "AC": "Composite",
+      "Parameter": "Competitive Advantages",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 26,
+      "Category": "Strategy & Culture",
+      "AC": "Composite",
+      "Parameter": "Weaknesses / Gaps in Offering",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 27,
+      "Category": "Strategy & Culture",
+      "AC": "Composite",
+      "Parameter": "Key Challenges and Unmet Needs",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 28,
+      "Category": "Competitive Landscape",
+      "AC": "Composite",
+      "Parameter": "Key Competitors",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 29,
+      "Category": "Competitive Landscape",
+      "AC": "Composite",
+      "Parameter": "Technology Partners",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 30,
+      "Category": "Company Narrative",
+      "AC": "Composite",
+      "Parameter": "Interesting Facts",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 31,
+      "Category": "Company Narrative",
+      "AC": "Composite",
+      "Parameter": "Recent News",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 32,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Website URL",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 33,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Quality of Website",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 34,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Website Rating",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 35,
+      "Category": "Digital Presence",
+      "AC": "Composite",
+      "Parameter": "Website Traffic Rank",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 36,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Social Media Followers Combined",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 37,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Glassdoor Rating",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 38,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Indeed Rating",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 39,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Google Reviews Rating",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 40,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "LinkedIn Profile URL",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 41,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Twitter X Handle",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 42,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Facebook Page URL",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 43,
+      "Category": "Digital Presence",
+      "AC": "Atomic",
+      "Parameter": "Instagram Page URL",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 44,
+      "Category": "Leadership",
+      "AC": "Atomic",
+      "Parameter": "CEO Name",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 45,
+      "Category": "Leadership",
+      "AC": "Atomic",
+      "Parameter": "CEO LinkedIn URL",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 46,
+      "Category": "Leadership",
+      "AC": "Composite",
+      "Parameter": "Key Business Leaders",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 47,
+      "Category": "Leadership",
+      "AC": "Composite",
+      "Parameter": "Warm Introduction Pathways",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 48,
+      "Category": "Leadership",
+      "AC": "Atomic",
+      "Parameter": "Decision Maker Accessibility",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 49,
+      "Category": "Contact Info",
+      "AC": "Atomic",
+      "Parameter": "Company Contact Email",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 50,
+      "Category": "Contact Info",
+      "AC": "Atomic",
+      "Parameter": "Company Phone Number",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 51,
+      "Category": "Contact Info",
+      "AC": "Atomic",
+      "Parameter": "Primary Contact Name",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 52,
+      "Category": "Contact Info",
+      "AC": "Atomic",
+      "Parameter": "Primary Contact Title",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 53,
+      "Category": "Contact Info",
+      "AC": "Atomic",
+      "Parameter": "Primary Contact Email",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 54,
+      "Category": "Contact Info",
+      "AC": "Atomic",
+      "Parameter": "Primary Contact Phone",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 55,
+      "Category": "Reputation",
+      "AC": "Composite",
+      "Parameter": "Awards and Recognitions",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 56,
+      "Category": "Reputation",
+      "AC": "Atomic",
+      "Parameter": "Brand Sentiment Score",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 57,
+      "Category": "Reputation",
+      "AC": "Composite",
+      "Parameter": "Event Participation",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 58,
+      "Category": "Risk & Compliance",
+      "AC": "Composite",
+      "Parameter": "Regulatory Compliance Status",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 59,
+      "Category": "Risk & Compliance",
+      "AC": "Atomic",
+      "Parameter": "Legal Issues Controversies",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 60,
+      "Category": "Financials",
+      "AC": "Atomic",
+      "Parameter": "Annual Revenues",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 61,
+      "Category": "Financials",
+      "AC": "Atomic",
+      "Parameter": "Annual Profits",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 62,
+      "Category": "Financials",
+      "AC": "Composite",
+      "Parameter": "Revenue Mix",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 63,
+      "Category": "Financials",
+      "AC": "Atomic",
+      "Parameter": "Company Valuation",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 64,
+      "Category": "Financials",
+      "AC": "Atomic",
+      "Parameter": "Year-over-Year Growth Rate",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 65,
+      "Category": "Financials",
+      "AC": "Atomic",
+      "Parameter": "Profitability Status",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 66,
+      "Category": "Financials",
+      "AC": "Atomic",
+      "Parameter": "Market Share",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 67,
+      "Category": "Funding",
+      "AC": "Composite",
+      "Parameter": "Key Investors Backers",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 68,
+      "Category": "Funding",
+      "AC": "Composite",
+      "Parameter": "Recent Funding Rounds",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 69,
+      "Category": "Funding",
+      "AC": "Atomic",
+      "Parameter": "Total Capital Raised",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 70,
+      "Category": "Sustainability",
+      "AC": "Composite",
+      "Parameter": "ESG Practices or Ratings",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 71,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Sales Motion",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 72,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Customer Acquisition Cost",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 73,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Customer Lifetime Value",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 74,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "CAC LTV Ratio",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 75,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Churn Rate",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 76,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Net Promoter Score",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 77,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Customer Concentration Risk",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 78,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Burn Rate",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 79,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Runway",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 80,
+      "Category": "Sales & Growth",
+      "AC": "Atomic",
+      "Parameter": "Burn Multiplier",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 81,
+      "Category": "Innovation",
+      "AC": "Composite",
+      "Parameter": "Intellectual Property",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 82,
+      "Category": "Innovation",
+      "AC": "Atomic",
+      "Parameter": "R&D Investment",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 83,
+      "Category": "Innovation",
+      "AC": "Atomic",
+      "Parameter": "AI ML Adoption Level",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 84,
+      "Category": "Operations",
+      "AC": "Composite",
+      "Parameter": "Tech Stack Tools Used",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 85,
+      "Category": "Operations",
+      "AC": "Composite",
+      "Parameter": "Cybersecurity Posture",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 86,
+      "Category": "Operations",
+      "AC": "Composite",
+      "Parameter": "Supply Chain Dependencies",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 87,
+      "Category": "Operations",
+      "AC": "Composite",
+      "Parameter": "Geopolitical Risks",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 88,
+      "Category": "Operations",
+      "AC": "Composite",
+      "Parameter": "Macro Risks",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 89,
+      "Category": "People & Talent",
+      "AC": "Composite",
+      "Parameter": "Diversity Metrics",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 90,
+      "Category": "People & Talent",
+      "AC": "Atomic",
+      "Parameter": "Remote Work Policy",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 91,
+      "Category": "People & Talent",
+      "AC": "Atomic",
+      "Parameter": "Training Development Spend",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 92,
+      "Category": "Market",
+      "AC": "Composite",
+      "Parameter": "Partnership Ecosystem",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 93,
+      "Category": "Market",
+      "AC": "Composite",
+      "Parameter": "Exit Strategy History",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 94,
+      "Category": "Sustainability",
+      "AC": "Atomic",
+      "Parameter": "Carbon Footprint",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 95,
+      "Category": "Sustainability",
+      "AC": "Composite",
+      "Parameter": "Ethical Sourcing Practices",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 96,
+      "Category": "Benchmarking",
+      "AC": "Composite",
+      "Parameter": "Benchmark vs Peers",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 97,
+      "Category": "Forecasting",
+      "AC": "Atomic",
+      "Parameter": "Future Projections",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 98,
+      "Category": "Forecasting",
+      "AC": "Composite",
+      "Parameter": "Strategic Priorities",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 99,
+      "Category": "Network",
+      "AC": "Composite",
+      "Parameter": "Industry Associations",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 100,
+      "Category": "Proof Points",
+      "AC": "Composite",
+      "Parameter": "Case Studies",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 101,
+      "Category": "Go-to-Market",
+      "AC": "Composite",
+      "Parameter": "Go-to-Market Strategy",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 102,
+      "Category": "Innovation",
+      "AC": "Composite",
+      "Parameter": "Innovation Roadmap",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 103,
+      "Category": "Innovation",
+      "AC": "Composite",
+      "Parameter": "Product Pipeline",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 104,
+      "Category": "Governance",
+      "AC": "Composite",
+      "Parameter": "Board of Directors Advisors",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 105,
+      "Category": "Digital Presence",
+      "AC": "Composite",
+      "Parameter": "Company Marketing Videos",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 106,
+      "Category": "Proof Points",
+      "AC": "Composite",
+      "Parameter": "Customer Testimonials",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 107,
+      "Category": "Benchmarking",
+      "AC": "Composite",
+      "Parameter": "Industry Benchmark Tech Adoption",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 108,
+      "Category": "Market",
+      "AC": "Atomic",
+      "Parameter": "Total Addressable Market TAM",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 109,
+      "Category": "Market",
+      "AC": "Atomic",
+      "Parameter": "Serviceable Addressable Market",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 110,
+      "Category": "Market",
+      "AC": "Atomic",
+      "Parameter": "Serviceable Obtainable Market",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 111,
+      "Category": "Culture & People",
+      "AC": "Composite",
+      "Parameter": "Work Culture",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 112,
+      "Category": "Culture & People",
+      "AC": "Atomic",
+      "Parameter": "Manager Quality",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 113,
+      "Category": "Culture & People",
+      "AC": "Atomic",
+      "Parameter": "Psychological Safety",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 114,
+      "Category": "Culture & People",
+      "AC": "Composite",
+      "Parameter": "Feedback Culture",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 115,
+      "Category": "Culture & People",
+      "AC": "Composite",
+      "Parameter": "Diversity Inclusion",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 116,
+      "Category": "Culture & People",
+      "AC": "Composite",
+      "Parameter": "Ethical Standards",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 117,
+      "Category": "Work-Life Balance",
+      "AC": "Atomic",
+      "Parameter": "Typical Working Hours",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 118,
+      "Category": "Work-Life Balance",
+      "AC": "Atomic",
+      "Parameter": "Overtime Expectations",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 119,
+      "Category": "Work-Life Balance",
+      "AC": "Atomic",
+      "Parameter": "Weekend Work",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 120,
+      "Category": "Work-Life Balance",
+      "AC": "Composite",
+      "Parameter": "Remote Hybrid Flexibility",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 121,
+      "Category": "Work-Life Balance",
+      "AC": "Composite",
+      "Parameter": "Leave Policy",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 122,
+      "Category": "Work-Life Balance",
+      "AC": "Atomic",
+      "Parameter": "Burnout Risk",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 123,
+      "Category": "Location & Accessibility",
+      "AC": "Atomic",
+      "Parameter": "Central vs Peripheral Location",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 124,
+      "Category": "Location & Accessibility",
+      "AC": "Composite",
+      "Parameter": "Public Transport Access",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 125,
+      "Category": "Location & Accessibility",
+      "AC": "Composite",
+      "Parameter": "Cab Availability Policy",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 126,
+      "Category": "Location & Accessibility",
+      "AC": "Atomic",
+      "Parameter": "Commute Time from Airport",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 127,
+      "Category": "Location & Accessibility",
+      "AC": "Atomic",
+      "Parameter": "Office Zone Type",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 128,
+      "Category": "Safety & Well-being",
+      "AC": "Composite",
+      "Parameter": "Area Safety",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 129,
+      "Category": "Safety & Well-being",
+      "AC": "Composite",
+      "Parameter": "Company Safety Policies",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 130,
+      "Category": "Safety & Well-being",
+      "AC": "Composite",
+      "Parameter": "Office Infrastructure Safety",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 131,
+      "Category": "Safety & Well-being",
+      "AC": "Composite",
+      "Parameter": "Emergency Response Preparedness",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 132,
+      "Category": "Safety & Well-being",
+      "AC": "Composite",
+      "Parameter": "Health Support",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 133,
+      "Category": "Learning & Growth",
+      "AC": "Atomic",
+      "Parameter": "Onboarding Training Quality",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 134,
+      "Category": "Learning & Growth",
+      "AC": "Composite",
+      "Parameter": "Learning Culture",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 135,
+      "Category": "Learning & Growth",
+      "AC": "Atomic",
+      "Parameter": "Exposure Quality",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 136,
+      "Category": "Learning & Growth",
+      "AC": "Composite",
+      "Parameter": "Mentorship Availability",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 137,
+      "Category": "Learning & Growth",
+      "AC": "Atomic",
+      "Parameter": "Internal Mobility",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 138,
+      "Category": "Learning & Growth",
+      "AC": "Composite",
+      "Parameter": "Promotion Clarity",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 139,
+      "Category": "Learning & Growth",
+      "AC": "Composite",
+      "Parameter": "Tools Technology Access",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 140,
+      "Category": "Role & Work Quality",
+      "AC": "Atomic",
+      "Parameter": "Role Clarity",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 141,
+      "Category": "Role & Work Quality",
+      "AC": "Atomic",
+      "Parameter": "Early Ownership",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 142,
+      "Category": "Role & Work Quality",
+      "AC": "Composite",
+      "Parameter": "Work Impact",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 143,
+      "Category": "Role & Work Quality",
+      "AC": "Atomic",
+      "Parameter": "Execution vs Thinking Balance",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 144,
+      "Category": "Role & Work Quality",
+      "AC": "Atomic",
+      "Parameter": "Automation Level",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 145,
+      "Category": "Role & Work Quality",
+      "AC": "Composite",
+      "Parameter": "Cross-functional Exposure",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 146,
+      "Category": "Company Stability",
+      "AC": "Atomic",
+      "Parameter": "Company Maturity",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 147,
+      "Category": "Company Stability",
+      "AC": "Atomic",
+      "Parameter": "Brand Value",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 148,
+      "Category": "Company Stability",
+      "AC": "Composite",
+      "Parameter": "Client Quality",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 149,
+      "Category": "Company Stability",
+      "AC": "Atomic",
+      "Parameter": "Layoff History",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 150,
+      "Category": "Compensation & Benefits",
+      "AC": "Atomic",
+      "Parameter": "Fixed vs Variable Pay",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 151,
+      "Category": "Compensation & Benefits",
+      "AC": "Atomic",
+      "Parameter": "Bonus Predictability",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 152,
+      "Category": "Compensation & Benefits",
+      "AC": "Composite",
+      "Parameter": "ESOPs Long-term Incentives",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 153,
+      "Category": "Compensation & Benefits",
+      "AC": "Composite",
+      "Parameter": "Family Health Insurance",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 154,
+      "Category": "Compensation & Benefits",
+      "AC": "Composite",
+      "Parameter": "Relocation Support",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 155,
+      "Category": "Compensation & Benefits",
+      "AC": "Composite",
+      "Parameter": "Lifestyle Wellness Benefits",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 156,
+      "Category": "Long-Term Career",
+      "AC": "Composite",
+      "Parameter": "Exit Opportunities",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 157,
+      "Category": "Long-Term Career",
+      "AC": "Atomic",
+      "Parameter": "Skill Relevance",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 158,
+      "Category": "Long-Term Career",
+      "AC": "Atomic",
+      "Parameter": "External Recognition",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 159,
+      "Category": "Long-Term Career",
+      "AC": "Composite",
+      "Parameter": "Network Strength",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 160,
+      "Category": "Long-Term Career",
+      "AC": "Composite",
+      "Parameter": "Global Exposure",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 161,
+      "Category": "Values Alignment",
+      "AC": "Atomic",
+      "Parameter": "Mission Clarity",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 162,
+      "Category": "Values Alignment",
+      "AC": "Composite",
+      "Parameter": "Sustainability and CSR",
+      "status": "✅ PASS",
+      "issue": null
+    },
+    {
+      "ID": 163,
+      "Category": "Values Alignment",
+      "AC": "Atomic",
+      "Parameter": "Crisis Behavior",
+      "status": "✅ PASS",
+      "issue": null
+    }
+  ],
+  "hallucination_issue_count": 7,
+  "hallucination_critical_count": 5,
+  "hallucination_sanitized_count": 5,
+  "hallucination_issues": [
+    {
+      "ID": 80,
+      "Parameter": "Burn Multiplier",
+      "severity": "critical",
+      "rule": "public_company_startup_metric",
+      "message": "Startup metric populated for public company.",
+      "value": "Not Found",
+      "action": "normalized_to_not_found"
+    },
+    {
+      "ID": 74,
+      "Parameter": "CAC LTV Ratio",
+      "severity": "critical",
+      "rule": "public_company_startup_metric",
+      "message": "Startup metric populated for public company.",
+      "value": "Not Found",
+      "action": "normalized_to_not_found"
+    },
+    {
+      "ID": 78,
+      "Parameter": "Burn Rate",
+      "severity": "critical",
+      "rule": "public_company_startup_metric",
+      "message": "Startup metric populated for public company.",
+      "value": "Not Found",
+      "action": "normalized_to_not_found"
+    },
+    {
+      "ID": 79,
+      "Parameter": "Runway",
+      "severity": "critical",
+      "rule": "public_company_startup_metric",
+      "message": "Startup metric populated for public company.",
+      "value": "Not Found",
+      "action": "normalized_to_not_found"
+    },
+    {
+      "ID": 67,
+      "Parameter": "Key Investors Backers",
+      "severity": "warning",
+      "rule": "public_company_funding_signal",
+      "message": "Funding-related field populated for public company; verify manually.",
+      "value": "Azim Premji;PremjiInvest",
+      "action": "none"
+    },
+    {
+      "ID": 69,
+      "Parameter": "Total Capital Raised",
+      "severity": "warning",
+      "rule": "public_company_funding_signal",
+      "message": "Funding-related field populated for public company; verify manually.",
+      "value": "5000000000",
+      "action": "none"
+    },
+    {
+      "ID": 108,
+      "Parameter": "Total Addressable Market TAM",
+      "severity": "critical",
+      "rule": "tam_less_than_revenue",
+      "message": "TAM is lower than annual revenue; value likely inconsistent.",
+      "value": "Not Found",
+      "action": "normalized_to_not_found"
+    }
+  ]
+}

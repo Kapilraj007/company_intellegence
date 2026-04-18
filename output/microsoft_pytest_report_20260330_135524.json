@@ -1,0 +1,17 @@
+{
+  "company_name": "microsoft",
+  "generated_at": "2026-03-30T13:55:47",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence single json/output/microsoft_golden_record_20260330_135524.json",
+  "total": 508,
+  "passed": 464,
+  "failed": 0,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 2.55,
+  "all_passed": true,
+  "failed_tests": [],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 0,
+  "skip_reason": null
+}

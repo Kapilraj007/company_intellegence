@@ -1,0 +1,18 @@
+{
+  "run_id": "eb229644-8b5d-4b3f-8fc6-3c5fe35dd74f",
+  "company_id": "infosys",
+  "company_name": "infosys",
+  "status": "completed",
+  "started_at": "2026-03-12T13:53:47.098069+00:00",
+  "completed_at": "2026-03-12T13:55:05.008770+00:00",
+  "golden_record_count": 163,
+  "all_tests_passed": false,
+  "failed_param_ids": [],
+  "agent2_retry_count": 0,
+  "pytest_retry_count": 0,
+  "paths": {
+    "golden_record_path": "/home/kapil/Desktop/company-intelligence single json/output/infosys_golden_record_20260312_192505.json",
+    "validation_report_path": "/home/kapil/Desktop/company-intelligence single json/output/infosys_validation_report_20260312_192505.json",
+    "pytest_report_path": null
+  }
+}

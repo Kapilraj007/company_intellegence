@@ -1,0 +1,17 @@
+{
+  "company_name": "NVIDIA",
+  "generated_at": "2026-03-14T17:41:18",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence single json/output/nvidia_golden_record_20260314_174056.json",
+  "total": 503,
+  "passed": 459,
+  "failed": 0,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 1.29,
+  "all_passed": true,
+  "failed_tests": [],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 0,
+  "skip_reason": null
+}

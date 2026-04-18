@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: .                   # project root (company-intelligence single json/)
+      dockerfile: backend.Dockerfile
+    container_name: ci_backend
+    env_file: .env                 # loads your existing .env file
+    # Backend stays internal to the Compose network; the frontend proxies via `/api`.
+    # If you want to call the API directly from your host, uncomment:
+    # ports:
+    #   - "8000:8000"
+    volumes:
+      - ./output:/app/output       # golden records and logs persist on your machine
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../frontend.Dockerfile
+    container_name: ci_frontend
+    ports:
+      # Host port 3000 is commonly occupied; publish on 3001 by default.
+      - "3001:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped

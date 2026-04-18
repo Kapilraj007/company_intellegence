@@ -1,0 +1,18 @@
+{
+  "run_id": "40c9e709-0134-4b01-bb7e-b7031cadd1f3",
+  "company_id": "nvidia",
+  "company_name": "NVIDIA",
+  "status": "completed",
+  "started_at": "2026-03-14T12:09:56.247379+00:00",
+  "completed_at": "2026-03-14T12:10:56.238912+00:00",
+  "golden_record_count": 163,
+  "all_tests_passed": false,
+  "failed_param_ids": [],
+  "agent2_retry_count": 0,
+  "pytest_retry_count": 0,
+  "paths": {
+    "golden_record_path": "/home/kapil/Desktop/company-intelligence single json/output/nvidia_golden_record_20260314_174056.json",
+    "validation_report_path": "/home/kapil/Desktop/company-intelligence single json/output/nvidia_validation_report_20260314_174056.json",
+    "pytest_report_path": null
+  }
+}

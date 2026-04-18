@@ -1,0 +1,17 @@
+{
+  "company_name": "TCS",
+  "generated_at": "2026-03-13T04:05:07",
+  "golden_record_path": "/app/output/tcs_golden_record_20260313_040502.json",
+  "total": 0,
+  "passed": 0,
+  "failed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "duration_sec": 0.0,
+  "all_passed": false,
+  "failed_tests": [],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 2,
+  "skip_reason": "tests/ directory not found at: /app/tests"
+}

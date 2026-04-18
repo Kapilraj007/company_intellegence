@@ -1,0 +1,17 @@
+{
+  "company_name": "Accenture",
+  "generated_at": "2026-03-15T13:24:26",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence single json/output/accenture_golden_record_20260315_132406.json",
+  "total": 508,
+  "passed": 464,
+  "failed": 0,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 2.69,
+  "all_passed": true,
+  "failed_tests": [],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 0,
+  "skip_reason": null
+}
