@@ -10,14 +10,9 @@ import SearchDetailPage from "./pages/SearchDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import InnovationClustersPage from "./pages/InnovationClustersPage";
 import AnalyticsDashboardPage from "./pages/AnalyticsDashboardPage";
-import { getHealth } from "./api";
-import {
-  getSession,
-  isSupabaseConfigured,
-  mapAuthUser,
-  onAuthStateChange,
-  signOut,
-} from "./supabaseClient";
+import ApprovalPendingPage from "./pages/ApprovalPendingPage";
+import AdminPanelApp from "./admin/AdminPanelApp";
+import { getCurrentUser, getHealth, logout } from "./api";
 
 const initialSearchState = {
   mode: "companies",
@@ -62,11 +57,29 @@ const GlobalStyle = () => (
     }
 
     /* ── Responsive layout ── */
-	    .app-shell { display: flex; min-height: 100vh; width: 100%; }
-	    .app-main  { flex: 1; padding: 36px 40px; overflow-y: auto; min-width: 0; animation: fadeUp 0.4s ease both; }
+	    .app-shell {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+      }
+	    .app-main  {
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        padding: 36px 40px;
+        overflow-y: auto;
+        animation: fadeUp 0.4s ease both;
+      }
 
 	    @media (max-width: 900px) {
-        .app-shell { flex-direction: column; min-height: 100dvh; }
+        .app-shell {
+          flex-direction: column;
+          min-height: 100dvh;
+          height: auto;
+          overflow: visible;
+        }
 	      .app-main { padding: 20px 16px; }
 	    }
 	    @media (max-width: 640px) {
@@ -95,10 +108,13 @@ function LoadingScreen() {
 export default function App() {
   const [authReady, setAuthReady] = useState(false);
   const [user, setUser] = useState(null);
+  const [authView, setAuthView] = useState("login");
+  const [pendingSignup, setPendingSignup] = useState(null);
   const [page, setPage] = useState("dashboard");
   const [activePipelineId, setActivePipelineId] = useState(null);
   const [activeOutputId, setActiveOutputId] = useState(null);
   const [searchState, setSearchState] = useState(initialSearchState);
+  const [adminMode, setAdminMode] = useState(true);
   const [apiInfo, setApiInfo] = useState({
     online: false,
     status: "offline",
@@ -141,19 +157,11 @@ export default function App() {
   useEffect(() => {
     let mounted = true;
 
-    if (!isSupabaseConfigured()) {
-      setAuthReady(true);
-      return () => {
-        mounted = false;
-      };
-    }
-
     const hydrateSession = async () => {
       try {
-        const { data, error } = await getSession();
-        if (error) throw error;
         if (!mounted) return;
-        setUser(mapAuthUser(data.session?.user));
+        const data = await getCurrentUser();
+        setUser(data?.user || null);
       } catch {
         if (!mounted) return;
         setUser(null);
@@ -166,32 +174,32 @@ export default function App() {
 
     hydrateSession();
 
-    const {
-      data: { subscription },
-    } = onAuthStateChange((_event, session) => {
-      if (!mounted) return;
-      setUser(mapAuthUser(session?.user));
-      setAuthReady(true);
-    });
-
     return () => {
       mounted = false;
-      subscription.unsubscribe();
     };
   }, []);
 
   const handleLogin = (userData) => {
     setUser(userData);
+    setAuthView("login");
+    setPendingSignup(null);
+    setAdminMode(String(userData?.role || "").toLowerCase() === "admin");
     setPage("dashboard");
+  };
+
+  const handleSignupPending = (payload) => {
+    setPendingSignup(payload || null);
+    setAuthView("approval-pending");
   };
 
   const handleLogout = async () => {
     try {
-      if (isSupabaseConfigured()) {
-        await signOut();
-      }
+      await logout();
     } finally {
       setUser(null);
+      setAuthView("login");
+      setPendingSignup(null);
+      setAdminMode(true);
       setPage("dashboard");
     }
   };
@@ -218,12 +226,42 @@ export default function App() {
     setPage("search-detail");
   };
 
+  const isAdmin = String(user?.role || "").toLowerCase() === "admin";
+
   if (!user) return (
     <>
       <GlobalStyle/>
-      <LoginPage onLogin={handleLogin}/>
+      {authView === "approval-pending"
+        ? (
+          <ApprovalPendingPage
+            signupInfo={pendingSignup}
+            onBackToLogin={() => {
+              setPendingSignup(null);
+              setAuthView("login");
+            }}
+          />
+        )
+        : (
+          <LoginPage
+            onLogin={handleLogin}
+            onSignupPending={handleSignupPending}
+          />
+        )}
     </>
   );
+
+  if (isAdmin && adminMode) {
+    return (
+      <AdminPanelApp
+        user={user}
+        onLogout={handleLogout}
+        onOpenWorkspace={() => {
+          setAdminMode(false);
+          setPage("dashboard");
+        }}
+      />
+    );
+  }
 
   const pages = {
     dashboard: (
@@ -276,6 +314,28 @@ export default function App() {
     <>
       <GlobalStyle/>
       <div className="app-shell">
+        {isAdmin && !adminMode && (
+          <button
+            onClick={() => setAdminMode(true)}
+            style={{
+              position: "fixed",
+              right: 16,
+              bottom: 16,
+              zIndex: 50,
+              border: `1px solid ${T.border}`,
+              background: T.navy2,
+              color: T.text,
+              borderRadius: 10,
+              padding: "10px 12px",
+              cursor: "pointer",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 11,
+              letterSpacing: "0.4px",
+            }}
+          >
+            Open Admin Panel
+          </button>
+        )}
         <Sidebar page={page} setPage={setPage} user={user} apiInfo={apiInfo}/>
         <main className="app-main">
           {pages[page] || pages.dashboard}

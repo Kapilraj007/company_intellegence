@@ -79,7 +79,14 @@ def _load_base_record(base_record_path: str) -> List[Dict[str, Any]]:
     raise ValueError(f"Base record must be a JSON object or list: {base_record_path}")
 
 
-def _register_supabase_run(run_id: str, company_name: str, company_id: str, *, user_id: str) -> None:
+def _register_supabase_run(
+    run_id: str,
+    company_name: str,
+    company_id: str,
+    *,
+    user_id: str,
+    user_name: str = "",
+) -> None:
     user_id = require_user_id(user_id, context="Supabase run registration")
     try:
         from core.supabase_store import get_supabase_client
@@ -89,12 +96,13 @@ def _register_supabase_run(run_id: str, company_name: str, company_id: str, *, u
             company_name=company_name,
             company_id=company_id,
             user_id=user_id,
+            user_name=user_name,
         )
     except Exception as exc:
         logger.warning(f"Could not register Supabase pipeline run: {exc}")
 
 
-def run_full_pipeline(company_name: str, *, user_id: str) -> Dict[str, Any]:
+def run_full_pipeline(company_name: str, *, user_id: str, user_name: str = "") -> Dict[str, Any]:
     user_id = require_user_id(user_id, context="full pipeline")
     sep = "=" * 70
     print(f"\n{sep}")
@@ -113,12 +121,17 @@ def run_full_pipeline(company_name: str, *, user_id: str) -> Dict[str, Any]:
             company_name=company_name,
             company_id=company_id,
             user_id=user_id,
+            user_name=user_name,
         )
     except Exception as e:
         logger.warning(f"Could not register local pipeline run: {e}")
 
     # Register run in Supabase for Agent1 FK integrity.
-    _register_supabase_run(run_id, company_name, company_id, user_id=user_id)
+    try:
+        _register_supabase_run(run_id, company_name, company_id, user_id=user_id, user_name=user_name)
+    except TypeError:
+        # Backward-compatible for tests/mocks that still patch the legacy signature.
+        _register_supabase_run(run_id, company_name, company_id, user_id=user_id)
 
     # Add run_id, company_id, and user_id to the LangGraph initial state.
     # One graph invocation already includes the internal retry/remediation loops.
@@ -143,6 +156,7 @@ def run_regeneration_only(
     run_pytests: bool,
     *,
     user_id: str,
+    user_name: str = "",
 ) -> Dict[str, Any]:
     user_id = require_user_id(user_id, context="targeted regeneration")
     sep = "=" * 70
@@ -172,11 +186,15 @@ def run_regeneration_only(
             company_name=company_name,
             company_id=company_id,
             user_id=user_id,
+            user_name=user_name,
         )
     except Exception as exc:
         logger.warning(f"Could not register regen run locally: {exc}")
 
-    _register_supabase_run(run_id, company_name, company_id, user_id=user_id)
+    try:
+        _register_supabase_run(run_id, company_name, company_id, user_id=user_id, user_name=user_name)
+    except TypeError:
+        _register_supabase_run(run_id, company_name, company_id, user_id=user_id)
 
     print(f"\n{sep}")
     print("  Company Intelligence Targeted Regeneration")

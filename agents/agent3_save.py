@@ -175,6 +175,7 @@ def save_output(state: Dict[str, Any]) -> Dict[str, Any]:
             golden_record_path=golden_path,
             validation_path=report_path,
             pytest_report_path=state.get("pytest_report_path"),
+            chunk_record_path=chunk_path,
         )
     except Exception as exc:
         logger.warning(f"Local store persistence failed (non-fatal): {exc}")
@@ -197,6 +198,19 @@ def save_output(state: Dict[str, Any]) -> Dict[str, Any]:
     try:
         from core.supabase_store import get_supabase_client
 
+        get_supabase_client().log_pipeline_activity(
+            user_id=user_id,
+            activity_type="golden_record_saved",
+            run_id=run_id,
+            company_id=company_id,
+            company_name=company_name,
+            activity_status="stored",
+            details={
+                "golden_record_path": golden_path,
+                "validation_report_path": report_path,
+                "semantic_chunks_path": chunk_path,
+            },
+        )
         get_supabase_client().complete_pipeline_run(run_id=run_id, user_id=user_id)
     except Exception as exc:
         logger.warning(f"Supabase run completion failed (non-fatal): {exc}")

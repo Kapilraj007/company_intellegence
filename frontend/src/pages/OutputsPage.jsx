@@ -244,7 +244,7 @@ export default function OutputsPage({ activeOutputId }) {
               No outputs match the current filter.
             </div>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: "flex", flexDirection: "column", maxHeight: "70dvh", overflowY: "auto" }}>
               {filteredRuns.map((run) => (
                 <button
                   key={run.id}

@@ -2,53 +2,21 @@
  * API helpers for the FastAPI backend.
  */
 
-import { getAccessToken, isSupabaseConfigured, refreshAccessToken } from "./supabaseClient";
-
 // In production (Docker/Nginx) the frontend and backend share the same origin
 // via an `/api` reverse proxy, so default to `/api` to avoid CORS issues.
 export const API_BASE =
   import.meta.env.VITE_API_BASE || (import.meta.env.PROD ? "/api" : "http://localhost:8000");
 
-async function getAuthHeaders() {
-  if (!isSupabaseConfigured()) {
-    return {};
-  }
-
-  try {
-    const token = await getAccessToken();
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  } catch {
-    return {};
-  }
-}
-
 async function request(path, options = {}) {
-  const authHeaders = await getAuthHeaders();
-  const baseHeaders = {
+  const headers = {
     ...(options.body ? { "Content-Type": "application/json" } : {}),
     ...(options.headers || {}),
   };
-  let headers = {
-    ...baseHeaders,
-    ...authHeaders,
-  };
-  let res = await fetch(`${API_BASE}${path}`, { ...options, headers });
-
-  // Retry once with a freshly refreshed token to recover from stale/expired sessions.
-  if (res.status === 401 && isSupabaseConfigured()) {
-    try {
-      const refreshedToken = await refreshAccessToken();
-      if (refreshedToken) {
-        headers = {
-          ...baseHeaders,
-          Authorization: `Bearer ${refreshedToken}`,
-        };
-        res = await fetch(`${API_BASE}${path}`, { ...options, headers });
-      }
-    } catch {
-      // Keep original 401 response handling below.
-    }
-  }
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...options,
+    headers,
+    credentials: "include",
+  });
 
   if (res.status === 204) return null;
 
@@ -69,6 +37,26 @@ async function request(path, options = {}) {
   }
 
   return data;
+}
+
+export async function signup({ name, email, password }) {
+  return request("/auth/signup", {
+    method: "POST",
+    body: JSON.stringify({ name, email, password }),
+  });
+}
+
+export async function login({ email, password }) {
+  return request("/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+export async function logout() {
+  return request("/auth/logout", {
+    method: "POST",
+  });
 }
 
 export async function submitJob(company) {
@@ -154,6 +142,71 @@ export async function getCurrentUser() {
   return request("/auth/me");
 }
 
+export async function getPendingUsers() {
+  return request("/auth/admin/users/pending");
+}
+
+export async function getAdminUsers({ approval_status = "", limit = 500 } = {}) {
+  const params = new URLSearchParams();
+  if (approval_status) params.set("approval_status", approval_status);
+  params.set("limit", String(limit));
+  return request(`/auth/admin/users?${params.toString()}`);
+}
+
+export async function approveUser(userId) {
+  return request(`/auth/admin/users/${encodeURIComponent(userId)}/approve`, {
+    method: "POST",
+  });
+}
+
+export async function rejectUser(userId) {
+  return request(`/auth/admin/users/${encodeURIComponent(userId)}/reject`, {
+    method: "POST",
+  });
+}
+
+export async function verifyUser(userId, { verified = true, note = "" } = {}) {
+  return request(`/auth/admin/users/${encodeURIComponent(userId)}/verify`, {
+    method: "POST",
+    body: JSON.stringify({ verified, note }),
+  });
+}
+
+export async function updateUserRole(userId, role) {
+  return request(`/auth/admin/users/${encodeURIComponent(userId)}/role`, {
+    method: "POST",
+    body: JSON.stringify({ role }),
+  });
+}
+
+export async function getAdminDashboard() {
+  return request("/auth/admin/dashboard");
+}
+
+export async function getAdminPipelineRuns(limit = 300) {
+  return request(`/auth/admin/pipelines/runs?limit=${encodeURIComponent(limit)}`);
+}
+
+export async function getAdminActivityLogs(limit = 300) {
+  return request(`/auth/admin/activity-logs?limit=${encodeURIComponent(limit)}`);
+}
+
+export async function getAdminErrorLogs(limit = 200) {
+  return request(`/auth/admin/error-logs?limit=${encodeURIComponent(limit)}`);
+}
+
+export async function getAdminDataVersions(limit = 300) {
+  return request(`/auth/admin/data-versions?limit=${encodeURIComponent(limit)}`);
+}
+
+export async function getMyDataVersions({ limit = 200, company_id = "", company_name = "" } = {}) {
+  const params = new URLSearchParams();
+  params.set("limit", String(limit));
+  if (company_id) params.set("company_id", company_id);
+  if (company_name) params.set("company_name", company_name);
+  return request(`/data/versions?${params.toString()}`);
+}
+
 export async function healthCheck() {
   try {
     const data = await getHealth();
@@ -222,20 +275,4 @@ export async function getPredictiveAnalytics({
       min_training_samples,
     }),
   });
-}
-
-// ─── Versioning & Caching API ──────────────────────────────────────────
-export async function analyzeCompany(company, forceRefresh = false) {
-  return request("/analyze", {
-    method: "POST",
-    body: JSON.stringify({ company, force_refresh: forceRefresh }),
-  });
-}
-
-export async function getRunStatus(runId) {
-  return request(`/run-status/${encodeURIComponent(runId)}`);
-}
-
-export async function getCompanyHistory(companyName) {
-  return request(`/company-history/${encodeURIComponent(companyName)}`);
 }

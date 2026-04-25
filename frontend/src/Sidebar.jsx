@@ -12,6 +12,7 @@ const NAV = [
 ];
 
 export default function Sidebar({ page, setPage, user, apiInfo }) {
+  const roleLabel = String(user?.role || "").toLowerCase() === "admin" ? "Admin" : "User";
   return (
     <>
       <style>{`
@@ -157,7 +158,7 @@ export default function Sidebar({ page, setPage, user, apiInfo }) {
           </div>
           <div className="sidebar-user-info">
             <div style={{ fontSize: 13, fontWeight: 600, color: T.white, fontFamily: "'Syne', sans-serif" }}>{user.name}</div>
-            <div style={{ fontSize: 11, color: T.muted }}>{user.role}</div>
+            <div style={{ fontSize: 11, color: T.muted }}>{roleLabel}</div>
           </div>
         </div>
       </aside>

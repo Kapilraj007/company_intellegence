@@ -10,6 +10,7 @@ import json
 import os
 import re
 import sys
+import time
 import uuid
 from contextlib import asynccontextmanager, redirect_stderr, redirect_stdout
 from datetime import datetime, timezone
@@ -18,24 +19,38 @@ from threading import Lock
 from typing import Any, Dict, Optional
 
 from dotenv import load_dotenv
-from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from core.auth import CurrentUser, get_current_user
+from core.auth import (
+    CurrentUser,
+    PENDING_APPROVAL_MESSAGE,
+    REJECTED_ACCOUNT_MESSAGE,
+    bootstrap_admin_from_env,
+    clear_auth_cookie,
+    create_access_token,
+    generate_session_nonce,
+    get_current_user,
+    get_role_permissions,
+    get_optional_current_user,
+    hash_password,
+    normalize_email,
+    require_admin,
+    require_permission,
+    serialize_user,
+    set_auth_cookie,
+    validate_password_strength,
+    verify_password,
+)
+from core.local_store import get_local_store_client
+from core.supabase_store import get_supabase_client
 from core.user_scope import require_user_id
 from logger import get_logger
 
 load_dotenv()
 logger = get_logger("server")
-
-# ── Supabase configuration ─────────────────────────────────────────────────────
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
-
-from supabase import create_client as _create_supabase
-_supabase = _create_supabase(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
 # ── Paths and constants ────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent
@@ -49,11 +64,130 @@ OUTPUT_FILE_RE = re.compile(
 _tasks: Dict[str, Dict[str, Any]] = {}
 _tasks_lock = Lock()
 _pipeline_run_lock = Lock()
+_admin_cache_lock = Lock()
+_admin_cache: Dict[str, Dict[str, Any]] = {}
+_output_file_metrics_cache: Dict[str, Dict[str, Any]] = {}
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
 def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def _admin_cache_ttl_seconds() -> float:
+    raw = str(os.getenv("ADMIN_CACHE_TTL_SECONDS", "20")).strip()
+    try:
+        return max(2.0, float(raw))
+    except (TypeError, ValueError):
+        return 20.0
+
+
+def _admin_cache_get(key: str) -> Any:
+    cache_key = str(key or "").strip()
+    if not cache_key:
+        return None
+    with _admin_cache_lock:
+        entry = _admin_cache.get(cache_key)
+        if not isinstance(entry, dict):
+            return None
+        cached_at = float(entry.get("cached_at") or 0.0)
+        if (time.time() - cached_at) > _admin_cache_ttl_seconds():
+            _admin_cache.pop(cache_key, None)
+            return None
+        payload = entry.get("payload")
+    if isinstance(payload, (dict, list)):
+        try:
+            return json.loads(json.dumps(payload, ensure_ascii=False))
+        except Exception:
+            return payload
+    return payload
+
+
+def _admin_cache_set(key: str, payload: Any) -> Any:
+    cache_key = str(key or "").strip()
+    if not cache_key:
+        return payload
+    if isinstance(payload, (dict, list)):
+        try:
+            clone = json.loads(json.dumps(payload, ensure_ascii=False))
+        except Exception:
+            clone = payload
+    else:
+        clone = payload
+    with _admin_cache_lock:
+        _admin_cache[cache_key] = {"cached_at": time.time(), "payload": clone}
+    return payload
+
+
+def _invalidate_admin_cache(prefix: str = "") -> None:
+    wanted = str(prefix or "").strip()
+    with _admin_cache_lock:
+        if not wanted:
+            _admin_cache.clear()
+            return
+        for key in list(_admin_cache.keys()):
+            if key.startswith(wanted):
+                _admin_cache.pop(key, None)
+
+
+def _record_local_activity(
+    *,
+    actor_user_id: str,
+    activity_type: str,
+    activity_status: str = "completed",
+    scope: str = "system",
+    target_user_id: str | None = None,
+    run_id: str | None = None,
+    company_id: str | None = None,
+    company_name: str | None = None,
+    details: Dict[str, Any] | None = None,
+    source: str = "server",
+) -> None:
+    if os.getenv("PYTEST_CURRENT_TEST") and str(os.getenv("ENABLE_SERVER_LOCAL_LOGS_IN_TESTS", "")).strip().lower() not in {"1", "true", "yes"}:
+        return
+    try:
+        get_local_store_client().record_admin_activity(
+            actor_user_id=actor_user_id,
+            activity_type=activity_type,
+            activity_status=activity_status,
+            scope=scope,
+            target_user_id=target_user_id,
+            run_id=run_id,
+            company_id=company_id,
+            company_name=company_name,
+            details=details,
+            source=source,
+        )
+    except Exception as exc:
+        logger.warning(f"Could not record local activity '{activity_type}': {exc}")
+
+
+def _record_error_event(
+    *,
+    user_id: str | None,
+    error_type: str,
+    message: str,
+    source: str = "server",
+    run_id: str | None = None,
+    company_id: str | None = None,
+    company_name: str | None = None,
+    details: Dict[str, Any] | None = None,
+) -> None:
+    if os.getenv("PYTEST_CURRENT_TEST") and str(os.getenv("ENABLE_SERVER_LOCAL_LOGS_IN_TESTS", "")).strip().lower() not in {"1", "true", "yes"}:
+        return
+    try:
+        get_local_store_client().record_error_event(
+            user_id=user_id,
+            error_type=error_type,
+            message=message,
+            source=source,
+            run_id=run_id,
+            company_id=company_id,
+            company_name=company_name,
+            details=details,
+        )
+    except Exception as exc:
+        logger.warning(f"Could not record error event '{error_type}': {exc}")
 
 
 def _task_status_payload(task: Dict[str, Any]) -> Dict[str, Any]:
@@ -74,7 +208,11 @@ def _current_user_id(current_user: CurrentUser) -> str:
         raise HTTPException(status_code=401, detail=str(exc)) from exc
 
 
-async def _authenticated_user_id(current_user: CurrentUser = Depends(get_current_user)) -> str:
+async def _authenticated_user_id(current_user: CurrentUser = Depends(require_permission("features:use"))) -> str:
+    return _current_user_id(current_user)
+
+
+async def _data_reader_user_id(current_user: CurrentUser = Depends(require_permission("data:read"))) -> str:
     return _current_user_id(current_user)
 
 
@@ -209,6 +347,54 @@ def _read_json(path: Path) -> Any:
         return json.load(fh)
 
 
+def _cached_output_metrics(path: str, metric_type: str) -> Dict[str, Any] | None:
+    normalized_path = str(path or "").strip()
+    if not normalized_path:
+        return None
+    candidate = Path(normalized_path)
+    if not candidate.exists():
+        return None
+    try:
+        stats = candidate.stat()
+        signature = f"{stats.st_mtime_ns}:{stats.st_size}:{metric_type}"
+    except OSError:
+        return None
+
+    with _admin_cache_lock:
+        cached = _output_file_metrics_cache.get(normalized_path)
+        if isinstance(cached, dict) and str(cached.get("signature") or "") == signature:
+            payload = cached.get("payload")
+            return dict(payload) if isinstance(payload, dict) else None
+
+    try:
+        payload = _read_json(candidate)
+    except Exception:
+        return None
+
+    if metric_type == "golden":
+        if isinstance(payload, dict):
+            metrics = {"fields": len(payload)}
+        elif isinstance(payload, list):
+            metrics = {"fields": len(payload)}
+        else:
+            metrics = {"fields": None}
+    elif metric_type == "pytest":
+        if isinstance(payload, dict):
+            metrics = {
+                "passed": int(payload.get("passed") or 0),
+                "failed": int(payload.get("failed") or 0),
+                "skipped": int(payload.get("skipped") or 0),
+            }
+        else:
+            metrics = {"passed": None, "failed": None, "skipped": None}
+    else:
+        metrics = {}
+
+    with _admin_cache_lock:
+        _output_file_metrics_cache[normalized_path] = {"signature": signature, "payload": dict(metrics)}
+    return metrics
+
+
 def _stamp_to_iso(stamp: str) -> str:
     try:
         dt = datetime.strptime(stamp, "%Y%m%d_%H%M%S").replace(tzinfo=timezone.utc)
@@ -217,10 +403,66 @@ def _stamp_to_iso(stamp: str) -> str:
         return ""
 
 
+def _serialize_current_user(current_user: CurrentUser) -> Dict[str, Any]:
+    return {
+        "user_id": current_user.user_id,
+        "name": current_user.name,
+        "email": current_user.email,
+        "role": current_user.role,
+        "approval_status": current_user.approval_status,
+        "permissions": get_role_permissions(current_user.role),
+    }
+
+
+def _log_supabase_activity(
+    *,
+    user_id: str,
+    activity_type: str,
+    run_id: str | None = None,
+    company_id: str | None = None,
+    company_name: str | None = None,
+    activity_status: str | None = None,
+    details: Dict[str, Any] | None = None,
+) -> None:
+    scope = "pipeline"
+    lowered = str(activity_type or "").strip().lower()
+    if lowered.startswith("signup") or lowered.startswith("user_") or lowered.startswith("role_"):
+        scope = "admin"
+    elif lowered.startswith("data_fetch") or lowered.startswith("data_store"):
+        scope = "storage"
+    _record_local_activity(
+        actor_user_id=str(user_id or "").strip(),
+        activity_type=activity_type,
+        activity_status=activity_status or "completed",
+        scope=scope,
+        run_id=run_id,
+        company_id=company_id,
+        company_name=company_name,
+        details=details,
+        source="server",
+    )
+    try:
+        get_supabase_client().log_pipeline_activity(
+            user_id=user_id,
+            activity_type=activity_type,
+            run_id=run_id,
+            company_id=company_id,
+            company_name=company_name,
+            activity_status=activity_status,
+            details=details,
+        )
+    except Exception as exc:
+        logger.warning(f"Could not record Supabase activity '{activity_type}': {exc}")
+
+
 # ── Lifespan ──────────────────────────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Company Intelligence API starting up")
+    try:
+        bootstrap_admin_from_env()
+    except Exception as exc:
+        logger.warning(f"Admin bootstrap skipped: {exc}")
     yield
     logger.info("Company Intelligence API shutting down")
 
@@ -246,7 +488,39 @@ app.add_middleware(
     ],
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_credentials=True,
 )
+
+
+@app.middleware("http")
+async def error_monitoring_middleware(request: Request, call_next):
+    started = time.time()
+    try:
+        response = await call_next(request)
+    except Exception as exc:
+        _record_error_event(
+            user_id=None,
+            error_type="unhandled_exception",
+            message=str(exc),
+            source="api_middleware",
+            details={"path": request.url.path, "method": request.method},
+        )
+        raise
+
+    if response.status_code >= 500:
+        _record_error_event(
+            user_id=None,
+            error_type="http_5xx",
+            message=f"{request.method} {request.url.path} -> {response.status_code}",
+            source="api_middleware",
+            details={
+                "path": request.url.path,
+                "method": request.method,
+                "status_code": response.status_code,
+                "duration_ms": round((time.time() - started) * 1000, 2),
+            },
+        )
+    return response
 
 
 # ── Models ────────────────────────────────────────────────────────────────────
@@ -254,9 +528,24 @@ class RunRequest(BaseModel):
     company: str
 
 
-class AnalyzeRequest(BaseModel):
-    company: str
-    force_refresh: bool = False
+class SignupRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class VerifyUserRequest(BaseModel):
+    verified: bool = True
+    note: str | None = None
+
+
+class UpdateUserRoleRequest(BaseModel):
+    role: str
 
 
 class SimilarSearchRequest(BaseModel):
@@ -304,7 +593,7 @@ def _run_company_search(body: SimilarSearchRequest, *, user_id: str) -> Dict[str
     from search.search_service import get_search_service
 
     try:
-        return get_search_service().search_companies(
+        result = get_search_service().search_companies(
             query=body.query,
             top_k=body.top_k,
             top_k_chunks=body.top_k_chunks,
@@ -313,6 +602,17 @@ def _run_company_search(body: SimilarSearchRequest, *, user_id: str) -> Dict[str
             filters=body.filters,
             user_id=user_id,
         )
+        _log_supabase_activity(
+            user_id=user_id,
+            activity_type="data_fetch_search",
+            activity_status="completed",
+            details={
+                "query": body.query,
+                "top_k": body.top_k,
+                "result_count": len(result.get("results") or []),
+            },
+        )
+        return result
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except RuntimeError as exc:
@@ -324,7 +624,7 @@ def _run_company_similarity(body: SimilarSearchRequest, *, user_id: str) -> Dict
     from search.search_service import CompanyNotFoundError, get_search_service
 
     try:
-        return get_search_service().find_similar_companies(
+        result = get_search_service().find_similar_companies(
             company=body.query,
             top_k=body.top_k,
             top_k_chunks=body.top_k_chunks,
@@ -333,6 +633,17 @@ def _run_company_similarity(body: SimilarSearchRequest, *, user_id: str) -> Dict
             filters=body.filters,
             user_id=user_id,
         )
+        _log_supabase_activity(
+            user_id=user_id,
+            activity_type="data_fetch_similarity",
+            activity_status="completed",
+            details={
+                "company": body.query,
+                "top_k": body.top_k,
+                "result_count": len(result.get("results") or []),
+            },
+        )
+        return result
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except CompanyNotFoundError as exc:
@@ -346,7 +657,7 @@ def _run_innovation_clustering(body: InnovationClusterRequest, *, user_id: str) 
     from ml.clustering.cluster_pipeline import get_innovation_cluster_pipeline
 
     try:
-        return get_innovation_cluster_pipeline().run(
+        result = get_innovation_cluster_pipeline().run(
             company_ids=body.company_ids or [],
             company_names=body.company_names or [],
             limit=body.limit,
@@ -357,6 +668,13 @@ def _run_innovation_clustering(body: InnovationClusterRequest, *, user_id: str) 
             include_noise=body.include_noise,
             user_id=user_id,
         )
+        _log_supabase_activity(
+            user_id=user_id,
+            activity_type="data_fetch_innovation_clusters",
+            activity_status="completed",
+            details={"cluster_count": len(result.get("clusters") or [])},
+        )
+        return result
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except RuntimeError as exc:
@@ -368,13 +686,20 @@ def _run_descriptive_analytics(body: AnalyticsRequest, *, user_id: str) -> Dict[
     from ml.analytics.descriptive_analytics import DescriptiveAnalyticsService
 
     try:
-        return DescriptiveAnalyticsService().run(
+        result = DescriptiveAnalyticsService().run(
             company_ids=body.company_ids or [],
             company_names=body.company_names or [],
             limit=body.limit,
             top_n=body.top_n,
             user_id=user_id,
         )
+        _log_supabase_activity(
+            user_id=user_id,
+            activity_type="data_fetch_descriptive_analytics",
+            activity_status="completed",
+            details={"company_count": len(result.get("companies") or [])},
+        )
+        return result
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except RuntimeError as exc:
@@ -386,7 +711,7 @@ def _run_predictive_analytics(body: PredictiveAnalyticsRequest, *, user_id: str)
     from ml.analytics.predictive_models import PredictiveAnalyticsService
 
     try:
-        return PredictiveAnalyticsService().run(
+        result = PredictiveAnalyticsService().run(
             company_ids=body.company_ids or [],
             company_names=body.company_names or [],
             limit=body.limit,
@@ -394,38 +719,301 @@ def _run_predictive_analytics(body: PredictiveAnalyticsRequest, *, user_id: str)
             min_training_samples=body.min_training_samples,
             user_id=user_id,
         )
+        _log_supabase_activity(
+            user_id=user_id,
+            activity_type="data_fetch_predictive_analytics",
+            activity_status="completed",
+            details={"company_count": len(result.get("companies") or [])},
+        )
+        return result
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
-# ── Background worker for versioning system ────────────────────────────────────
-def _run_and_save(run_id: str, company: str, user_id: str) -> None:
-    """
-    Runs the full pipeline for a company and saves the result
-    back to the company_runs row identified by run_id.
-    On failure, marks the row with is_active=False and stores
-    the error message in golden_record so the UI can display it.
-    """
-    user_id = require_user_id(user_id, context="versioning background run")
+def _admin_list_users(*, limit: int = 1000, approval_status: str | None = None) -> list[Dict[str, Any]]:
+    store = get_supabase_client()
+    if hasattr(store, "list_users"):
+        try:
+            rows = store.list_users(limit=limit, approval_status=approval_status)
+            return [serialize_user(row) for row in rows if isinstance(row, dict)]
+        except Exception as exc:
+            logger.warning(f"Admin user listing via list_users failed: {exc}")
+
+    statuses = [approval_status] if approval_status else ["pending", "approved", "rejected"]
+    merged: Dict[str, Dict[str, Any]] = {}
+    for status_value in statuses:
+        if not status_value:
+            continue
+        try:
+            for row in store.list_users_by_approval_status(status_value):
+                if not isinstance(row, dict):
+                    continue
+                user = serialize_user(row)
+                user_id = str(user.get("user_id") or "").strip()
+                if user_id:
+                    merged[user_id] = user
+        except Exception as exc:
+            logger.warning(f"Fallback user listing for status='{status_value}' failed: {exc}")
+    rows = list(merged.values())
+    rows.sort(key=lambda row: str(row.get("created_at") or ""), reverse=True)
+    return rows[: max(1, min(int(limit or 1000), 5000))]
+
+
+def _admin_recent_activity(limit: int = 300) -> list[Dict[str, Any]]:
+    normalized_limit = max(1, min(int(limit or 300), 2000))
+    cache_key = f"admin:activity:{normalized_limit}"
+    cached = _admin_cache_get(cache_key)
+    if isinstance(cached, list):
+        return cached
+
+    rows: list[Dict[str, Any]] = []
     try:
-        from main import run_full_pipeline
-        result = run_full_pipeline(company, user_id=user_id)
-        _supabase.table("company_runs").update({
-            "golden_record": result.get("golden_record"),
-            "chunk_path": result.get("chunk_record_path"),
-        }).eq("id", run_id).eq("run_by", user_id).execute()
+        rows.extend(get_local_store_client().list_activity_logs(limit=normalized_limit))
     except Exception as exc:
-        logger.error(f"Pipeline failed for run_id={run_id}: {exc}")
-        _supabase.table("company_runs").update({
-            "is_active": False,
-            "golden_record": {"error": str(exc)},
-        }).eq("id", run_id).eq("run_by", user_id).execute()
+        logger.warning(f"Local activity listing failed: {exc}")
+    try:
+        remote_rows = get_supabase_client().list_pipeline_activity(limit=normalized_limit)
+        for row in remote_rows:
+            if not isinstance(row, dict):
+                continue
+            rows.append(
+                {
+                    "activity_id": str(row.get("activity_id") or ""),
+                    "created_at": row.get("created_at"),
+                    "scope": "pipeline",
+                    "source": "supabase",
+                    "actor_user_id": str(row.get("user_id") or ""),
+                    "activity_type": str(row.get("activity_type") or ""),
+                    "activity_status": str(row.get("activity_status") or ""),
+                    "run_id": row.get("run_id"),
+                    "company_id": row.get("company_id"),
+                    "company_name": row.get("company_name"),
+                    "details": row.get("details") if isinstance(row.get("details"), dict) else {},
+                }
+            )
+    except Exception as exc:
+        logger.warning(f"Supabase activity listing failed: {exc}")
+    rows.sort(key=lambda row: str(row.get("created_at") or ""), reverse=True)
+    deduped: list[Dict[str, Any]] = []
+    seen: set[str] = set()
+    for row in rows:
+        dedupe_key = "|".join(
+            [
+                str(row.get("activity_id") or ""),
+                str(row.get("created_at") or ""),
+                str(row.get("actor_user_id") or ""),
+                str(row.get("activity_type") or ""),
+                str(row.get("run_id") or ""),
+            ]
+        )
+        if dedupe_key in seen:
+            continue
+        seen.add(dedupe_key)
+        deduped.append(row)
+        if len(deduped) >= normalized_limit:
+            break
+    _admin_cache_set(cache_key, deduped)
+    return deduped
+
+
+def _admin_error_logs(limit: int = 200) -> list[Dict[str, Any]]:
+    normalized_limit = max(1, min(int(limit or 200), 2000))
+    cache_key = f"admin:errors:{normalized_limit}"
+    cached = _admin_cache_get(cache_key)
+    if isinstance(cached, list):
+        return cached
+    rows: list[Dict[str, Any]] = []
+    try:
+        rows.extend(get_local_store_client().list_error_logs(limit=normalized_limit))
+    except Exception as exc:
+        logger.warning(f"Error log listing failed: {exc}")
+    rows.sort(key=lambda row: str(row.get("created_at") or ""), reverse=True)
+    rows = rows[:normalized_limit]
+    _admin_cache_set(cache_key, rows)
+    return rows
+
+
+def _admin_pipeline_runs(limit: int = 300) -> list[Dict[str, Any]]:
+    normalized_limit = max(1, min(int(limit or 300), 5000))
+    cache_key = f"admin:runs:{normalized_limit}"
+    cached = _admin_cache_get(cache_key)
+    if isinstance(cached, list):
+        return cached
+    rows: list[Dict[str, Any]] = []
+    try:
+        rows = get_local_store_client().list_all_pipeline_runs(limit=normalized_limit)
+    except Exception as exc:
+        logger.warning(f"Admin pipeline run listing failed: {exc}")
+    _admin_cache_set(cache_key, rows)
+    return rows
+
+
+def _build_rerun_version_rows(runs: list[Dict[str, Any]], *, limit: int) -> list[Dict[str, Any]]:
+    normalized_limit = max(1, min(int(limit or 300), 5000))
+    grouped: Dict[str, list[Dict[str, Any]]] = {}
+    for run in runs:
+        if not isinstance(run, dict):
+            continue
+        company_id = str(run.get("company_id") or "").strip().lower()
+        company_name = str(run.get("company_name") or "").strip()
+        if not company_id and not company_name:
+            continue
+        group_key = company_id or company_name.lower()
+        grouped.setdefault(group_key, []).append(run)
+
+    reruns: list[Dict[str, Any]] = []
+    for group_runs in grouped.values():
+        ordered = sorted(
+            group_runs,
+            key=lambda row: str(row.get("completed_at") or row.get("started_at") or row.get("created_at") or ""),
+        )
+        if len(ordered) <= 1:
+            continue
+        previous = ordered[0]
+        for idx, current in enumerate(ordered[1:], start=2):
+            run_id = str(current.get("run_id") or "").strip()
+            company_id = str(current.get("company_id") or "").strip()
+            company_name = str(current.get("company_name") or "").strip()
+            created_at = str(current.get("completed_at") or current.get("started_at") or current.get("created_at") or "")
+            reruns.append(
+                {
+                    "version_id": f"rerun-{(company_id or company_name or 'company')}-{idx:05d}-{run_id[:8]}",
+                    "version_number": idx,
+                    "version_kind": "rerun",
+                    "created_at": created_at,
+                    "run_id": run_id,
+                    "user_id": str(current.get("user_id") or "").strip(),
+                    "user_name": str(current.get("user_name") or "").strip(),
+                    "company_id": company_id,
+                    "company_name": company_name,
+                    "status": str(current.get("status") or "").strip().lower(),
+                    "previous_run_id": str(previous.get("run_id") or "").strip(),
+                    "previous_created_at": str(
+                        previous.get("completed_at")
+                        or previous.get("started_at")
+                        or previous.get("created_at")
+                        or ""
+                    ),
+                }
+            )
+            previous = current
+
+    reruns.sort(key=lambda row: str(row.get("created_at") or ""), reverse=True)
+    return reruns[:normalized_limit]
+
+
+def _admin_data_versions(limit: int = 300) -> list[Dict[str, Any]]:
+    normalized_limit = max(1, min(int(limit or 300), 5000))
+    cache_key = f"admin:versions:{normalized_limit}"
+    cached = _admin_cache_get(cache_key)
+    if isinstance(cached, list):
+        return cached
+    rows: list[Dict[str, Any]] = []
+    try:
+        all_runs = get_local_store_client().list_all_pipeline_runs(limit=50000)
+        rows = _build_rerun_version_rows(all_runs, limit=normalized_limit)
+    except Exception as exc:
+        logger.warning(f"Admin data version listing failed: {exc}")
+    _admin_cache_set(cache_key, rows)
+    return rows
+
+
+def _admin_dashboard_summary() -> Dict[str, Any]:
+    cache_key = "admin:dashboard:summary"
+    cached = _admin_cache_get(cache_key)
+    if isinstance(cached, dict):
+        return cached
+
+    users = _admin_list_users(limit=5000)
+    runs = _admin_pipeline_runs(limit=5000)
+    activity = _admin_recent_activity(limit=2000)
+    errors = _admin_error_logs(limit=1000)
+    versions = _admin_data_versions(limit=5000)
+
+    now = datetime.now(timezone.utc)
+    day_ago = now.timestamp() - 86400
+
+    def _is_last_day(ts: Any) -> bool:
+        raw = str(ts or "").strip()
+        if not raw:
+            return False
+        try:
+            return datetime.fromisoformat(raw.replace("Z", "+00:00")).timestamp() >= day_ago
+        except ValueError:
+            return False
+
+    pending = sum(1 for user in users if str(user.get("approval_status") or "") == "pending")
+    approved = sum(1 for user in users if str(user.get("approval_status") or "") == "approved")
+    rejected = sum(1 for user in users if str(user.get("approval_status") or "") == "rejected")
+    admins = sum(1 for user in users if str(user.get("role") or "") == "admin")
+
+    status_counts = {"running": 0, "completed": 0, "failed": 0, "other": 0}
+    for run in runs:
+        status_value = str(run.get("status") or "").strip().lower()
+        if status_value in {"running", "pending"}:
+            status_counts["running"] += 1
+        elif status_value in {"completed", "done"}:
+            status_counts["completed"] += 1
+        elif status_value in {"failed", "error"}:
+            status_counts["failed"] += 1
+        else:
+            status_counts["other"] += 1
+
+    actor_counts: Dict[str, int] = {}
+    for row in activity:
+        actor = str(row.get("actor_user_id") or "").strip()
+        if not actor:
+            continue
+        actor_counts[actor] = actor_counts.get(actor, 0) + 1
+    top_actors = sorted(actor_counts.items(), key=lambda pair: pair[1], reverse=True)[:10]
+
+    storage_summary = {}
+    try:
+        storage_summary = get_local_store_client().get_storage_summary()
+    except Exception as exc:
+        logger.warning(f"Storage summary unavailable: {exc}")
+
+    payload = {
+        "generated_at": _utc_now_iso(),
+        "users": {
+            "total": len(users),
+            "admins": admins,
+            "approved": approved,
+            "pending": pending,
+            "rejected": rejected,
+            "last_24h_signups": sum(1 for user in users if _is_last_day(user.get("created_at"))),
+        },
+        "pipelines": {
+            "total_runs": len(runs),
+            "running": status_counts["running"],
+            "completed": status_counts["completed"],
+            "failed": status_counts["failed"],
+            "last_24h_runs": sum(1 for run in runs if _is_last_day(run.get("started_at") or run.get("created_at"))),
+            "last_24h_completed": sum(1 for run in runs if _is_last_day(run.get("completed_at"))),
+        },
+        "storage": {
+            **(storage_summary if isinstance(storage_summary, dict) else {}),
+            "version_events": len(versions),
+        },
+        "activity": {
+            "total_events": len(activity),
+            "last_24h_events": sum(1 for row in activity if _is_last_day(row.get("created_at"))),
+            "top_actors": [{"user_id": uid, "events": count} for uid, count in top_actors],
+        },
+        "errors": {
+            "total": len(errors),
+            "last_24h": sum(1 for row in errors if _is_last_day(row.get("created_at"))),
+            "latest": errors[0] if errors else None,
+        },
+    }
+    _admin_cache_set(cache_key, payload)
+    return payload
 
 
 # ── Background worker ─────────────────────────────────────────────────────────
-def _execute_pipeline(task_id: str, company: str, user_id: str) -> None:
+def _execute_pipeline(task_id: str, company: str, user_id: str, user_name: str = "") -> None:
     user_id = require_user_id(user_id, context="background pipeline execution")
     with _pipeline_run_lock:
         with _tasks_lock:
@@ -443,7 +1031,7 @@ def _execute_pipeline(task_id: str, company: str, user_id: str) -> None:
             from main import run_full_pipeline
 
             with redirect_stdout(stream_out), redirect_stderr(stream_err):
-                result = run_full_pipeline(company, user_id=user_id)
+                result = run_full_pipeline(company, user_id=user_id, user_name=user_name)
             stream_out.flush()
             stream_err.flush()
 
@@ -491,6 +1079,7 @@ def _execute_pipeline(task_id: str, company: str, user_id: str) -> None:
             logger.info(
                 f"[task={task_id}] Pipeline complete — {field_count} fields"
             )
+            _invalidate_admin_cache("admin:")
         except Exception as exc:
             stream_out.flush()
             stream_err.flush()
@@ -504,6 +1093,16 @@ def _execute_pipeline(task_id: str, company: str, user_id: str) -> None:
                     )
             _append_event(task_id, f"Pipeline failed: {exc}", source="server", level="error")
             logger.error(f"[task={task_id}] Pipeline failed: {exc}", exc_info=True)
+            _record_error_event(
+                user_id=user_id,
+                error_type="pipeline_failed",
+                message=str(exc),
+                source="pipeline_worker",
+                run_id=task_id,
+                company_name=company,
+                details={"task_id": task_id},
+            )
+            _invalidate_admin_cache("admin:")
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
@@ -519,9 +1118,353 @@ def health_check():
     return {"status": "ok", "tasks_in_memory": tasks_in_memory}
 
 
+@app.post("/auth/signup", status_code=201)
+def signup(body: SignupRequest):
+    name = str(body.name or "").strip()
+    email = normalize_email(body.email)
+    password = str(body.password or "")
+
+    if not name:
+        raise HTTPException(status_code=422, detail="'name' must not be empty.")
+    if not email:
+        raise HTTPException(status_code=422, detail="'email' must not be empty.")
+    try:
+        validate_password_strength(password)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    store = get_supabase_client()
+    existing = store.get_user_by_email(email)
+    if existing:
+        raise HTTPException(status_code=409, detail="An account with this email already exists.")
+
+    created = store.create_user(
+        name=name,
+        email=email,
+        password_hash=hash_password(password),
+        role="user",
+        approval_status="pending",
+        session_nonce=generate_session_nonce(),
+    )
+    user = created or store.get_user_by_email(email)
+    if not user:
+        raise HTTPException(status_code=500, detail="Unable to create user account.")
+
+    _log_supabase_activity(
+        user_id=str(user.get("user_id") or ""),
+        activity_type="signup_requested",
+        activity_status="pending",
+        details={"email": email},
+    )
+    _invalidate_admin_cache("admin:")
+    return {
+        "message": "Request has been sent to admin for approval.",
+        "user": serialize_user(user),
+    }
+
+
+@app.post("/auth/login")
+def login(body: LoginRequest, response: Response):
+    email = normalize_email(body.email)
+    password = str(body.password or "")
+    store = get_supabase_client()
+    user = store.get_user_by_email(email)
+
+    if not user or not verify_password(password, str(user.get("password") or "")):
+        raise HTTPException(status_code=401, detail="Invalid email or password.")
+
+    approval_status = str(user.get("approval_status") or "").strip().lower()
+    if approval_status == "pending":
+        raise HTTPException(status_code=403, detail=PENDING_APPROVAL_MESSAGE)
+    if approval_status == "rejected":
+        raise HTTPException(status_code=403, detail=REJECTED_ACCOUNT_MESSAGE)
+
+    session_nonce = generate_session_nonce()
+    updated = store.update_user(
+        str(user.get("user_id") or ""),
+        session_nonce=session_nonce,
+        last_login_at=_utc_now_iso(),
+    ) or user
+    token = create_access_token(updated, session_nonce=session_nonce)
+    set_auth_cookie(response, token)
+    _log_supabase_activity(
+        user_id=str(updated.get("user_id") or ""),
+        activity_type="login",
+        activity_status="success",
+    )
+    _invalidate_admin_cache("admin:")
+    return {"user": serialize_user(updated)}
+
+
+@app.post("/auth/logout")
+def logout(response: Response, current_user: CurrentUser | None = Depends(get_optional_current_user)):
+    if current_user is not None:
+        try:
+            get_supabase_client().update_user(
+                current_user.user_id,
+                session_nonce=generate_session_nonce(),
+            )
+            _log_supabase_activity(
+                user_id=current_user.user_id,
+                activity_type="logout",
+                activity_status="success",
+            )
+        except Exception as exc:
+            logger.warning(f"Logout session rotation failed: {exc}")
+    clear_auth_cookie(response)
+    _invalidate_admin_cache("admin:")
+    return {"message": "Signed out."}
+
+
 @app.get("/auth/me")
-async def get_authenticated_user(user_id: str = Depends(_authenticated_user_id)):
-    return {"user_id": user_id}
+async def get_authenticated_user(current_user: CurrentUser = Depends(get_current_user)):
+    return {"user": _serialize_current_user(current_user)}
+
+
+@app.get("/auth/admin/users/pending")
+def list_pending_users(_admin: CurrentUser = Depends(require_admin)):
+    rows = [serialize_user(row) for row in get_supabase_client().list_users_by_approval_status("pending")]
+    return {"users": rows}
+
+
+@app.get("/auth/admin/users")
+def list_users(
+    approval_status: str | None = Query(default=None),
+    limit: int = Query(default=500, ge=1, le=5000),
+    _admin: CurrentUser = Depends(require_admin),
+):
+    status_value = str(approval_status or "").strip().lower() or None
+    rows = _admin_list_users(limit=limit, approval_status=status_value)
+    return {"users": rows, "count": len(rows)}
+
+
+@app.post("/auth/admin/users/{target_user_id}/approve")
+def approve_user(target_user_id: str, admin_user: CurrentUser = Depends(require_admin)):
+    store = get_supabase_client()
+    user = store.get_user_by_id(target_user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    updated = store.update_user(
+        target_user_id,
+        approval_status="approved",
+        verification_status=str(user.get("verification_status") or "verified").strip().lower() or "verified",
+        verified_at=user.get("verified_at") or _utc_now_iso(),
+        verified_by=user.get("verified_by") or admin_user.user_id,
+    ) or user
+    _log_supabase_activity(
+        user_id=admin_user.user_id,
+        activity_type="user_approved",
+        activity_status="completed",
+        details={"target_user_id": target_user_id, "target_email": updated.get("email")},
+    )
+    _record_local_activity(
+        actor_user_id=admin_user.user_id,
+        scope="admin",
+        activity_type="user_approved",
+        target_user_id=target_user_id,
+        activity_status="completed",
+        details={"target_email": updated.get("email")},
+    )
+    _invalidate_admin_cache("admin:")
+    return {"user": serialize_user(updated)}
+
+
+@app.post("/auth/admin/users/{target_user_id}/reject")
+def reject_user(target_user_id: str, admin_user: CurrentUser = Depends(require_admin)):
+    store = get_supabase_client()
+    user = store.get_user_by_id(target_user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    updated = store.update_user(target_user_id, approval_status="rejected") or user
+    _log_supabase_activity(
+        user_id=admin_user.user_id,
+        activity_type="user_rejected",
+        activity_status="completed",
+        details={"target_user_id": target_user_id, "target_email": updated.get("email")},
+    )
+    _record_local_activity(
+        actor_user_id=admin_user.user_id,
+        scope="admin",
+        activity_type="user_rejected",
+        target_user_id=target_user_id,
+        activity_status="completed",
+        details={"target_email": updated.get("email")},
+    )
+    _invalidate_admin_cache("admin:")
+    return {"user": serialize_user(updated)}
+
+
+@app.post("/auth/admin/users/{target_user_id}/verify")
+def verify_user(
+    target_user_id: str,
+    body: VerifyUserRequest,
+    admin_user: CurrentUser = Depends(require_admin),
+):
+    store = get_supabase_client()
+    user = store.get_user_by_id(target_user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    verified = bool(body.verified)
+    verification_status = "verified" if verified else "unverified"
+    updated = store.update_user(
+        target_user_id,
+        verification_status=verification_status,
+        verified_at=_utc_now_iso() if verified else None,
+        verified_by=admin_user.user_id if verified else None,
+        approval_note=(body.note or "").strip() or None,
+    ) or user
+    _log_supabase_activity(
+        user_id=admin_user.user_id,
+        activity_type="user_verified" if verified else "user_unverified",
+        activity_status="completed",
+        details={
+            "target_user_id": target_user_id,
+            "target_email": updated.get("email"),
+            "verification_status": verification_status,
+            "note": (body.note or "").strip(),
+        },
+    )
+    _record_local_activity(
+        actor_user_id=admin_user.user_id,
+        scope="admin",
+        activity_type="user_verified" if verified else "user_unverified",
+        target_user_id=target_user_id,
+        activity_status="completed",
+        details={
+            "verification_status": verification_status,
+            "target_email": updated.get("email"),
+            "note": (body.note or "").strip(),
+        },
+    )
+    _invalidate_admin_cache("admin:")
+    return {"user": serialize_user(updated)}
+
+
+@app.post("/auth/admin/users/{target_user_id}/role")
+def update_user_role(
+    target_user_id: str,
+    body: UpdateUserRoleRequest,
+    admin_user: CurrentUser = Depends(require_admin),
+):
+    new_role = str(body.role or "").strip().lower()
+    if new_role not in {"user", "admin"}:
+        raise HTTPException(status_code=422, detail="Role must be either 'user' or 'admin'.")
+    if target_user_id == admin_user.user_id and new_role != "admin":
+        raise HTTPException(status_code=409, detail="You cannot remove your own admin role.")
+
+    store = get_supabase_client()
+    user = store.get_user_by_id(target_user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    updated = store.update_user(target_user_id, role=new_role) or user
+    _log_supabase_activity(
+        user_id=admin_user.user_id,
+        activity_type="role_updated",
+        activity_status="completed",
+        details={
+            "target_user_id": target_user_id,
+            "target_email": updated.get("email"),
+            "new_role": new_role,
+        },
+    )
+    _record_local_activity(
+        actor_user_id=admin_user.user_id,
+        scope="admin",
+        activity_type="role_updated",
+        target_user_id=target_user_id,
+        activity_status="completed",
+        details={"new_role": new_role, "target_email": updated.get("email")},
+    )
+    _invalidate_admin_cache("admin:")
+    return {"user": serialize_user(updated)}
+
+
+@app.get("/auth/admin/dashboard")
+def get_admin_dashboard(_admin: CurrentUser = Depends(require_admin)):
+    return _admin_dashboard_summary()
+
+
+@app.get("/auth/admin/pipelines/runs")
+def get_admin_pipeline_runs(
+    limit: int = Query(default=300, ge=1, le=5000),
+    _admin: CurrentUser = Depends(require_admin),
+):
+    rows = _admin_pipeline_runs(limit=limit)
+    return {"runs": rows, "count": len(rows)}
+
+
+@app.get("/auth/admin/activity-logs")
+def get_admin_activity_logs(
+    limit: int = Query(default=300, ge=1, le=2000),
+    _admin: CurrentUser = Depends(require_admin),
+):
+    rows = _admin_recent_activity(limit=limit)
+    return {"logs": rows, "count": len(rows)}
+
+
+@app.get("/auth/admin/error-logs")
+def get_admin_error_logs(
+    limit: int = Query(default=200, ge=1, le=2000),
+    _admin: CurrentUser = Depends(require_admin),
+):
+    rows = _admin_error_logs(limit=limit)
+    return {"errors": rows, "count": len(rows)}
+
+
+@app.get("/auth/admin/data-versions")
+def get_admin_data_versions(
+    limit: int = Query(default=300, ge=1, le=5000),
+    _admin: CurrentUser = Depends(require_admin),
+):
+    rows = _admin_data_versions(limit=limit)
+    return {"versions": rows, "count": len(rows)}
+
+
+@app.get("/data/versions")
+def list_user_data_versions(
+    limit: int = Query(default=200, ge=1, le=2000),
+    company_id: str = Query(default=""),
+    company_name: str = Query(default=""),
+    reruns_only: bool = Query(default=True),
+    user_id: str = Depends(_data_reader_user_id),
+):
+    company_id_value = company_id.strip()
+    company_name_value = company_name.strip().lower()
+    if reruns_only:
+        runs = get_local_store_client().list_pipeline_runs(user_id=user_id)
+        if company_id_value or company_name_value:
+            runs = [
+                row
+                for row in runs
+                if (
+                    (company_id_value and str(row.get("company_id") or "").strip() == company_id_value)
+                    or (company_name_value and str(row.get("company_name") or "").strip().lower() == company_name_value)
+                )
+            ]
+        rows = _build_rerun_version_rows(runs, limit=limit)
+    else:
+        rows = get_local_store_client().list_company_versions(
+            user_id=user_id,
+            company_id=company_id_value,
+            company_name=company_name.strip(),
+            limit=limit,
+        )
+    _record_local_activity(
+        actor_user_id=user_id,
+        scope="storage",
+        activity_type="data_versions_viewed",
+        details={
+            "count": len(rows),
+            "company_id": company_id_value,
+            "company_name": company_name.strip(),
+            "reruns_only": bool(reruns_only),
+        },
+    )
+    return {"versions": rows, "count": len(rows)}
 
 
 @app.post("/search-companies")
@@ -553,8 +1496,10 @@ def predictive_analytics(body: PredictiveAnalyticsRequest, user_id: str = Depend
 def run_pipeline(
     body: RunRequest,
     background_tasks: BackgroundTasks,
-    user_id: str = Depends(_authenticated_user_id),
+    current_user: CurrentUser = Depends(require_permission("pipeline:run")),
 ):
+    user_id = _current_user_id(current_user)
+    user_name = str(current_user.name or "").strip()
     company = body.company.strip()
     if not company:
         raise HTTPException(status_code=422, detail="'company' must not be empty.")
@@ -564,6 +1509,7 @@ def run_pipeline(
     task = {
         "task_id": task_id,
         "user_id": user_id,
+        "user_name": user_name,
         "status": "pending",
         "company": company,
         "created_at": created,
@@ -577,9 +1523,27 @@ def run_pipeline(
     with _tasks_lock:
         _tasks[task_id] = task
     _append_event(task_id, f"Queued pipeline for company '{company}'", source="server")
+    _record_local_activity(
+        actor_user_id=user_id,
+        scope="pipeline",
+        activity_type="pipeline_queued",
+        activity_status="pending",
+        run_id=task_id,
+        company_name=company,
+        details={"task_id": task_id, "user_name": user_name},
+    )
+    _log_supabase_activity(
+        user_id=user_id,
+        activity_type="pipeline_queued",
+        run_id=task_id,
+        company_name=company,
+        activity_status="pending",
+        details={"user_name": user_name},
+    )
 
-    background_tasks.add_task(_execute_pipeline, task_id, company, user_id)
+    background_tasks.add_task(_execute_pipeline, task_id, company, user_id, user_name)
     logger.info(f"[task={task_id}] Queued for company='{company}'")
+    _invalidate_admin_cache("admin:")
     return TaskStatus(**_task_status_payload(task))
 
 
@@ -673,227 +1637,89 @@ def get_result(task_id: str, user_id: str = Depends(_authenticated_user_id)):
 
 
 @app.get("/outputs")
-def list_outputs(limit: int = 200, user_id: str = Depends(_authenticated_user_id)):
+def list_outputs(limit: int = 200, user_id: str = Depends(_data_reader_user_id)):
     require_user_id(user_id, context="output listing route")
     if limit <= 0:
         limit = 200
     limit = min(limit, 1000)
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    runs = get_local_store_client().list_pipeline_runs(user_id=user_id)[:limit]
+    items: list[Dict[str, Any]] = []
 
-    grouped: Dict[str, Dict[str, Any]] = {}
-    for path in OUTPUT_DIR.glob("*.json"):
-        match = OUTPUT_FILE_RE.match(path.name)
-        if not match:
+    for run in runs:
+        paths = run.get("paths") or {}
+        if not isinstance(paths, dict) or not any(paths.values()):
             continue
-        company_slug = match.group("company")
-        kind = match.group("kind")
-        stamp = match.group("stamp")
-        run_id = f"{company_slug}_{stamp}"
-        item = grouped.setdefault(
-            run_id,
+        items.append(
             {
-                "id": run_id,
-                "company": company_slug.replace("_", " "),
-                "company_slug": company_slug,
-                "timestamp": stamp,
-                "created_at": _stamp_to_iso(stamp),
-                "golden_record_path": None,
-                "validation_report_path": None,
-                "pytest_report_path": None,
-                "semantic_chunks_path": None,
+                "id": str(run.get("run_id") or ""),
+                "company": str(run.get("company_name") or "").strip(),
+                "company_slug": str(run.get("company_id") or "").strip(),
+                "timestamp": str(run.get("completed_at") or run.get("started_at") or ""),
+                "created_at": run.get("completed_at") or run.get("started_at"),
+                "golden_record_path": paths.get("golden_record_path"),
+                "validation_report_path": paths.get("validation_report_path"),
+                "pytest_report_path": paths.get("pytest_report_path"),
+                "semantic_chunks_path": paths.get("semantic_chunks_path"),
                 "fields": None,
                 "passed": None,
                 "failed": None,
                 "skipped": None,
-            },
+            }
         )
-        item[f"{kind}_path"] = str(path.resolve())
-
-    items = sorted(grouped.values(), key=lambda x: x["timestamp"], reverse=True)[:limit]
 
     for item in items:
         golden_path = item.get("golden_record_path")
         pytest_path = item.get("pytest_report_path")
 
         if golden_path:
-            try:
-                golden_data = _read_json(Path(golden_path))
-                if isinstance(golden_data, dict):
-                    item["fields"] = len(golden_data)
-                elif isinstance(golden_data, list):
-                    item["fields"] = len(golden_data)
-            except Exception:
-                item["fields"] = None
+            metrics = _cached_output_metrics(str(golden_path), "golden")
+            item["fields"] = metrics.get("fields") if isinstance(metrics, dict) else None
 
         if pytest_path:
-            try:
-                report = _read_json(Path(pytest_path))
-                if isinstance(report, dict):
-                    item["passed"] = int(report.get("passed") or 0)
-                    item["failed"] = int(report.get("failed") or 0)
-                    item["skipped"] = int(report.get("skipped") or 0)
-            except Exception:
+            metrics = _cached_output_metrics(str(pytest_path), "pytest")
+            if isinstance(metrics, dict):
+                item["passed"] = metrics.get("passed")
+                item["failed"] = metrics.get("failed")
+                item["skipped"] = metrics.get("skipped")
+            else:
                 item["passed"] = None
                 item["failed"] = None
                 item["skipped"] = None
 
+    _log_supabase_activity(
+        user_id=user_id,
+        activity_type="data_fetch_outputs",
+        activity_status="completed",
+        details={"result_count": len(items)},
+    )
     return items
 
 
 @app.get("/file")
-def read_output_json(path: str, user_id: str = Depends(_authenticated_user_id)):
+def read_output_json(path: str, user_id: str = Depends(_data_reader_user_id)):
     require_user_id(user_id, context="output file route")
     target = _safe_output_path(path)
+    run = get_local_store_client().get_pipeline_run_for_path(path=str(target), user_id=user_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Requested file is not available for this user.")
     if not target.exists():
         raise HTTPException(status_code=404, detail=f"File not found: {target.name}")
     if target.suffix.lower() != ".json":
         raise HTTPException(status_code=415, detail="Only JSON files are supported.")
     try:
-        return JSONResponse(_read_json(target))
+        payload = _read_json(target)
+        _log_supabase_activity(
+            user_id=user_id,
+            activity_type="data_fetch_output_file",
+            run_id=str(run.get("run_id") or ""),
+            company_id=str(run.get("company_id") or ""),
+            company_name=str(run.get("company_name") or ""),
+            activity_status="completed",
+            details={"path": str(target)},
+        )
+        return JSONResponse(payload)
     except json.JSONDecodeError as exc:
         raise HTTPException(status_code=422, detail=f"Invalid JSON: {exc}") from exc
-
-
-# ── Versioning API endpoints ──────────────────────────────────────────────────
-@app.post("/analyze")
-async def analyze(
-    req: AnalyzeRequest,
-    background_tasks: BackgroundTasks,
-    user_id: str = Depends(_authenticated_user_id),
-):
-    """
-    Main entry point for company intelligence lookup.
-
-    Behaviour:
-      - If data exists AND force_refresh=False  → return cached data instantly
-      - If data exists AND force_refresh=True   → archive old row, run pipeline,
-                                                  return status=running + run_id
-      - If no data exists                       → run pipeline,
-                                                  return status=running + run_id
-
-    The frontend should poll GET /run-status/{run_id} to know when done.
-    """
-    company = req.company.strip()
-    if not company:
-        raise HTTPException(status_code=400, detail="Company name is required")
-    user_id = require_user_id(user_id, context="analyze route")
-
-    # 1. Look up active record
-    existing = (
-        _supabase.table("company_runs")
-        .select("id, version, golden_record, created_at")
-        .eq("company_name", company)
-        .eq("run_by", user_id)
-        .eq("is_active", True)
-        .maybe_single()
-        .execute()
-    )
-
-    # 2. Serve from cache if no refresh requested
-    if existing.data and not req.force_refresh:
-        return {
-            "status": "cached",
-            "company": company,
-            "version": existing.data["version"],
-            "created_at": existing.data["created_at"],
-            "golden_record": existing.data["golden_record"],
-        }
-
-    # 3. Determine next version number
-    next_version = 1
-    if existing.data:
-        next_version = existing.data["version"] + 1
-        # Archive the currently active row
-        _supabase.table("company_runs").update({
-            "is_active": False,
-            "archived_at": datetime.now(timezone.utc).isoformat(),
-        }).eq("id", existing.data["id"]).eq("run_by", user_id).execute()
-
-    # 4. Insert placeholder row so frontend can poll immediately
-    insert_result = _supabase.table("company_runs").insert({
-        "company_name": company,
-        "version": next_version,
-        "is_active": True,
-        "run_by": user_id,
-    }).execute()
-
-    run_id = insert_result.data[0]["id"]
-
-    # 5. Kick off pipeline in background
-    background_tasks.add_task(_run_and_save, run_id, company, user_id)
-
-    return {
-        "status": "running",
-        "company": company,
-        "version": next_version,
-        "run_id": run_id,
-    }
-
-
-@app.get("/run-status/{run_id}")
-async def run_status(
-    run_id: str,
-    user_id: str = Depends(_authenticated_user_id),
-):
-    """
-    Polls a single run by its UUID.
-    Returns:
-      - status=running  if golden_record is still null
-      - status=done     if golden_record is populated
-      - status=failed   if is_active=False and golden_record has an 'error' key
-    Frontend should call this every 3–5 seconds until status != 'running'.
-    """
-    row = (
-        _supabase.table("company_runs")
-        .select("id, version, is_active, golden_record, created_at")
-        .eq("id", run_id)
-        .eq("run_by", user_id)
-        .single()
-        .execute()
-    )
-
-    if not row.data:
-        raise HTTPException(status_code=404, detail="Run not found")
-
-    data = row.data
-
-    if data["golden_record"] is None:
-        return {"status": "running", "run_id": run_id}
-
-    if not data["is_active"] and "error" in (data["golden_record"] or {}):
-        return {
-            "status": "failed",
-            "run_id": run_id,
-            "error": data["golden_record"]["error"],
-        }
-
-    return {
-        "status": "done",
-        "run_id": run_id,
-        "version": data["version"],
-        "created_at": data["created_at"],
-        "golden_record": data["golden_record"],
-    }
-
-
-@app.get("/company-history/{company_name}")
-async def company_history(
-    company_name: str,
-    user_id: str = Depends(_authenticated_user_id),
-):
-    """
-    Returns all versions (active + archived) for a company,
-    ordered newest first. Used to build a version history UI.
-    """
-    rows = (
-        _supabase.table("company_runs")
-        .select("id, version, is_active, created_at, archived_at, run_by")
-        .eq("company_name", company_name)
-        .eq("run_by", user_id)
-        .order("version", desc=True)
-        .execute()
-    )
-    return {"company": company_name, "versions": rows.data}
 
 
 # ── Dev entry point ───────────────────────────────────────────────────────────

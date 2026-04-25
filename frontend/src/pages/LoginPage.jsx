@@ -2,93 +2,68 @@ import { useState } from "react";
 import { T } from "../theme";
 import { Card, Btn, Input, Spinner } from "../components";
 import { Logo } from "../components";
-import { healthCheck } from "../api";
-import {
-  isSupabaseConfigured,
-  mapAuthUser,
-  signInWithPassword,
-  signUpWithPassword,
-} from "../supabaseClient";
+import { healthCheck, login, signup } from "../api";
 
 function getAuthErrorMessage(error, mode) {
   const message = error?.message || "Authentication failed.";
   const lower = message.toLowerCase();
 
-  if (lower.includes("invalid login credentials")) {
+  if (lower.includes("invalid email or password")) {
     return "Invalid email or password.";
   }
 
-  if (lower.includes("email not confirmed")) {
-    return "Check your inbox to confirm your email, then sign in.";
+  if (lower.includes("pending admin approval")) {
+    return "Your account is waiting for admin approval.";
   }
 
-  if (mode === "register" && lower.includes("already registered")) {
+  if (lower.includes("rejected")) {
+    return "Your access request was rejected. Please contact an administrator.";
+  }
+
+  if (mode === "register" && lower.includes("already exists")) {
     return "An account with this email already exists. Try signing in instead.";
   }
 
   return message;
 }
 
-export default function LoginPage({ onLogin }) {
-  const [mode, setMode]         = useState("sign-in");
-  const [email, setEmail]     = useState("");
-  const [pass,  setPass]      = useState("");
+export default function LoginPage({ onLogin, onSignupPending }) {
+  const [mode, setMode] = useState("sign-in");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
-  const [err, setErr]         = useState("");
-  const [note, setNote]       = useState("");
-  const configured = isSupabaseConfigured();
+  const [err, setErr] = useState("");
+  const [note, setNote] = useState("");
 
   const handle = async () => {
-    console.log("[LoginPage] Button clicked. Mode:", mode, "Email:", email);
-    
-    if (!email || !pass) { 
-      setErr("Please fill in all fields."); 
-      console.log("[LoginPage] Validation failed: missing email or password");
-      return; 
-    }
-    
-    if (!configured) {
-      const errMsg = "Supabase auth is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.";
-      setErr(errMsg);
-      console.error("[LoginPage]", errMsg);
+    if (!email || !pass || (mode === "register" && !name.trim())) {
+      setErr("Please fill in all required fields.");
       return;
     }
 
-    setLoading(true); setErr("");
+    setLoading(true);
+    setErr("");
     setNote("");
 
     try {
-      const action = mode === "register" ? signUpWithPassword : signInWithPassword;
-      console.log("[LoginPage] Calling auth action:", mode === "register" ? "signUpWithPassword" : "signInWithPassword");
-      
-      const { data, error } = await action({ email, password: pass });
-      console.log("[LoginPage] Auth response - Data:", data, "Error:", error);
-      
-      if (error) {
-        console.error("[LoginPage] Auth error:", error);
-        throw error;
+      if (mode === "register") {
+        const data = await signup({ name: name.trim(), email, password: pass });
+        onSignupPending?.(data?.user || { name: name.trim(), email });
+        setNote(data?.message || "Request has been sent to admin for approval.");
+        return;
       }
 
-      const signedInUser = data?.session?.user || null;
-      console.log("[LoginPage] Signed-in user:", signedInUser);
-      
-      if (signedInUser) {
+      const data = await login({ email, password: pass });
+      if (data?.user) {
         const apiOnline = await healthCheck();
-        console.log("[LoginPage] Health check result:", apiOnline);
         onLogin({
-          ...mapAuthUser(signedInUser),
+          ...data.user,
           apiOnline,
         });
         return;
       }
-
-      if (mode === "register" && data?.user) {
-        console.log("[LoginPage] Account created (email confirmation required)");
-        setMode("sign-in");
-        setNote("Account created. If email confirmation is enabled, confirm your inbox and then sign in.");
-      }
     } catch (error) {
-      console.error("[LoginPage] Exception:", error);
       setErr(getAuthErrorMessage(error, mode));
     } finally {
       setLoading(false);
@@ -104,8 +79,8 @@ export default function LoginPage({ onLogin }) {
   const handleKey = e => { if (e.key === "Enter") handle(); };
   const title = mode === "register" ? "Create account" : "Sign in";
   const subtitle = mode === "register"
-    ? "Create a secure workspace account"
-    : "Access your research workspace";
+    ? "Request access to the research workspace"
+    : "Access your approved workspace";
 
   return (
     <div style={{
@@ -136,6 +111,13 @@ export default function LoginPage({ onLogin }) {
           <p style={{ fontSize: 13, color: T.muted, marginBottom: 28 }}>{subtitle}</p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            {mode === "register" && (
+              <Input label="Name" type="text" value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="Kapil Sharma" icon="👤"
+                onKeyDown={handleKey}
+              />
+            )}
             <Input label="Email" type="email" value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="analyst@firm.com" icon="✉"
@@ -165,23 +147,10 @@ export default function LoginPage({ onLogin }) {
               </div>
             )}
 
-            {!configured && (
-              <div style={{
-                background: T.amber + "15", border: `1px solid ${T.amber}40`,
-                borderRadius: 8, padding: "10px 14px", fontSize: 12, color: T.amber,
-                fontFamily: "'JetBrains Mono', monospace",
-              }}>
-                <strong>⚠️ Missing Environment:</strong> You need to set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file.
-                <div style={{ marginTop: 8, fontSize: 11, opacity: 0.9 }}>
-                  📋 Get your keys from Supabase: Settings → API → "anon" key
-                </div>
-              </div>
-            )}
-
             <Btn onClick={handle} disabled={loading} full style={{ marginTop: 4, padding: "13px 22px", fontSize: 14 }}>
               {loading
                 ? <><Spinner size={14} color="#000"/> Authenticating…</>
-                : mode === "register" ? "Create Account →" : "Sign In →"}
+                : mode === "register" ? "Request Access →" : "Sign In →"}
             </Btn>
           </div>
 
@@ -191,8 +160,8 @@ export default function LoginPage({ onLogin }) {
             fontFamily: "'JetBrains Mono', monospace",
           }}>
             {mode === "register"
-              ? "Create a Supabase-backed email/password account."
-              : "Use your Supabase email/password account to enter the workspace."}
+              ? "New accounts stay pending until an admin approves access."
+              : "Approved users receive a secure server-managed session."}
           </div>
 
           <div style={{ marginTop: 14, display: "flex", justifyContent: "center", gap: 8, fontSize: 12, color: T.muted }}>

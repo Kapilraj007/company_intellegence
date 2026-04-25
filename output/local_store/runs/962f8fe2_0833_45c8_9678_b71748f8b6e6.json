@@ -1,0 +1,21 @@
+{
+  "run_id": "962f8fe2-0833-45c8-9678-b71748f8b6e6",
+  "user_id": "bc56edb3-5682-4177-801c-0d1cba2abb79",
+  "user_name": "karthi",
+  "company_id": "capgemini",
+  "company_name": "capgemini",
+  "status": "completed",
+  "started_at": "2026-04-25T16:11:22.973698+00:00",
+  "completed_at": "2026-04-25T16:15:22.643201+00:00",
+  "golden_record_count": 163,
+  "all_tests_passed": false,
+  "failed_param_ids": [],
+  "agent2_retry_count": 0,
+  "pytest_retry_count": 0,
+  "paths": {
+    "golden_record_path": "/home/kapil/Desktop/company-intelligence single json/output/capgemini_golden_record_20260425_214522.json",
+    "validation_report_path": "/home/kapil/Desktop/company-intelligence single json/output/capgemini_validation_report_20260425_214522.json",
+    "pytest_report_path": null,
+    "semantic_chunks_path": "/home/kapil/Desktop/company-intelligence single json/output/capgemini_semantic_chunks_20260425_214522.json"
+  }
+}

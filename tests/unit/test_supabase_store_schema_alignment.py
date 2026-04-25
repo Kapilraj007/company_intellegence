@@ -154,3 +154,47 @@ def test_insert_agent1_output_embeds_user_id_in_raw_data_when_column_missing(mon
     assert "user_id" not in insert_call["payload"]
     assert insert_call["payload"]["raw_data"]["__user_id"] == "user-a"
     assert source_raw_data == {"key": "value"}
+
+
+def test_create_user_stores_custom_user_fields(monkeypatch):
+    fake_client = _FakeSupabaseClient()
+    store = _build_store(monkeypatch, fake_client)
+
+    store.create_user(
+        name="Kapil",
+        email="kapil@example.com",
+        password_hash="pbkdf2_sha256$390000$salt$hash",
+        role="user",
+        approval_status="pending",
+        session_nonce="nonce-123",
+    )
+
+    insert_call = fake_client.operations[-1]
+    assert insert_call["table"] == "users"
+    assert insert_call["payload"]["name"] == "Kapil"
+    assert insert_call["payload"]["email"] == "kapil@example.com"
+    assert insert_call["payload"]["password"] == "pbkdf2_sha256$390000$salt$hash"
+    assert insert_call["payload"]["approval_status"] == "pending"
+    assert insert_call["payload"]["session_nonce"] == "nonce-123"
+
+
+def test_log_pipeline_activity_includes_user_context(monkeypatch):
+    fake_client = _FakeSupabaseClient()
+    store = _build_store(monkeypatch, fake_client)
+
+    store.log_pipeline_activity(
+        user_id="user-a",
+        activity_type="pipeline_started",
+        run_id="run-1",
+        company_id="acme",
+        company_name="Acme",
+        activity_status="running",
+        details={"step": "queue"},
+    )
+
+    insert_call = fake_client.operations[-1]
+    assert insert_call["table"] == "pipeline_activity_logs"
+    assert insert_call["payload"]["user_id"] == "user-a"
+    assert insert_call["payload"]["activity_type"] == "pipeline_started"
+    assert insert_call["payload"]["run_id"] == "run-1"
+    assert insert_call["payload"]["details"] == {"step": "queue"}

@@ -5,9 +5,11 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from threading import Lock
+from threading import RLock
 from typing import Any, Dict, List, Optional
 
 from core.user_scope import require_user_id
@@ -47,10 +49,21 @@ class LocalStoreClient:
         self.root = base.resolve()
         self.runs_dir = self.root / "runs"
         self.companies_dir = self.root / "companies"
+        self.versions_dir = self.root / "versions"
+        self.admin_dir = self.root / "admin"
+        self.activity_log_path = self.admin_dir / "activity_logs.jsonl"
+        self.error_log_path = self.admin_dir / "error_logs.jsonl"
         self.root.mkdir(parents=True, exist_ok=True)
         self.runs_dir.mkdir(parents=True, exist_ok=True)
         self.companies_dir.mkdir(parents=True, exist_ok=True)
-        self._lock = Lock()
+        self.versions_dir.mkdir(parents=True, exist_ok=True)
+        self.admin_dir.mkdir(parents=True, exist_ok=True)
+        self._lock = RLock()
+        self._query_cache: Dict[str, Dict[str, Any]] = {}
+        try:
+            self._query_cache_ttl = max(2.0, float(os.getenv("LOCAL_STORE_QUERY_CACHE_TTL_SECONDS", "15")))
+        except (TypeError, ValueError):
+            self._query_cache_ttl = 15.0
 
     def _run_path(self, run_id: str) -> Path:
         return self.runs_dir / f"{_slug(run_id)}.json"
@@ -77,9 +90,77 @@ class LocalStoreClient:
         tmp.replace(path)
 
     @staticmethod
+    def _append_jsonl_line(path: Path, payload: Dict[str, Any]) -> None:
+        with path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+    def _invalidate_query_cache(self, prefix: str = "") -> None:
+        if not prefix:
+            self._query_cache.clear()
+            return
+        wanted = str(prefix).strip()
+        if not wanted:
+            return
+        for key in list(self._query_cache.keys()):
+            if key.startswith(wanted):
+                self._query_cache.pop(key, None)
+
+    def _cache_get(self, key: str) -> Any:
+        entry = self._query_cache.get(key)
+        if not isinstance(entry, dict):
+            return None
+        cached_at = float(entry.get("cached_at") or 0.0)
+        if (time.time() - cached_at) > self._query_cache_ttl:
+            self._query_cache.pop(key, None)
+            return None
+        return entry.get("value")
+
+    def _cache_set(self, key: str, value: Any) -> Any:
+        self._query_cache[key] = {"cached_at": time.time(), "value": value}
+        return value
+
+    @staticmethod
+    def _json_copy(value: Any) -> Any:
+        return json.loads(json.dumps(value, ensure_ascii=False))
+
+    @staticmethod
+    def _activity_ts() -> str:
+        return _now_iso()
+
+    @staticmethod
+    def _sort_desc_by_created_at(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        rows.sort(key=lambda row: str(row.get("created_at") or ""), reverse=True)
+        return rows
+
+    def _iter_jsonl_rows(self, path: Path) -> List[Dict[str, Any]]:
+        if not path.exists():
+            return []
+        rows: List[Dict[str, Any]] = []
+        try:
+            with path.open("r", encoding="utf-8") as fh:
+                for line in fh:
+                    clean = line.strip()
+                    if not clean:
+                        continue
+                    try:
+                        payload = json.loads(clean)
+                    except Exception:
+                        continue
+                    if isinstance(payload, dict):
+                        rows.append(payload)
+        except Exception:
+            return []
+        return rows
+
+    @staticmethod
     def _visible_to_user(doc: Dict[str, Any], user_id: str) -> bool:
-        owner = str(doc.get("user_id") or "").strip()
-        return not owner or owner == user_id
+        del user_id
+        return isinstance(doc, dict)
+
+    @staticmethod
+    def _run_visible_to_user(doc: Dict[str, Any], user_id: str) -> bool:
+        del user_id
+        return isinstance(doc, dict)
 
     def _load_company_doc(self, company_id: str, company_name: str = "", user_id: str = "") -> Dict[str, Any]:
         user_id = require_user_id(user_id, context="local company document load")
@@ -99,12 +180,146 @@ class LocalStoreClient:
         doc.setdefault("consolidated", {})
         doc.setdefault("chunks", [])
         doc.setdefault("failed_parameter_ids_by_run", {})
+        if not isinstance(doc.get("versions"), list):
+            doc["versions"] = []
+        try:
+            doc["version_counter"] = int(doc.get("version_counter") or len(doc["versions"]))
+        except (TypeError, ValueError):
+            doc["version_counter"] = len(doc["versions"])
         return doc
 
     def _write_company_doc(self, company_id: str, company_name: str, user_id: str, doc: Dict[str, Any]) -> None:
         user_id = require_user_id(user_id, context="local company document write")
         doc["user_id"] = user_id
         self._write(self._company_path(company_id, company_name, user_id=user_id), doc)
+
+    def _record_activity(
+        self,
+        *,
+        actor_user_id: str,
+        activity_type: str,
+        activity_status: str = "completed",
+        scope: str = "system",
+        target_user_id: str | None = None,
+        run_id: str | None = None,
+        company_id: str | None = None,
+        company_name: str | None = None,
+        details: Dict[str, Any] | None = None,
+        source: str = "local_store",
+    ) -> Dict[str, Any]:
+        payload: Dict[str, Any] = {
+            "activity_id": str(uuid.uuid4()),
+            "created_at": self._activity_ts(),
+            "source": str(source or "local_store"),
+            "scope": str(scope or "system"),
+            "actor_user_id": str(actor_user_id or "").strip(),
+            "activity_type": str(activity_type or "").strip(),
+            "activity_status": str(activity_status or "completed").strip().lower() or "completed",
+            "details": dict(details or {}),
+        }
+        if target_user_id:
+            payload["target_user_id"] = str(target_user_id).strip()
+        if run_id:
+            payload["run_id"] = str(run_id).strip()
+        if company_id:
+            payload["company_id"] = str(company_id).strip()
+        if company_name:
+            payload["company_name"] = str(company_name).strip()
+
+        self._append_jsonl_line(self.activity_log_path, payload)
+        self._invalidate_query_cache("activity:")
+        self._invalidate_query_cache("dashboard:")
+        return payload
+
+    def _record_error(
+        self,
+        *,
+        user_id: str | None,
+        error_type: str,
+        message: str,
+        source: str = "local_store",
+        run_id: str | None = None,
+        company_id: str | None = None,
+        company_name: str | None = None,
+        details: Dict[str, Any] | None = None,
+    ) -> Dict[str, Any]:
+        payload: Dict[str, Any] = {
+            "error_id": str(uuid.uuid4()),
+            "created_at": self._activity_ts(),
+            "source": str(source or "local_store"),
+            "user_id": str(user_id or "").strip() or None,
+            "error_type": str(error_type or "runtime").strip().lower() or "runtime",
+            "message": str(message or "").strip(),
+            "details": dict(details or {}),
+        }
+        if run_id:
+            payload["run_id"] = str(run_id).strip()
+        if company_id:
+            payload["company_id"] = str(company_id).strip()
+        if company_name:
+            payload["company_name"] = str(company_name).strip()
+        self._append_jsonl_line(self.error_log_path, payload)
+        self._invalidate_query_cache("error:")
+        self._invalidate_query_cache("dashboard:")
+        return payload
+
+    def _record_company_version(
+        self,
+        *,
+        doc: Dict[str, Any],
+        user_id: str,
+        company_id: str,
+        company_name: str,
+        run_id: str,
+        version_kind: str,
+        snapshot_payload: Dict[str, Any] | List[Any] | str | int | float | None,
+    ) -> Dict[str, Any]:
+        versions = doc.get("versions")
+        if not isinstance(versions, list):
+            versions = []
+            doc["versions"] = versions
+        try:
+            current_counter = int(doc.get("version_counter") or len(versions))
+        except (TypeError, ValueError):
+            current_counter = len(versions)
+        version_number = current_counter + 1
+        created_at = self._activity_ts()
+        version_id = f"v{version_number:05d}"
+
+        snapshot_dir = self.versions_dir / _slug(user_id) / _slug(company_id or company_name)
+        snapshot_dir.mkdir(parents=True, exist_ok=True)
+        snapshot_path = snapshot_dir / f"{version_number:05d}_{_slug(version_kind)}.json"
+        snapshot_doc = {
+            "version_id": version_id,
+            "version_number": version_number,
+            "version_kind": str(version_kind or "snapshot").strip().lower() or "snapshot",
+            "created_at": created_at,
+            "user_id": user_id,
+            "run_id": str(run_id or "").strip(),
+            "company_id": company_id,
+            "company_name": company_name,
+            "payload": snapshot_payload,
+        }
+        self._write(snapshot_path, snapshot_doc)
+
+        meta = {
+            "version_id": version_id,
+            "version_number": version_number,
+            "version_kind": snapshot_doc["version_kind"],
+            "created_at": created_at,
+            "user_id": user_id,
+            "run_id": str(run_id or "").strip(),
+            "company_id": company_id,
+            "company_name": company_name,
+            "snapshot_path": str(snapshot_path),
+            "snapshot_size_bytes": int(snapshot_path.stat().st_size),
+        }
+        versions.append(meta)
+        if len(versions) > 500:
+            doc["versions"] = versions[-500:]
+        doc["version_counter"] = version_number
+        self._invalidate_query_cache("dashboard:")
+        return meta
 
     def _visible_company_docs(self, user_id: str) -> List[Dict[str, Any]]:
         user_id = require_user_id(user_id, context="local company listing")
@@ -119,12 +334,21 @@ class LocalStoreClient:
                 selected[cid] = doc
         return list(selected.values())
 
-    def create_pipeline_run(self, *, run_id: str, company_name: str, company_id: str, user_id: str) -> None:
+    def create_pipeline_run(
+        self,
+        *,
+        run_id: str,
+        company_name: str,
+        company_id: str,
+        user_id: str,
+        user_name: str = "",
+    ) -> None:
         user_id = require_user_id(user_id, context="local pipeline run creation")
         with self._lock:
             run = {
                 "run_id": run_id,
                 "user_id": user_id,
+                "user_name": str(user_name or "").strip(),
                 "company_id": company_id,
                 "company_name": company_name,
                 "status": "running",
@@ -138,6 +362,17 @@ class LocalStoreClient:
                 "paths": {},
             }
             self._write(self._run_path(run_id), run)
+            self._invalidate_query_cache("runs:")
+            self._invalidate_query_cache("dashboard:")
+            self._record_activity(
+                actor_user_id=user_id,
+                scope="pipeline",
+                activity_type="pipeline_run_created",
+                activity_status="running",
+                run_id=run_id,
+                company_id=company_id,
+                company_name=company_name,
+            )
 
     def complete_pipeline_run(
         self,
@@ -151,6 +386,7 @@ class LocalStoreClient:
         golden_record_path: str,
         validation_path: str,
         pytest_report_path: Optional[str],
+        chunk_record_path: Optional[str],
         user_id: str,
     ) -> None:
         user_id = require_user_id(user_id, context="local pipeline run completion")
@@ -176,10 +412,29 @@ class LocalStoreClient:
                         "golden_record_path": golden_record_path,
                         "validation_report_path": validation_path,
                         "pytest_report_path": pytest_report_path,
+                        "semantic_chunks_path": chunk_record_path,
                     },
                 }
             )
             self._write(path, run)
+            company_id_value = str(run.get("company_id") or "").strip()
+            company_name_value = str(run.get("company_name") or "").strip()
+            self._invalidate_query_cache("runs:")
+            self._invalidate_query_cache("dashboard:")
+            self._record_activity(
+                actor_user_id=user_id,
+                scope="pipeline",
+                activity_type="pipeline_run_completed",
+                activity_status="completed",
+                run_id=run_id,
+                company_id=company_id_value or None,
+                company_name=company_name_value or None,
+                details={
+                    "golden_record_count": int(golden_record_count or 0),
+                    "all_tests_passed": bool(all_tests_passed),
+                    "failed_param_count": len(failed_param_ids or []),
+                },
+            )
 
     def insert_agent1_flat(
         self,
@@ -204,7 +459,27 @@ class LocalStoreClient:
                 "data": full_json,
             }
             doc["updated_at"] = _now_iso()
+            self._record_company_version(
+                doc=doc,
+                user_id=user_id,
+                company_id=company_id,
+                company_name=company_name,
+                run_id=run_id,
+                version_kind=f"agent1_{source_llm}",
+                snapshot_payload={"source_llm": source_llm, "data": full_json},
+            )
             self._write_company_doc(company_id, company_name, user_id, doc)
+            self._invalidate_query_cache("companies:")
+            self._invalidate_query_cache("versions:")
+            self._record_activity(
+                actor_user_id=user_id,
+                scope="storage",
+                activity_type="agent1_flat_saved",
+                run_id=run_id,
+                company_id=company_id,
+                company_name=company_name,
+                details={"source_llm": source_llm, "key_count": len(full_json or {})},
+            )
 
     def insert_company_raw_data(
         self,
@@ -227,7 +502,27 @@ class LocalStoreClient:
             doc["raw_data"]["last_run_id"] = run_id
             doc["raw_data"]["updated_at"] = _now_iso()
             doc["updated_at"] = _now_iso()
+            self._record_company_version(
+                doc=doc,
+                user_id=user_id,
+                company_id=company_id,
+                company_name=company_name,
+                run_id=run_id,
+                version_kind="raw_data",
+                snapshot_payload=raw_json,
+            )
             self._write_company_doc(company_id, company_name, user_id, doc)
+            self._invalidate_query_cache("companies:")
+            self._invalidate_query_cache("versions:")
+            self._record_activity(
+                actor_user_id=user_id,
+                scope="storage",
+                activity_type="raw_data_saved",
+                run_id=run_id,
+                company_id=company_id,
+                company_name=company_name,
+                details={"raw_key_count": len(raw_json or {}) if isinstance(raw_json, dict) else 0},
+            )
 
     def upsert_company_consolidated_data(
         self,
@@ -254,7 +549,31 @@ class LocalStoreClient:
                 "json": consolidated_json,
             }
             doc["updated_at"] = _now_iso()
+            self._record_company_version(
+                doc=doc,
+                user_id=user_id,
+                company_id=company_id,
+                company_name=company_name,
+                run_id=run_id,
+                version_kind="consolidated",
+                snapshot_payload=consolidated_json,
+            )
             self._write_company_doc(company_id, company_name, user_id, doc)
+            self._invalidate_query_cache("companies:")
+            self._invalidate_query_cache("versions:")
+            self._record_activity(
+                actor_user_id=user_id,
+                scope="storage",
+                activity_type="consolidated_data_saved",
+                run_id=run_id,
+                company_id=company_id,
+                company_name=company_name,
+                details={
+                    "chunk_count": int(chunk_count or 0),
+                    "chunk_coverage_pct": float(chunk_coverage_pct or 0.0),
+                    "field_count": len(consolidated_json or {}) if isinstance(consolidated_json, dict) else 0,
+                },
+            )
 
     def insert_company_chunks(
         self,
@@ -274,7 +593,27 @@ class LocalStoreClient:
             doc["chunks"] = chunks or []
             doc["chunks_run_id"] = run_id
             doc["updated_at"] = _now_iso()
+            self._record_company_version(
+                doc=doc,
+                user_id=user_id,
+                company_id=company_id,
+                company_name=company_name,
+                run_id=run_id,
+                version_kind="semantic_chunks",
+                snapshot_payload=chunks,
+            )
             self._write_company_doc(company_id, company_name, user_id, doc)
+            self._invalidate_query_cache("companies:")
+            self._invalidate_query_cache("versions:")
+            self._record_activity(
+                actor_user_id=user_id,
+                scope="storage",
+                activity_type="semantic_chunks_saved",
+                run_id=run_id,
+                company_id=company_id,
+                company_name=company_name,
+                details={"chunk_count": len(chunks or [])},
+            )
 
     def repair_company_chunks(
         self,
@@ -321,7 +660,34 @@ class LocalStoreClient:
             doc["raw_data"] = raw_data
 
             doc["updated_at"] = _now_iso()
+            self._record_company_version(
+                doc=doc,
+                user_id=user_id,
+                company_id=company_id,
+                company_name=company_name,
+                run_id=run_id,
+                version_kind="repair",
+                snapshot_payload={
+                    "consolidated": consolidated_json,
+                    "chunks": chunks,
+                    "schema_field_count": schema_field_count,
+                },
+            )
             self._write_company_doc(company_id, company_name, user_id, doc)
+            self._invalidate_query_cache("companies:")
+            self._invalidate_query_cache("versions:")
+            self._record_activity(
+                actor_user_id=user_id,
+                scope="storage",
+                activity_type="company_data_repaired",
+                run_id=run_id,
+                company_id=company_id,
+                company_name=company_name,
+                details={
+                    "chunk_count": len(chunks or []),
+                    "schema_field_count": schema_field_count,
+                },
+            )
             return doc
 
     def mark_parameters_as_failed(
@@ -353,6 +719,256 @@ class LocalStoreClient:
                 doc["failed_parameter_ids_by_run"][run_id] = ids
                 doc["updated_at"] = _now_iso()
                 self._write_company_doc(company_id, doc.get("company_name", ""), user_id, doc)
+            self._invalidate_query_cache("runs:")
+            self._invalidate_query_cache("companies:")
+            self._record_activity(
+                actor_user_id=user_id,
+                scope="pipeline",
+                activity_type="failed_parameters_marked",
+                activity_status="completed",
+                run_id=run_id,
+                company_id=company_id,
+                details={"failed_parameter_ids": ids},
+            )
+
+    def record_admin_activity(
+        self,
+        *,
+        actor_user_id: str,
+        activity_type: str,
+        activity_status: str = "completed",
+        scope: str = "admin",
+        target_user_id: str | None = None,
+        run_id: str | None = None,
+        company_id: str | None = None,
+        company_name: str | None = None,
+        details: Dict[str, Any] | None = None,
+        source: str = "server",
+    ) -> Dict[str, Any]:
+        with self._lock:
+            return self._record_activity(
+                actor_user_id=str(actor_user_id or "").strip(),
+                activity_type=activity_type,
+                activity_status=activity_status,
+                scope=scope,
+                target_user_id=target_user_id,
+                run_id=run_id,
+                company_id=company_id,
+                company_name=company_name,
+                details=details,
+                source=source,
+            )
+
+    def record_error_event(
+        self,
+        *,
+        user_id: str | None,
+        error_type: str,
+        message: str,
+        source: str = "server",
+        run_id: str | None = None,
+        company_id: str | None = None,
+        company_name: str | None = None,
+        details: Dict[str, Any] | None = None,
+    ) -> Dict[str, Any]:
+        with self._lock:
+            return self._record_error(
+                user_id=user_id,
+                error_type=error_type,
+                message=message,
+                source=source,
+                run_id=run_id,
+                company_id=company_id,
+                company_name=company_name,
+                details=details,
+            )
+
+    def list_activity_logs(
+        self,
+        *,
+        limit: int = 200,
+        actor_user_id: str | None = None,
+        scope: str | None = None,
+        activity_type: str | None = None,
+    ) -> List[Dict[str, Any]]:
+        normalized_limit = max(1, min(int(limit or 200), 5000))
+        cache_key = f"activity:{normalized_limit}:{actor_user_id or ''}:{scope or ''}:{activity_type or ''}"
+        with self._lock:
+            cached = self._cache_get(cache_key)
+            if isinstance(cached, list):
+                return self._json_copy(cached)
+            rows = self._iter_jsonl_rows(self.activity_log_path)
+            if actor_user_id:
+                wanted_actor = str(actor_user_id).strip()
+                rows = [row for row in rows if str(row.get("actor_user_id") or "").strip() == wanted_actor]
+            if scope:
+                wanted_scope = str(scope).strip().lower()
+                rows = [row for row in rows if str(row.get("scope") or "").strip().lower() == wanted_scope]
+            if activity_type:
+                wanted_type = str(activity_type).strip().lower()
+                rows = [row for row in rows if str(row.get("activity_type") or "").strip().lower() == wanted_type]
+            self._sort_desc_by_created_at(rows)
+            limited = rows[:normalized_limit]
+            self._cache_set(cache_key, self._json_copy(limited))
+            return limited
+
+    def list_error_logs(
+        self,
+        *,
+        limit: int = 200,
+        user_id: str | None = None,
+        error_type: str | None = None,
+    ) -> List[Dict[str, Any]]:
+        normalized_limit = max(1, min(int(limit or 200), 5000))
+        cache_key = f"error:{normalized_limit}:{user_id or ''}:{error_type or ''}"
+        with self._lock:
+            cached = self._cache_get(cache_key)
+            if isinstance(cached, list):
+                return self._json_copy(cached)
+            rows = self._iter_jsonl_rows(self.error_log_path)
+            if user_id:
+                wanted_user = str(user_id).strip()
+                rows = [row for row in rows if str(row.get("user_id") or "").strip() == wanted_user]
+            if error_type:
+                wanted_type = str(error_type).strip().lower()
+                rows = [row for row in rows if str(row.get("error_type") or "").strip().lower() == wanted_type]
+            self._sort_desc_by_created_at(rows)
+            limited = rows[:normalized_limit]
+            self._cache_set(cache_key, self._json_copy(limited))
+            return limited
+
+    def list_company_versions(
+        self,
+        *,
+        user_id: str,
+        company_id: str = "",
+        company_name: str = "",
+        limit: int = 200,
+    ) -> List[Dict[str, Any]]:
+        user_id = require_user_id(user_id, context="local company version listing")
+        normalized_limit = max(1, min(int(limit or 200), 2000))
+        if company_id or company_name:
+            doc = self.get_company(company_id=company_id, company_name=company_name, user_id=user_id)
+            if not isinstance(doc, dict):
+                return []
+            versions = list(doc.get("versions") or [])
+            if not isinstance(versions, list):
+                return []
+            self._sort_desc_by_created_at(versions)
+            return versions[:normalized_limit]
+
+        versions: List[Dict[str, Any]] = []
+        with self._lock:
+            for doc in self._visible_company_docs(user_id):
+                rows = doc.get("versions")
+                if not isinstance(rows, list):
+                    continue
+                for row in rows:
+                    if isinstance(row, dict):
+                        versions.append(dict(row))
+        self._sort_desc_by_created_at(versions)
+        return versions[:normalized_limit]
+
+    def list_all_company_versions(
+        self,
+        *,
+        limit: int = 500,
+        user_id: str | None = None,
+        company_id: str | None = None,
+    ) -> List[Dict[str, Any]]:
+        normalized_limit = max(1, min(int(limit or 500), 5000))
+        cache_key = f"versions:all:{normalized_limit}:{user_id or ''}:{company_id or ''}"
+        with self._lock:
+            cached = self._cache_get(cache_key)
+            if isinstance(cached, list):
+                return self._json_copy(cached)
+            out: List[Dict[str, Any]] = []
+            for path in sorted(self.companies_dir.glob("*.json")):
+                doc = self._read(path, {})
+                if not isinstance(doc, dict):
+                    continue
+                owner = str(doc.get("user_id") or "").strip()
+                if user_id and owner != str(user_id).strip():
+                    continue
+                if company_id and str(doc.get("company_id") or "").strip() != str(company_id).strip():
+                    continue
+                rows = doc.get("versions")
+                if not isinstance(rows, list):
+                    continue
+                for row in rows:
+                    if isinstance(row, dict):
+                        out.append(dict(row))
+            self._sort_desc_by_created_at(out)
+            limited = out[:normalized_limit]
+            self._cache_set(cache_key, self._json_copy(limited))
+            return limited
+
+    def list_all_companies(self, *, limit: int = 5000) -> List[Dict[str, Any]]:
+        normalized_limit = max(1, min(int(limit or 5000), 20000))
+        cache_key = f"companies:all:{normalized_limit}"
+        with self._lock:
+            cached = self._cache_get(cache_key)
+            if isinstance(cached, list):
+                return self._json_copy(cached)
+            rows: List[Dict[str, Any]] = []
+            for path in sorted(self.companies_dir.glob("*.json")):
+                doc = self._read(path, {})
+                if isinstance(doc, dict):
+                    rows.append(doc)
+            self._sort_desc_by_created_at(rows)
+            limited = rows[:normalized_limit]
+            self._cache_set(cache_key, self._json_copy(limited))
+            return limited
+
+    def list_all_pipeline_runs(self, *, limit: int = 5000) -> List[Dict[str, Any]]:
+        normalized_limit = max(1, min(int(limit or 5000), 50000))
+        cache_key = f"runs:all:{normalized_limit}"
+        with self._lock:
+            cached = self._cache_get(cache_key)
+            if isinstance(cached, list):
+                return self._json_copy(cached)
+            rows: List[Dict[str, Any]] = []
+            for path in sorted(self.runs_dir.glob("*.json")):
+                doc = self._read(path, {})
+                if isinstance(doc, dict):
+                    rows.append(doc)
+            rows.sort(key=lambda row: str(row.get("completed_at") or row.get("started_at") or ""), reverse=True)
+            limited = rows[:normalized_limit]
+            self._cache_set(cache_key, self._json_copy(limited))
+            return limited
+
+    def get_storage_summary(self) -> Dict[str, Any]:
+        cache_key = "dashboard:storage_summary"
+        with self._lock:
+            cached = self._cache_get(cache_key)
+            if isinstance(cached, dict):
+                return self._json_copy(cached)
+
+            def _dir_size(path: Path) -> int:
+                total = 0
+                if not path.exists():
+                    return 0
+                for child in path.rglob("*"):
+                    if child.is_file():
+                        total += int(child.stat().st_size)
+                return total
+
+            summary = {
+                "runs_count": len(list(self.runs_dir.glob("*.json"))),
+                "companies_count": len(list(self.companies_dir.glob("*.json"))),
+                "versions_count": len(list(self.versions_dir.rglob("*.json"))),
+                "activity_log_entries": len(self._iter_jsonl_rows(self.activity_log_path)),
+                "error_log_entries": len(self._iter_jsonl_rows(self.error_log_path)),
+                "bytes": {
+                    "runs": _dir_size(self.runs_dir),
+                    "companies": _dir_size(self.companies_dir),
+                    "versions": _dir_size(self.versions_dir),
+                    "admin_logs": _dir_size(self.admin_dir),
+                },
+            }
+            summary["bytes"]["total"] = int(sum(summary["bytes"].values()))
+            self._cache_set(cache_key, self._json_copy(summary))
+            return summary
 
     def get_companies_full_data(
         self,
@@ -396,9 +1012,49 @@ class LocalStoreClient:
 
     def list_companies(self, *, user_id: str) -> List[Dict[str, Any]]:
         user_id = require_user_id(user_id, context="local company listing")
+        cache_key = f"companies:user:{user_id}"
         with self._lock:
+            cached = self._cache_get(cache_key)
+            if isinstance(cached, list):
+                return self._json_copy(cached)
             rows = self._visible_company_docs(user_id)
-        return rows
+            self._sort_desc_by_created_at(rows)
+            self._cache_set(cache_key, self._json_copy(rows))
+            return rows
+
+    def list_pipeline_runs(self, *, user_id: str) -> List[Dict[str, Any]]:
+        user_id = require_user_id(user_id, context="local pipeline run listing")
+        cache_key = f"runs:user:{user_id}"
+        rows: List[Dict[str, Any]] = []
+        with self._lock:
+            cached = self._cache_get(cache_key)
+            if isinstance(cached, list):
+                return self._json_copy(cached)
+            for path in sorted(self.runs_dir.glob("*.json")):
+                doc = self._read(path, {})
+                if not isinstance(doc, dict) or not self._run_visible_to_user(doc, user_id):
+                    continue
+                rows.append(doc)
+            rows.sort(key=lambda row: str(row.get("completed_at") or row.get("started_at") or ""), reverse=True)
+            self._cache_set(cache_key, self._json_copy(rows))
+            return rows
+
+    def get_pipeline_run_for_path(self, *, path: str, user_id: str) -> Optional[Dict[str, Any]]:
+        user_id = require_user_id(user_id, context="local pipeline path ownership")
+        target = str(path or "").strip()
+        if not target:
+            return None
+        normalized_target = str(Path(target).resolve())
+        for run in self.list_pipeline_runs(user_id=user_id):
+            paths = run.get("paths") or {}
+            if not isinstance(paths, dict):
+                continue
+            for candidate in paths.values():
+                if not candidate:
+                    continue
+                if str(Path(str(candidate)).resolve()) == normalized_target:
+                    return run
+        return None
 
     def search_similar_companies_from_chunks(
         self,

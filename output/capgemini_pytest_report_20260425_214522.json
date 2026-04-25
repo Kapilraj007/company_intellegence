@@ -1,0 +1,43 @@
+{
+  "company_name": "capgemini",
+  "generated_at": "2026-04-25T21:46:38",
+  "golden_record_path": "/home/kapil/Desktop/company-intelligence single json/output/capgemini_golden_record_20260425_214522.json",
+  "total": 539,
+  "passed": 490,
+  "failed": 5,
+  "skipped": 44,
+  "errors": 0,
+  "duration_sec": 4.54,
+  "all_passed": false,
+  "failed_tests": [
+    {
+      "name": "tests/unit/test_server_stabilization.py::test_auth_me_rejects_missing_bearer_token",
+      "message": "tests/unit/test_server_stabilization.py:139: in test_auth_me_rejects_missing_bearer_token\n    get_supabase_jwt_verifier.cache_clear()\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AttributeError: 'function' object has no attribute 'cache_clear'",
+      "phase": null
+    },
+    {
+      "name": "tests/unit/test_server_stabilization.py::test_auth_me_returns_token_user_id",
+      "message": "tests/unit/test_server_stabilization.py:154: in test_auth_me_returns_token_user_id\n    get_supabase_jwt_verifier.cache_clear()\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AttributeError: 'function' object has no attribute 'cache_clear'",
+      "phase": null
+    },
+    {
+      "name": "tests/unit/test_server_stabilization.py::test_analyze_scopes_cache_lookup_to_authenticated_user",
+      "message": "tests/unit/test_server_stabilization.py:184: in test_analyze_scopes_cache_lookup_to_authenticated_user\n    monkeypatch.setattr(server, \"_supabase\", fake_db)\nE   AttributeError: <module 'server' from '/home/kapil/Desktop/company-intelligence single json/server.py'> has no attribute '_supabase'",
+      "phase": null
+    },
+    {
+      "name": "tests/unit/test_server_stabilization.py::test_run_status_hides_foreign_user_run",
+      "message": "tests/unit/test_server_stabilization.py:226: in test_run_status_hides_foreign_user_run\n    monkeypatch.setattr(server, \"_supabase\", fake_db)\nE   AttributeError: <module 'server' from '/home/kapil/Desktop/company-intelligence single json/server.py'> has no attribute '_supabase'",
+      "phase": null
+    },
+    {
+      "name": "tests/unit/test_user_scope_pipeline.py::test_run_full_pipeline_threads_user_id",
+      "message": "tests/unit/test_user_scope_pipeline.py:47: in test_run_full_pipeline_threads_user_id\n    main.run_full_pipeline(\"Acme Corp\", user_id=\"user-123\")\nmain.py:130: in run_full_pipeline\n    _register_supabase_run(run_id, company_name, company_id, user_id=user_id, user_name=user_name)\nE   TypeError: test_run_full_pipeline_threads_user_id.<locals>.<lambda>() got an unexpected keyword argument 'user_name'",
+      "phase": null
+    }
+  ],
+  "error_tests": [],
+  "failed_parameter_ids": [],
+  "exit_code": 1,
+  "skip_reason": null
+}

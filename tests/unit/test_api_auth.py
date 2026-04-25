@@ -1,33 +1,52 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime, timedelta, timezone
+import os
+from datetime import timedelta
 
 import httpx
-import jwt
-import pytest
 from fastapi import Depends, FastAPI
 from fastapi import HTTPException
 
 import core.auth as auth_module
-from core.auth import CurrentUser, get_current_user, get_supabase_jwt_verifier
+from core.auth import CurrentUser, get_auth_jwt_verifier, get_current_user
 
 
 TEST_JWT_SECRET = "test-jwt-secret-that-is-long-enough"
 
 
-def _make_token(user_id: str, email: str = "analyst@example.com") -> str:
-    now = datetime.now(timezone.utc)
-    payload = {
-        "sub": user_id,
-        "email": email,
-        "aud": "authenticated",
-        "iss": "https://example.supabase.co/auth/v1",
-        "role": "authenticated",
-        "exp": int((now + timedelta(hours=1)).timestamp()),
-        "iat": int(now.timestamp()),
+class _FakeAuthStore:
+    def __init__(self, user: dict[str, object]) -> None:
+        self._user = dict(user)
+
+    def get_user_by_id(self, user_id: str) -> dict[str, object] | None:
+        return dict(self._user) if self._user.get("user_id") == user_id else None
+
+    def get_user_by_email(self, email: str) -> dict[str, object] | None:
+        return dict(self._user) if self._user.get("email") == email else None
+
+
+def _make_user(**overrides: object) -> dict[str, object]:
+    base = {
+        "user_id": "user-123",
+        "name": "Analyst User",
+        "email": "analyst@example.com",
+        "password": auth_module.hash_password("password-123"),
+        "role": "user",
+        "approval_status": "approved",
+        "created_at": "2026-04-25T00:00:00+00:00",
+        "session_nonce": "nonce-123",
     }
-    return jwt.encode(payload, TEST_JWT_SECRET, algorithm="HS256")
+    base.update(overrides)
+    return base
+
+
+def _make_token(user: dict[str, object], session_nonce: str | None = None) -> str:
+    return auth_module.create_access_token(
+        user,
+        session_nonce=session_nonce or str(user.get("session_nonce") or ""),
+        expires_delta=timedelta(hours=1),
+    )
 
 
 def _make_app() -> FastAPI:
@@ -35,172 +54,120 @@ def _make_app() -> FastAPI:
 
     @app.get("/auth/me")
     async def auth_me(current_user: CurrentUser = Depends(get_current_user)):
-        return {"user_id": current_user.user_id}
+        return {
+            "user_id": current_user.user_id,
+            "email": current_user.email,
+            "role": current_user.role,
+        }
 
     return app
 
 
-def _make_protected_action_app(captured: dict | None = None) -> FastAPI:
-    app = FastAPI()
+def test_password_hash_round_trip():
+    os.environ["PASSWORD_HASH_ITERATIONS"] = "100000"
+    hashed = auth_module.hash_password("password-123")
 
-    @app.post("/search-companies")
-    async def protected_search(
-        body: dict,
-        current_user: CurrentUser = Depends(get_current_user),
-    ):
-        user_id = current_user.user_id
-        if captured is not None:
-            captured["body_user_id"] = body.get("user_id")
-            captured["user_id"] = user_id
-        return {"user_id": user_id}
-
-    return app
+    assert hashed.startswith("pbkdf2_sha256$")
+    assert auth_module.verify_password("password-123", hashed) is True
+    assert auth_module.verify_password("wrong-password", hashed) is False
 
 
-def test_supabase_verifier_extracts_user_id(monkeypatch):
-    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
-    monkeypatch.setenv("SUPABASE_JWT_SECRET", TEST_JWT_SECRET)
-    get_supabase_jwt_verifier.cache_clear()
+def test_verifier_extracts_user_profile(monkeypatch):
+    monkeypatch.setenv("PASSWORD_HASH_ITERATIONS", "100000")
+    user = _make_user()
+    monkeypatch.setenv("APP_JWT_SECRET", TEST_JWT_SECRET)
+    monkeypatch.setattr(auth_module, "_get_auth_store", lambda: _FakeAuthStore(user))
+    get_auth_jwt_verifier.cache_clear()
 
     try:
-        current_user = get_supabase_jwt_verifier().verify_token(_make_token("user-123"))
+        current_user = get_auth_jwt_verifier().verify_token(_make_token(user))
     finally:
-        get_supabase_jwt_verifier.cache_clear()
+        get_auth_jwt_verifier.cache_clear()
 
     assert current_user.user_id == "user-123"
     assert current_user.email == "analyst@example.com"
+    assert current_user.role == "user"
 
 
-def test_auth_me_returns_current_user_id(monkeypatch):
-    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
-    monkeypatch.setenv("SUPABASE_JWT_SECRET", TEST_JWT_SECRET)
-    get_supabase_jwt_verifier.cache_clear()
+def test_verifier_rejects_stale_session_nonce(monkeypatch):
+    monkeypatch.setenv("PASSWORD_HASH_ITERATIONS", "100000")
+    user = _make_user()
+    monkeypatch.setenv("APP_JWT_SECRET", TEST_JWT_SECRET)
+    monkeypatch.setattr(auth_module, "_get_auth_store", lambda: _FakeAuthStore(user))
+    get_auth_jwt_verifier.cache_clear()
+
+    try:
+        try:
+            get_auth_jwt_verifier().verify_token(_make_token(user, session_nonce="stale-nonce"))
+        except HTTPException as exc:
+            assert exc.status_code == 401
+            assert exc.detail == "Session is no longer valid."
+        else:
+            raise AssertionError("Expected stale nonce to be rejected")
+    finally:
+        get_auth_jwt_verifier.cache_clear()
+
+
+def test_verifier_rejects_pending_user(monkeypatch):
+    monkeypatch.setenv("PASSWORD_HASH_ITERATIONS", "100000")
+    user = _make_user(approval_status="pending")
+    monkeypatch.setenv("APP_JWT_SECRET", TEST_JWT_SECRET)
+    monkeypatch.setattr(auth_module, "_get_auth_store", lambda: _FakeAuthStore(user))
+    get_auth_jwt_verifier.cache_clear()
+
+    try:
+        try:
+            get_auth_jwt_verifier().verify_token(_make_token(user))
+        except HTTPException as exc:
+            assert exc.status_code == 403
+            assert exc.detail == auth_module.PENDING_APPROVAL_MESSAGE
+        else:
+            raise AssertionError("Expected pending user to be rejected")
+    finally:
+        get_auth_jwt_verifier.cache_clear()
+
+
+def test_get_current_user_accepts_bearer_token(monkeypatch):
+    monkeypatch.setenv("PASSWORD_HASH_ITERATIONS", "100000")
+    user = _make_user()
+    monkeypatch.setenv("APP_JWT_SECRET", TEST_JWT_SECRET)
+    monkeypatch.setattr(auth_module, "_get_auth_store", lambda: _FakeAuthStore(user))
+    get_auth_jwt_verifier.cache_clear()
 
     async def run_request():
         transport = httpx.ASGITransport(app=_make_app())
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             return await client.get(
                 "/auth/me",
-                headers={"Authorization": f"Bearer {_make_token('user-456')}"},
+                headers={"Authorization": f"Bearer {_make_token(user)}"},
             )
 
-    response = asyncio.run(run_request())
-
-    get_supabase_jwt_verifier.cache_clear()
+    try:
+        response = asyncio.run(run_request())
+    finally:
+        get_auth_jwt_verifier.cache_clear()
 
     assert response.status_code == 200
-    assert response.json() == {"user_id": "user-456"}
+    assert response.json()["user_id"] == "user-123"
 
 
-def test_auth_me_rejects_missing_token(monkeypatch):
-    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
-    monkeypatch.setenv("SUPABASE_JWT_SECRET", TEST_JWT_SECRET)
-    get_supabase_jwt_verifier.cache_clear()
+def test_get_current_user_accepts_cookie_token(monkeypatch):
+    monkeypatch.setenv("PASSWORD_HASH_ITERATIONS", "100000")
+    user = _make_user()
+    monkeypatch.setenv("APP_JWT_SECRET", TEST_JWT_SECRET)
+    monkeypatch.setattr(auth_module, "_get_auth_store", lambda: _FakeAuthStore(user))
+    get_auth_jwt_verifier.cache_clear()
 
     async def run_request():
         transport = httpx.ASGITransport(app=_make_app())
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            client.cookies.set(auth_module.auth_cookie_name(), _make_token(user))
             return await client.get("/auth/me")
 
-    response = asyncio.run(run_request())
-
-    get_supabase_jwt_verifier.cache_clear()
-
-    assert response.status_code == 401
-    assert response.json()["detail"] == "Missing bearer token."
-
-
-def test_protected_search_route_rejects_missing_token(monkeypatch):
-    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
-    monkeypatch.setenv("SUPABASE_JWT_SECRET", TEST_JWT_SECRET)
-    get_supabase_jwt_verifier.cache_clear()
-
-    async def run_request():
-        transport = httpx.ASGITransport(app=_make_protected_action_app())
-        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
-            return await client.post("/search-companies", json={"query": "AI healthcare"})
-
-    response = asyncio.run(run_request())
-
-    get_supabase_jwt_verifier.cache_clear()
-
-    assert response.status_code == 401
-    assert response.json()["detail"] == "Missing bearer token."
-
-
-def test_protected_search_route_uses_token_user_id(monkeypatch):
-    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
-    monkeypatch.setenv("SUPABASE_JWT_SECRET", TEST_JWT_SECRET)
-    get_supabase_jwt_verifier.cache_clear()
-
-    captured = {}
-
-    async def run_request():
-        transport = httpx.ASGITransport(app=_make_protected_action_app(captured))
-        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
-            return await client.post(
-                "/search-companies",
-                json={"query": "AI healthcare", "user_id": "spoofed-user"},
-                headers={"Authorization": f"Bearer {_make_token('token-user')}"},
-            )
-
-    response = asyncio.run(run_request())
-
-    get_supabase_jwt_verifier.cache_clear()
+    try:
+        response = asyncio.run(run_request())
+    finally:
+        get_auth_jwt_verifier.cache_clear()
 
     assert response.status_code == 200
-    assert captured == {"body_user_id": "spoofed-user", "user_id": "token-user"}
-
-
-def test_verifier_accepts_rs256_tokens_when_jwt_secret_is_present(monkeypatch):
-    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
-    monkeypatch.setenv("SUPABASE_JWT_SECRET", TEST_JWT_SECRET)
-    get_supabase_jwt_verifier.cache_clear()
-    verifier = get_supabase_jwt_verifier()
-
-    class _SigningKey:
-        key = "public-key"
-
-    class _JWKClient:
-        def get_signing_key_from_jwt(self, _token: str):
-            return _SigningKey()
-
-    monkeypatch.setattr(verifier, "_jwks_client", _JWKClient())
-    monkeypatch.setattr(auth_module.jwt, "get_unverified_header", lambda _token: {"alg": "RS256"})
-
-    captured: dict[str, object] = {}
-
-    def _fake_decode(token: str, key: str, algorithms: list[str], **_kwargs):
-        captured["token"] = token
-        captured["key"] = key
-        captured["algorithms"] = list(algorithms)
-        return {"sub": "user-rs", "exp": int((datetime.now(timezone.utc) + timedelta(hours=1)).timestamp())}
-
-    monkeypatch.setattr(auth_module.jwt, "decode", _fake_decode)
-
-    try:
-        current_user = verifier.verify_token("rs-token")
-    finally:
-        get_supabase_jwt_verifier.cache_clear()
-
-    assert current_user.user_id == "user-rs"
-    assert captured["token"] == "rs-token"
-    assert captured["key"] == "public-key"
-    assert captured["algorithms"] == ["RS256"]
-
-
-def test_verifier_rejects_unsupported_signing_algorithm(monkeypatch):
-    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
-    monkeypatch.setenv("SUPABASE_JWT_SECRET", TEST_JWT_SECRET)
-    get_supabase_jwt_verifier.cache_clear()
-    verifier = get_supabase_jwt_verifier()
-    monkeypatch.setattr(auth_module.jwt, "get_unverified_header", lambda _token: {"alg": "none"})
-
-    try:
-        with pytest.raises(HTTPException) as exc_info:
-            verifier.verify_token("unsupported-token")
-    finally:
-        get_supabase_jwt_verifier.cache_clear()
-
-    assert exc_info.value.status_code == 401
-    assert exc_info.value.detail == "Unsupported token signing algorithm."
+    assert response.json()["email"] == "analyst@example.com"
