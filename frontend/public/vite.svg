@@ -1,24 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- IntelIQ Logo: Orange Q with gradient -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- IntelIQ Icon - Orange Q -->
   <defs>
-    <linearGradient id="iqGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ff9500;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ff6b00;stop-opacity:1" />
+    <linearGradient id="qGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff8800;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ff5500;stop-opacity:1" />
     </linearGradient>
   </defs>
   
-  <!-- Main Q shape -->
-  <g transform="translate(50, 50)">
-    <!-- Q circle body -->
-    <circle cx="0" cy="0" r="28" fill="url(#iqGradient)" stroke="#ff5500" stroke-width="1.5"/>
-    
-    <!-- Q inner white space -->
-    <circle cx="0" cy="0" r="18" fill="#ffffff" opacity="0.15"/>
-    
-    <!-- Q tail -->
-    <path d="M 12 12 Q 20 18 22 28" fill="none" stroke="url(#iqGradient)" stroke-width="5" stroke-linecap="round"/>
-    
-    <!-- Highlight for 3D effect -->
-    <ellipse cx="-10" cy="-12" rx="8" ry="6" fill="#ffffff" opacity="0.3"/>
-  </g>
+  <!-- Outer circle (Q body) -->
+  <circle cx="100" cy="100" r="85" fill="url(#qGrad)" stroke="#ff4400" stroke-width="3"/>
+  
+  <!-- Inner circle (Q hole) -->
+  <circle cx="100" cy="100" r="55" fill="#001a40"/>
+  
+  <!-- Q tail -->
+  <path d="M 140 135 Q 160 155 165 180" fill="none" stroke="url(#qGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- White highlight -->
+  <ellipse cx="70" cy="70" rx="25" ry="20" fill="#ffffff" opacity="0.25"/>
 </svg>
