@@ -15,8 +15,8 @@ from search.semantic_search import PineconeSemanticSearch
 
 logger = get_logger("search_service")
 _EMPTY_VALUES = {"not found", "n/a", "na", "unknown", "none", "null", "", "-"}
-MIN_SEMANTIC_CHUNK_SCORE = float(os.getenv("SEARCH_MIN_CHUNK_SCORE", "0.5"))
-MIN_SEMANTIC_COMPANY_SCORE = float(os.getenv("SEARCH_MIN_COMPANY_SCORE", "0.6"))
+MIN_SEMANTIC_CHUNK_SCORE = float(os.getenv("SEARCH_MIN_CHUNK_SCORE", "0.4"))
+MIN_SEMANTIC_COMPANY_SCORE = float(os.getenv("SEARCH_MIN_COMPANY_SCORE", "0.5"))
 
 
 def _utc_now_iso() -> str:
@@ -369,6 +369,8 @@ class SearchService:
                     exclude_company_name=exclude_company or None,
                     user_id=user_id,
                 )
+                # For local search, skip strict thresholds since local search has different scoring
+                logger.info(f"Local search returned {len(matches)} results for query: {normalized_query}")
             except Exception as inner_exc:
                 logger.error(f"Similarity search failed: {inner_exc}")
                 raise RuntimeError(f"Similarity search unavailable: {inner_exc}") from inner_exc

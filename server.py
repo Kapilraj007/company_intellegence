@@ -74,6 +74,13 @@ def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _slug(value: str) -> str:
+    """Convert a string to a URL-friendly slug."""
+    cleaned = re.sub(r"[^a-zA-Z0-9]+", "_", (value or "").strip().lower())
+    cleaned = re.sub(r"_+", "_", cleaned).strip("_")
+    return cleaned or "unknown"
+
+
 def _admin_cache_ttl_seconds() -> float:
     raw = str(os.getenv("ADMIN_CACHE_TTL_SECONDS", "20")).strip()
     try:
@@ -1642,9 +1649,11 @@ def list_outputs(limit: int = 200, user_id: str = Depends(_data_reader_user_id))
     if limit <= 0:
         limit = 200
     limit = min(limit, 1000)
-    runs = get_local_store_client().list_pipeline_runs(user_id=user_id)[:limit]
+    runs = get_local_store_client().list_pipeline_runs(user_id=user_id)
     items: list[Dict[str, Any]] = []
+    seen_paths: set[str] = set()
 
+    # Process runs from local_store (current/tracked runs)
     for run in runs:
         paths = run.get("paths") or {}
         if not isinstance(paths, dict) or not any(paths.values()):
@@ -1666,6 +1675,78 @@ def list_outputs(limit: int = 200, user_id: str = Depends(_data_reader_user_id))
                 "skipped": None,
             }
         )
+        # Track paths we've already added
+        for path in paths.values():
+            if path:
+                seen_paths.add(str(path))
+    
+    # Discover old output files that don't have run metadata
+    try:
+        if OUTPUT_DIR.exists():
+            for json_file in sorted(OUTPUT_DIR.glob("*.json"), reverse=True):
+                file_path_str = str(json_file)
+                if file_path_str in seen_paths:
+                    continue  # Already included from run metadata
+                
+                match = OUTPUT_FILE_RE.match(json_file.name)
+                if not match:
+                    continue  # Doesn't match expected pattern
+                
+                company = match.group("company")
+                kind = match.group("kind")
+                stamp = match.group("stamp")
+                
+                if kind == "golden_record":
+                    # Try to find or create an entry for this company
+                    existing = next((item for item in items if item["company_slug"].lower() == _slug(company).lower()), None)
+                    if existing:
+                        if not existing.get("golden_record_path"):
+                            existing["golden_record_path"] = file_path_str
+                            seen_paths.add(file_path_str)
+                    else:
+                        timestamp = _stamp_to_iso(stamp)
+                        items.append(
+                            {
+                                "id": f"old-{_slug(company)}-{stamp}",
+                                "company": company,
+                                "company_slug": _slug(company),
+                                "timestamp": timestamp,
+                                "created_at": timestamp,
+                                "golden_record_path": file_path_str,
+                                "validation_report_path": None,
+                                "pytest_report_path": None,
+                                "semantic_chunks_path": None,
+                                "fields": None,
+                                "passed": None,
+                                "failed": None,
+                                "skipped": None,
+                            }
+                        )
+                        seen_paths.add(file_path_str)
+                elif kind == "validation_report" and any(item["company_slug"].lower() == _slug(company).lower() for item in items):
+                    for item in items:
+                        if item["company_slug"].lower() == _slug(company).lower() and not item.get("validation_report_path"):
+                            item["validation_report_path"] = file_path_str
+                            seen_paths.add(file_path_str)
+                            break
+                elif kind == "pytest_report" and any(item["company_slug"].lower() == _slug(company).lower() for item in items):
+                    for item in items:
+                        if item["company_slug"].lower() == _slug(company).lower() and not item.get("pytest_report_path"):
+                            item["pytest_report_path"] = file_path_str
+                            seen_paths.add(file_path_str)
+                            break
+                elif kind == "semantic_chunks" and any(item["company_slug"].lower() == _slug(company).lower() for item in items):
+                    for item in items:
+                        if item["company_slug"].lower() == _slug(company).lower() and not item.get("semantic_chunks_path"):
+                            item["semantic_chunks_path"] = file_path_str
+                            seen_paths.add(file_path_str)
+                            break
+    except Exception as exc:
+        logger.warning(f"Error discovering old output files: {exc}")
+    
+    # Sort by timestamp (newest first)
+    items.sort(key=lambda x: str(x.get("created_at") or ""), reverse=True)
+    items = items[:limit]
 
     for item in items:
         golden_path = item.get("golden_record_path")

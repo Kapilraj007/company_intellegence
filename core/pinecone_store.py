@@ -163,7 +163,13 @@ def _all_categories() -> List[str]:
 
 class PineconeStore:
     def __init__(self) -> None:
-        api_key = os.environ["PINECONE_API_KEY"]
+        api_key = os.environ.get("PINECONE_API_KEY", "").strip()
+        if not api_key:
+            raise RuntimeError(
+                "PINECONE_API_KEY environment variable is not set. "
+                "Semantic search is disabled. Set PINECONE_API_KEY to enable Pinecone search."
+            )
+        
         pc = Pinecone(api_key=api_key)
 
         if INDEX_NAME not in pc.list_indexes().names():
