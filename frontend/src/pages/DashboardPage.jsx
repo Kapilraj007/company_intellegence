@@ -6,9 +6,24 @@ import { formatDateTime, outputIdFromPath, truncateId } from "../utils";
 
 const COMPANY_HINTS = ["NVIDIA", "Apple", "Infosys", "TCS", "OpenAI", "Tesla"];
 const LIVE_TASK_STATUSES = new Set(["pending", "running"]);
+const COMPANY_SPLIT_PATTERN = /[\n,;]+/;
 
 function normalizeCompanyName(value) {
   return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function parseCompanyInput(value) {
+  const seen = new Set();
+  const names = [];
+  for (const candidate of String(value || "").split(COMPANY_SPLIT_PATTERN)) {
+    const trimmed = candidate.trim().replace(/\s+/g, " ");
+    if (!trimmed) continue;
+    const normalized = normalizeCompanyName(trimmed);
+    if (seen.has(normalized)) continue;
+    seen.add(normalized);
+    names.push(trimmed);
+  }
+  return names;
 }
 
 function MetricCard({ label, value, sub, color = T.amber }) {
@@ -31,6 +46,7 @@ export default function DashboardPage({ setPage, setActivePipeline, setActiveOut
   const [company, setCompany] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [tasks, setTasks] = useState([]);
   const [outputs, setOutputs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -164,23 +180,24 @@ export default function DashboardPage({ setPage, setActivePipeline, setActiveOut
   }, [outputs, tasks]);
 
   const companyCacheSignal = useMemo(() => {
-    const name = company.trim();
-    if (!name) return null;
-    return findExistingRunMeta(name);
+    const companies = parseCompanyInput(company);
+    if (companies.length !== 1) return null;
+    return findExistingRunMeta(companies[0]);
   }, [company, findExistingRunMeta]);
 
   const handleSubmit = useCallback(async ({ force = false, companyOverride = "" } = {}) => {
-    const name = (companyOverride || company).trim();
-    if (!name) {
-      setError("Please enter a company name.");
+    const companyList = parseCompanyInput(companyOverride || company);
+    if (!companyList.length) {
+      setError("Please enter at least one company name.");
       return;
     }
 
-    if (!force) {
-      const existingRunMeta = findExistingRunMeta(name);
+    if (!force && companyList.length === 1) {
+      const existingRunMeta = findExistingRunMeta(companyList[0]);
       if (existingRunMeta) {
         setRerunPrompt(existingRunMeta);
         setError("");
+        setNotice("");
         return;
       }
     }
@@ -188,17 +205,53 @@ export default function DashboardPage({ setPage, setActivePipeline, setActiveOut
     setRerunPrompt(null);
     setSubmitting(true);
     setError("");
+    setNotice("");
     try {
-      const data = await submitJob(name);
-      setCompany("");
-      setActivePipeline(data.task_id);
-      setTimeout(refreshData, 500);
+      const queuedTaskIds = [];
+      const failedCompanies = [];
+
+      for (const companyName of companyList) {
+        try {
+          const data = await submitJob(companyName);
+          queuedTaskIds.push(data.task_id);
+        } catch (requestError) {
+          failedCompanies.push({
+            company: companyName,
+            message: requestError?.message || "Unknown error",
+          });
+        }
+      }
+
+      if (queuedTaskIds.length > 0) {
+        setCompany("");
+        setActivePipeline(queuedTaskIds[queuedTaskIds.length - 1]);
+        setTimeout(refreshData, 500);
+      }
+
+      if (failedCompanies.length > 0) {
+        const failedNames = failedCompanies.map((item) => item.company).join(", ");
+        const firstError = failedCompanies[0].message;
+        if (queuedTaskIds.length > 0) {
+          setError(
+            `Queued ${queuedTaskIds.length} run${queuedTaskIds.length === 1 ? "" : "s"}, but failed for ${failedNames}. First error: ${firstError}`
+          );
+        } else {
+          setError(`Failed to start pipeline: ${firstError}`);
+        }
+      } else if (companyList.length > 1) {
+        setNotice(
+          `Queued ${queuedTaskIds.length} separate runs for ${companyList.join(", ")}.`
+        );
+      }
     } catch (requestError) {
       setError(`Failed to start pipeline: ${requestError.message}`);
     } finally {
       setSubmitting(false);
     }
   }, [company, findExistingRunMeta, refreshData, setActivePipeline]);
+
+  const parsedCompanyInput = useMemo(() => parseCompanyInput(company), [company]);
+  const multipleCompaniesSelected = parsedCompanyInput.length > 1;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -277,6 +330,7 @@ export default function DashboardPage({ setPage, setActivePipeline, setActiveOut
                     setCompany(event.target.value);
                     setRerunPrompt(null);
                     setError("");
+                    setNotice("");
                   }}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") handleSubmit();
@@ -298,10 +352,16 @@ export default function DashboardPage({ setPage, setActivePipeline, setActiveOut
                 />
                 <Btn
                   onClick={handleSubmit}
-                  disabled={!company.trim() || !apiInfo.online || submitting}
+                  disabled={!parsedCompanyInput.length || !apiInfo.online || submitting}
                   style={{ minWidth: 170, padding: "14px 24px", fontSize: 14 }}
                 >
-                  {submitting ? "Submitting..." : companyCacheSignal ? "Run Fresh Version" : "Run Pipeline"}
+                  {submitting
+                    ? "Submitting..."
+                    : multipleCompaniesSelected
+                      ? `Run ${parsedCompanyInput.length} Pipelines`
+                      : companyCacheSignal
+                        ? "Run Fresh Version"
+                        : "Run Pipeline"}
                 </Btn>
               </div>
             </div>
@@ -372,6 +432,12 @@ export default function DashboardPage({ setPage, setActivePipeline, setActiveOut
             {error && (
               <div style={{ marginTop: 14, padding: "12px 14px", background: T.red + "12", border: `1px solid ${T.red}35`, borderRadius: 10, color: T.red, fontSize: 13 }}>
                 {error}
+              </div>
+            )}
+
+            {notice && (
+              <div style={{ marginTop: 14, padding: "12px 14px", background: T.green + "12", border: `1px solid ${T.green}35`, borderRadius: 10, color: T.green, fontSize: 13 }}>
+                {notice}
               </div>
             )}
 

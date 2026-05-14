@@ -65,6 +65,23 @@ class DummyReranker:
         return reranked
 
 
+class LowEvidenceReranker:
+    def rerank(self, *, query, matches):
+        del query
+        reranked = []
+        for match in matches:
+            reranked.append(
+                {
+                    **dict(match),
+                    "vector_score": match.get("score"),
+                    "rerank_score": None,
+                    "lexical_score": 0.0,
+                    "overlap_terms": [],
+                }
+            )
+        return reranked
+
+
 class DummyLocalStore:
     def __init__(self, *, full_data=None, local_matches=None, company_docs=None):
         self.full_data = full_data or {}
@@ -358,6 +375,107 @@ def test_search_service_falls_back_to_local_store_when_pinecone_fails():
     assert local_store.search_calls[0]["top_k_companies"] == 5
     assert local_store.search_calls[0]["top_k_chunks"] == 50
     assert local_store.search_calls[0]["user_id"] == "user-123"
+
+
+def test_search_service_falls_back_to_local_when_pinecone_matches_fail_thresholds():
+    semantic_backend = DummySemanticBackend(
+        matches=[
+            {
+                "id": "generic_sales",
+                "company_id": "generic_co",
+                "company_name": "Generic Co",
+                "score": 0.41,
+                "category": "Sales & Growth",
+                "snippet": "Broad enterprise sales information.",
+            }
+        ]
+    )
+    local_store = DummyLocalStore(
+        local_matches=[
+            {
+                "company_id": "capgemini",
+                "company_name": "Capgemini",
+                "score": 0.76,
+                "match_count": 4,
+                "top_chunks": [{"chunk_id": "2", "chunk_title": "Innovation", "score": 0.76, "overlap_terms": ["erp"]}],
+                "category": "Innovation",
+                "snippet": "ERP modernization and managed services capabilities.",
+            }
+        ]
+    )
+    service = SearchService(
+        semantic_backend=semantic_backend,
+        local_store=local_store,
+        reranker=DummyReranker(score_shift=0.0),
+    )
+
+    response = service.search_companies(
+        query="enterprise ERP implementation and managed services",
+        top_k=5,
+        top_k_chunks=40,
+        include_full_data=False,
+        user_id="user-123",
+    )
+
+    assert response["backend"] == "local_store"
+    assert response["result_count"] == 1
+    assert response["results"][0]["company_name"] == "Capgemini"
+    assert local_store.search_calls[0]["top_k_companies"] == 5
+    assert local_store.search_calls[0]["top_k_chunks"] == 50
+    assert local_store.search_calls[0]["user_id"] == "user-123"
+
+
+def test_search_service_falls_back_to_local_when_semantic_hits_have_low_evidence():
+    semantic_backend = DummySemanticBackend(
+        matches=[
+            {
+                "id": "pwc_sales_growth_03",
+                "company_id": "pwc",
+                "company_name": "PWC",
+                "score": 0.556,
+                "category": "Sales & Growth #3",
+                "snippet": "Runway and burn multiplier details",
+            },
+            {
+                "id": "naukri_people_02",
+                "company_id": "naukri",
+                "company_name": "naukri",
+                "score": 0.554,
+                "category": "People & Talent #2",
+                "snippet": "Career growth and opportunities",
+            },
+        ]
+    )
+    local_store = DummyLocalStore(
+        local_matches=[
+            {
+                "company_id": "fortinet",
+                "company_name": "Fortinet",
+                "score": 0.81,
+                "match_count": 4,
+                "top_chunks": [{"chunk_id": "7", "chunk_title": "Cybersecurity", "score": 0.81, "overlap_terms": ["cybersecurity", "soc"]}],
+                "category": "Cybersecurity",
+                "snippet": "SOC services and managed threat response",
+            }
+        ]
+    )
+    service = SearchService(
+        semantic_backend=semantic_backend,
+        local_store=local_store,
+        reranker=LowEvidenceReranker(),
+    )
+
+    response = service.search_companies(
+        query="cybersecurity SOC services for mid-market companies",
+        top_k=5,
+        top_k_chunks=40,
+        include_full_data=False,
+        user_id="user-123",
+    )
+
+    assert response["backend"] == "local_store"
+    assert response["result_count"] == 1
+    assert response["results"][0]["company_name"] == "Fortinet"
 
 
 def test_search_service_filters_weak_semantic_matches():

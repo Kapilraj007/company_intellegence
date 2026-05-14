@@ -17,6 +17,9 @@ logger = get_logger("search_service")
 _EMPTY_VALUES = {"not found", "n/a", "na", "unknown", "none", "null", "", "-"}
 MIN_SEMANTIC_CHUNK_SCORE = float(os.getenv("SEARCH_MIN_CHUNK_SCORE", "0.4"))
 MIN_SEMANTIC_COMPANY_SCORE = float(os.getenv("SEARCH_MIN_COMPANY_SCORE", "0.5"))
+LOW_CONFIDENCE_COMPANY_SCORE = float(os.getenv("SEARCH_LOW_CONFIDENCE_COMPANY_SCORE", "0.72"))
+MIN_RERANK_SCORE_FOR_LOW_LEXICAL = float(os.getenv("SEARCH_MIN_RERANK_FOR_LOW_LEXICAL", "0.62"))
+MIN_LEXICAL_SCORE_FOR_LOW_CONFIDENCE = float(os.getenv("SEARCH_MIN_LEXICAL_FOR_LOW_CONFIDENCE", "0.05"))
 
 
 def _utc_now_iso() -> str:
@@ -320,8 +323,55 @@ class SearchService:
             max_score = float(row.get("max_score") or 0.0)
             if score < MIN_SEMANTIC_COMPANY_SCORE or max_score < MIN_SEMANTIC_CHUNK_SCORE:
                 continue
+
+            top_chunks = list(row.get("top_chunks") or [])
+            lexical_scores = [float(chunk.get("lexical_score") or 0.0) for chunk in top_chunks if isinstance(chunk, dict)]
+            rerank_scores = [
+                float(chunk.get("rerank_score"))
+                for chunk in top_chunks
+                if isinstance(chunk, dict) and chunk.get("rerank_score") is not None
+            ]
+            overlap_counts = [
+                len(list(chunk.get("overlap_terms") or []))
+                for chunk in top_chunks
+                if isinstance(chunk, dict)
+            ]
+
+            best_lexical = max(lexical_scores) if lexical_scores else 0.0
+            best_rerank = max(rerank_scores) if rerank_scores else 0.0
+            best_overlap_count = max(overlap_counts) if overlap_counts else 0
+
+            # Guard against generic, low-evidence semantic matches that often look
+            # identical across unrelated queries.
+            if (
+                score < LOW_CONFIDENCE_COMPANY_SCORE
+                and best_lexical < MIN_LEXICAL_SCORE_FOR_LOW_CONFIDENCE
+                and best_rerank < MIN_RERANK_SCORE_FOR_LOW_LEXICAL
+                and best_overlap_count == 0
+            ):
+                continue
             filtered.append(row)
         return filtered
+
+    def _search_local_companies(
+        self,
+        *,
+        query_text: str,
+        top_k: int,
+        top_k_chunks: int,
+        exclude_company: str,
+        filters: Optional[Dict[str, Any]],
+        user_id: str,
+    ) -> list[Dict[str, Any]]:
+        user_id = require_user_id(user_id, context="local company chunk search")
+        return self._local_store.search_similar_companies_from_chunks(
+            query_text=query_text,
+            top_k_companies=top_k,
+            top_k_chunks=top_k_chunks,
+            filters=filters or {},
+            exclude_company_name=exclude_company or None,
+            user_id=user_id,
+        )
 
     def search_companies(
         self,
@@ -351,22 +401,39 @@ class SearchService:
                 user_id=user_id,
             )
             raw_matches = self._reranker.rerank(query=normalized_query, matches=raw_matches)
-            matches = rank_company_matches(
+            ranked_matches = rank_company_matches(
                 raw_matches,
                 top_k=normalized_top_k,
                 exclude_company=exclude_company,
             )
-            matches = self._apply_semantic_thresholds(matches)
+            matches = self._apply_semantic_thresholds(ranked_matches)
+            if not matches:
+                logger.info(
+                    "Pinecone search returned no strong matches; falling back to local chunk search "
+                    f"for query: {normalized_query}"
+                )
+                local_matches = self._search_local_companies(
+                    query_text=normalized_query,
+                    top_k=normalized_top_k,
+                    top_k_chunks=normalized_top_k_chunks,
+                    exclude_company=exclude_company,
+                    filters=filters,
+                    user_id=user_id,
+                )
+                if local_matches:
+                    backend = "local_store"
+                    matches = local_matches
+                    logger.info(f"Local search returned {len(matches)} results for query: {normalized_query}")
         except Exception as exc:
             backend = "local_store"
             logger.warning(f"Pinecone search unavailable, falling back to local search: {exc}")
             try:
-                matches = self._local_store.search_similar_companies_from_chunks(
+                matches = self._search_local_companies(
                     query_text=normalized_query,
-                    top_k_companies=normalized_top_k,
+                    top_k=normalized_top_k,
                     top_k_chunks=normalized_top_k_chunks,
-                    filters=filters or {},
-                    exclude_company_name=exclude_company or None,
+                    exclude_company=exclude_company,
+                    filters=filters,
                     user_id=user_id,
                 )
                 # For local search, skip strict thresholds since local search has different scoring
